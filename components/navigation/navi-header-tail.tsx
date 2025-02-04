@@ -1,17 +1,16 @@
-"use client";
+'use client';
+import { useRouter } from "next/navigation";
+import { ModeToggle } from "../mode-toggle";
 import { UserButton } from "@clerk/nextjs";
 import { Button } from "../ui/button";
 import { LogIn } from "lucide-react";
-import { ModeToggle } from "../mode-toggle";
-import { useRouter } from "next/navigation";
 
-interface NavigationHeaderProps {
+interface HeaderTailProps {
   user: any
 }
-
-export function NavigationHeader({
-  user,
-}: NavigationHeaderProps) {
+export function NaviHeaderTail({
+  user
+}: HeaderTailProps) {
   const router = useRouter();
   return (
     <div className="w-full flex justify-end space-x-2 pr-2 dark:bg-[#1E1F22] bg-[#E3E5E8]">
@@ -29,5 +28,5 @@ export function NavigationHeader({
       </h1>
     )}
   </div>
-  );
+  )
 }

@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark, experimental__simple} from "@clerk/themes";
+import { NaviHeader } from "@/components/navigation/navi-header";
 
 const font = Open_Sans({ subsets: ["latin"] });
 
@@ -27,13 +28,14 @@ export default function RootLayout({
             }}
 >
       <html lang="en" suppressHydrationWarning>
-        <body className={cn(font.className, "bg-white dark:bg-[#313338]")}>
+        <body className={cn(font.className, "bg-white dark:bg-[#313338] overflow-hidden")}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
           >
+            <NaviHeader />
             {children}
           </ThemeProvider>
         </body>
