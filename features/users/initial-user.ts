@@ -27,9 +27,9 @@ export const initialUser = async () => {
       email: clerkUser.emailAddresses[0].emailAddress,
       username: `${clerkUser.username}`,
       role: "USER",
-      status: "ACTIVE"
+      status: "ACTIVE",
     })
     .returning();
 
   return newUser[0];
-}
+};

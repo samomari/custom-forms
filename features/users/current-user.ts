@@ -17,4 +17,4 @@ export const currentUser = async () => {
     .limit(1);
 
   return currentUser.length > 0 ? currentUser[0] : null;
-}
+};

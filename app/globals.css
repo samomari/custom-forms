@@ -8,10 +8,11 @@ body,
   height: 100%;
 }
 
-.cl-formButtonPrimary {
+
+.auth {
+  .cl-formButtonPrimary {
   @apply inline-flex h-9 items-center justify-center whitespace-nowrap rounded-md bg-primary px-3  font-medium text-primary-foreground !shadow-none ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50;
 }
-
 .cl-card,
 .cl-socialButtonsBlockButton,
 .cl-alert,
@@ -19,7 +20,6 @@ body,
 .cl-userButtonPopoverCard {
   @apply rounded-lg border border-input bg-background;
 }
-
 .cl-headerTitle,
 .cl-socialButtonsBlockButtonText,
 .cl-loading,
@@ -58,8 +58,8 @@ body,
 .cl-fileDropAreaHint,
 .cl-fileDropAreaFooterHint,
 .cl-form
-  p[data-localization-key='userProfile.emailAddressPage.emailCode.formHint'],
-p[data-localization-key='userProfile.profilePage.successMessage'] {
+  p[data-localization-key="userProfile.emailAddressPage.emailCode.formHint"],
+p[data-localization-key="userProfile.profilePage.successMessage"] {
   @apply text-muted-foreground;
 }
 
@@ -67,9 +67,9 @@ p[data-localization-key='userProfile.profilePage.successMessage'] {
   @apply bg-border;
 }
 
-.cl-formFieldInput[type='text'],
-.cl-formFieldInput[type='email'],
-.cl-formFieldInput[type='password'] {
+.cl-formFieldInput[type="text"],
+.cl-formFieldInput[type="email"],
+.cl-formFieldInput[type="password"] {
   @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-foreground ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
 }
 
@@ -98,7 +98,7 @@ p[data-localization-key='userProfile.profilePage.successMessage'] {
   @apply text-foreground;
 }
 
-button[data-localization-key='userProfile.start.dangerSection.deleteAccountButton'] {
+button[data-localization-key="userProfile.start.dangerSection.deleteAccountButton"] {
   @apply bg-destructive text-destructive-foreground hover:bg-destructive/90;
 }
 
@@ -141,7 +141,7 @@ button[data-localization-key='userProfile.start.dangerSection.deleteAccountButto
   @apply rounded-full border border-input bg-background px-2.5 py-0.5 text-xs text-foreground !shadow-none;
 }
 
-.cl-badge[data-localization-key='badge__unverified'] {
+.cl-badge[data-localization-key="badge__unverified"] {
   @apply border bg-transparent text-destructive dark:text-red-500;
 }
 
@@ -188,7 +188,7 @@ button[data-localization-key='userProfile.start.dangerSection.deleteAccountButto
   @apply rounded-lg rounded-l-none border border-input bg-gradient-to-t from-background to-background;
 }
 
-h1[data-localization-key='userProfile.navbar.title'] {
+h1[data-localization-key="userProfile.navbar.title"] {
   @apply text-foreground;
 }
 
@@ -213,7 +213,7 @@ h1[data-localization-key='userProfile.navbar.title'] {
   @apply border border-input bg-background;
 }
 
-.cl-menuItem[data-color='neutral'] {
+.cl-menuItem[data-color="neutral"] {
   @apply text-foreground hover:bg-muted;
 }
 
@@ -224,7 +224,7 @@ h1[data-localization-key='userProfile.navbar.title'] {
 .cl-userButtonPopoverMain {
   @apply rounded-lg border-input bg-background;
 }
-
+}
 
 @layer base {
   :root {
