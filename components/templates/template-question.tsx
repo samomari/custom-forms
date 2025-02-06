@@ -7,8 +7,10 @@ import { FormInput } from "./form-input";
 import { FormSelect } from "./form-select";
 
 interface TemplateQuestionProps {
+  // eslint-disable-next-line
   field: any;
   index: number;
+  // eslint-disable-next-line
   form: any;
   types: string[];
 }

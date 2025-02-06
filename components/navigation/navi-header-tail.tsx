@@ -5,8 +5,18 @@ import { UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { LogIn } from "lucide-react";
 
+type User = {
+  id: string;
+  email: string;
+  username: string;
+  role: "USER" | "ADMIN";
+  status: "ACTIVE" | "BLOCKED";
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 interface HeaderTailProps {
-  user: any;
+  user: User | null;
 }
 export function NaviHeaderTail({ user }: HeaderTailProps) {
   const router = useRouter();

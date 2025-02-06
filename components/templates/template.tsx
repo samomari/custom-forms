@@ -66,7 +66,7 @@ export default function Template() {
     },
   });
 
-  const { fields, append, remove, move } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "questions",
   });
@@ -77,6 +77,7 @@ export default function Template() {
 
   const sensors = useSensors(useSensor(PointerSensor));
 
+  // eslint-disable-next-line
   const handleDragEnd = (event: any) => {
     const { active, over } = event;
     if (!over || active.id === over.id) return;

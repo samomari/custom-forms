@@ -6,10 +6,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
+type Field = {
+  value: string;
+};
+
 interface FormInputProps {
   label: string;
   placeholder: string;
-  field: any;
+  field: Field;
 }
 
 export const FormInput = ({ label, placeholder, field }: FormInputProps) => {
