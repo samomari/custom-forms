@@ -3,26 +3,26 @@
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form, FormField } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { MinusIcon, PlusIcon } from "lucide-react";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { TemplateQuestion } from "./template-question";
+import { restrictToParentElement } from "@dnd-kit/modifiers";
+import { FormInput } from "./form-input";
+import { FormSelect } from "./form-select";
 
 const topics = ["Geography", "Quiz", "History"];
 
@@ -46,6 +46,7 @@ const formSchema = z.object({
     z.object({
       question: z.string().min(1, { message: "Question is required." }),
       type: z.string().min(1, { message: "Type is required." }),
+      position: z.number(),
     })
   ),
 });
@@ -58,17 +59,45 @@ export default function Template() {
       description: "",
       topic: "",
       imageUrl: "",
-      questions: [{ question: "", type: "" }],
+      questions: [{ question: "", type: "", position: 0 }],
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, move } = useFieldArray({
     control: form.control,
     name: "questions",
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
+  };
+
+  const sensors = useSensors(useSensor(PointerSensor));
+
+  const handleDragEnd = (event: any) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    const oldIndex = fields.findIndex((item) => item.id === active.id);
+    const newIndex = fields.findIndex((item) => item.id === over.id);
+
+    if (oldIndex !== -1 && newIndex !== -1) {
+      const updatedQuestions = form.getValues("questions");
+
+      const reorderedQuestions = arrayMove(
+        updatedQuestions,
+        oldIndex,
+        newIndex
+      ).map((q, index) => ({
+        ...q,
+        position: index,
+      }));
+
+      form.setValue("questions", reorderedQuestions, {
+        shouldValidate: false,
+        shouldDirty: true,
+      });
+    }
   };
 
   return (
@@ -84,35 +113,22 @@ export default function Template() {
                 control={form.control}
                 name="title"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="uppercase font-bold">Title</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter template title..."
-                        {...field}
-                        className="w-full font-semibold"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <FormInput
+                    label="Title"
+                    placeholder="Enter template title"
+                    field={field}
+                  />
                 )}
               />
               <FormField
                 control={form.control}
                 name="description"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="uppercase font-bold">
-                      Description (optional)
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter template description..."
-                        {...field}
-                        className="w-full font-semibold"
-                      />
-                    </FormControl>
-                  </FormItem>
+                  <FormInput
+                    label="Description (optional)"
+                    placeholder="Enter template description"
+                    field={field}
+                  />
                 )}
               />
             </Card>
@@ -121,119 +137,48 @@ export default function Template() {
                 control={form.control}
                 name="topic"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="uppercase font-bold">
-                      Template Topic
-                    </FormLabel>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="font-semibold">
-                          <SelectValue placeholder="Select a topic" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {topics.map((topic) => (
-                          <SelectItem
-                            key={topic}
-                            value={topic}
-                            className="font-semibold"
-                          >
-                            {topic}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
+                  <FormSelect
+                    label="Template Topic"
+                    options={topics}
+                    field={field}
+                  />
                 )}
               />
               <FormField
                 control={form.control}
                 name="imageUrl"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="uppercase font-bold">
-                      Template Image (optional)
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter image url..."
-                        {...field}
-                        className="w-full font-semibold"
-                      />
-                    </FormControl>
-                  </FormItem>
+                  <FormInput
+                    label="Template Image (optional)"
+                    placeholder="Enter image url"
+                    field={field}
+                  />
                 )}
               />
             </Card>
-            <div className="flex flex-col space-y-4">
-              {fields.map((field, index) => (
-                <Card
-                  key={field.id}
-                  className="flex items-center space-x-4 p-6 shadow-lg rounded-xl "
-                >
-                  <div className="w-2/3">
-                    <FormField
-                      control={form.control}
-                      name={`questions.${index}.question`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="uppercase font-bold">
-                            Question
-                          </FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="Enter your question..."
-                              {...field}
-                              className="w-full font-semibold"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+              modifiers={[restrictToParentElement]}
+            >
+              <SortableContext
+                items={fields.map((field) => field.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                <div className="flex flex-col space-y-4">
+                  {fields.map((field, index) => (
+                    <TemplateQuestion
+                      key={field.id}
+                      field={field}
+                      index={index}
+                      form={form}
+                      types={types}
                     />
-                  </div>
-                  <div className="w-1/3">
-                    <FormField
-                      control={form.control}
-                      name={`questions.${index}.type`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="uppercase font-bold">
-                            Question type
-                          </FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select a type" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              {types.map((type) => (
-                                <SelectItem
-                                  key={type}
-                                  value={type}
-                                  className="font-semibold"
-                                >
-                                  {type}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </Card>
-              ))}
-            </div>
+                  ))}
+                </div>
+              </SortableContext>
+            </DndContext>
             <div className="flex justify-end mt-2 space-x-2">
               {fields.length > 1 && (
                 <Button
@@ -247,7 +192,9 @@ export default function Template() {
               )}
               <Button
                 type="button"
-                onClick={() => append({ question: "", type: "" })}
+                onClick={() =>
+                  append({ question: "", type: "", position: fields.length })
+                }
                 className="flex items-center space-x-2"
               >
                 <PlusIcon className="w-5 h-5" />
