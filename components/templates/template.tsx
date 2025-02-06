@@ -3,7 +3,7 @@
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Form, FormField } from "@/components/ui/form";
+import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import { MinusIcon, PlusIcon } from "lucide-react";
@@ -23,6 +23,7 @@ import { TemplateQuestion } from "./template-question";
 import { restrictToParentElement } from "@dnd-kit/modifiers";
 import { FormInput } from "./form-input";
 import { FormSelect } from "./form-select";
+import { Switch } from "../ui/switch";
 
 const topics = ["Geography", "Quiz", "History"];
 
@@ -49,6 +50,7 @@ const formSchema = z.object({
       position: z.number(),
     })
   ),
+  isPublic: z.boolean(),
 });
 
 export default function Template() {
@@ -60,6 +62,7 @@ export default function Template() {
       topic: "",
       imageUrl: "",
       questions: [{ question: "", type: "", position: 0 }],
+      isPublic: true,
     },
   });
 
@@ -131,8 +134,6 @@ export default function Template() {
                   />
                 )}
               />
-            </Card>
-            <Card className="p-6 shadow-lg rounded-xl space-y-4">
               <FormField
                 control={form.control}
                 name="topic"
@@ -156,6 +157,28 @@ export default function Template() {
                 )}
               />
             </Card>
+
+            <Card className="p-6 shadow-lg rounded-xl space-y-4">
+              <FormField
+                control={form.control}
+                name="isPublic"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="flex items-center">
+                      <FormLabel className="mr-4 uppercase font-bold">
+                        Public Template
+                      </FormLabel>
+                      <Switch
+                        id="visibility-switch"
+                        checked={field.value}
+                        onCheckedChange={(checked) => field.onChange(checked)}
+                      />
+                    </div>
+                  </FormItem>
+                )}
+              />
+            </Card>
+
             <DndContext
               sensors={sensors}
               collisionDetection={closestCenter}
@@ -179,6 +202,7 @@ export default function Template() {
                 </div>
               </SortableContext>
             </DndContext>
+
             <div className="flex justify-end mt-2 space-x-2">
               {fields.length > 1 && (
                 <Button
