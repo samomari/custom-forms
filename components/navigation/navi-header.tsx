@@ -1,13 +1,38 @@
-import { initialUser } from "@/features/users/initial-user";
-import { NaviHeaderTail } from "./navi-header-tail";
-import { HeaderHome } from "./navi-header-home";
+"use client";
+import { useAuth, UserButton } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { ModeToggle } from "../mode-toggle";
+import { Button } from "../ui/button";
+import { LogIn, Loader2 } from "lucide-react";
 
-export async function NaviHeader() {
-  const user = await initialUser();
+export function NaviHeader() {
+  const router = useRouter();
+  const { isSignedIn } = useAuth();
+  console.log(isSignedIn);
+
   return (
-    <div className="w-full flex justify-between dark:bg-[#1E1F22] bg-[#E3E5E8]">
-      <HeaderHome />
-      <NaviHeaderTail user={user} />
+    <div className="w-full dark:bg-[#0C0A09] bg-[#E3E5E8]">
+      <div className="flex justify-between">
+        <div className="flex justify-start">
+          <Button onClick={() => router.push("/")} variant="ghost">
+            <strong className="text-2xl text-zinc-600 dark:text-zinc-300">
+              Custom Forms
+            </strong>
+          </Button>
+        </div>
+        <div className="flex items-center pr-2">
+          <ModeToggle />
+          {isSignedIn === true && <UserButton />}
+          {isSignedIn === undefined && (
+            <Loader2 className="animate-spin w-6 h-6" />
+          )}
+          {isSignedIn === false && (
+            <Button onClick={() => router.push("/sign-in")} variant="ghost">
+              <LogIn />
+            </Button>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

@@ -23,7 +23,8 @@ import { TemplateQuestion } from "./template-question";
 import { restrictToParentElement } from "@dnd-kit/modifiers";
 import { FormInput } from "./form-input";
 import { FormSelect } from "./form-select";
-import { Switch } from "../ui/switch";
+import { Switch } from "@/components/ui/switch";
+import { useState, useEffect } from "react";
 
 const topics = ["Geography", "Quiz", "History"];
 
@@ -54,6 +55,8 @@ const formSchema = z.object({
 });
 
 export default function Template() {
+  const [isMounted, setIsMounted] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -65,6 +68,10 @@ export default function Template() {
       isPublic: true,
     },
   });
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
@@ -157,9 +164,6 @@ export default function Template() {
                   />
                 )}
               />
-            </Card>
-
-            <Card className="p-6 shadow-lg rounded-xl space-y-4">
               <FormField
                 control={form.control}
                 name="isPublic"
@@ -180,52 +184,53 @@ export default function Template() {
               />
             </Card>
 
-            <DndContext
-              sensors={sensors}
-              collisionDetection={closestCenter}
-              onDragEnd={handleDragEnd}
-              modifiers={[restrictToParentElement]}
-            >
-              <SortableContext
-                items={fields.map((field) => field.id)}
-                strategy={verticalListSortingStrategy}
+            {isMounted && (
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+                modifiers={[restrictToParentElement]}
               >
-                <div className="flex flex-col space-y-4">
-                  {fields.map((field, index) => (
-                    <TemplateQuestion
-                      key={field.id}
-                      field={field}
-                      index={index}
-                      form={form}
-                      types={types}
-                    />
-                  ))}
-                </div>
-              </SortableContext>
-            </DndContext>
-
-            <div className="flex justify-end mt-2 space-x-2">
-              {fields.length > 1 && (
+                <SortableContext
+                  items={fields.map((field) => field.id)}
+                  strategy={verticalListSortingStrategy}
+                >
+                  <div className="flex flex-col space-y-4">
+                    {fields.map((field, index) => (
+                      <TemplateQuestion
+                        key={field.id}
+                        field={field}
+                        index={index}
+                        form={form}
+                        types={types}
+                      />
+                    ))}
+                  </div>
+                </SortableContext>
+              </DndContext>
+            )}
+            <div className="flex justify-between pb-2">
+              <div className="flex space-x-2">
+                {fields.length > 1 && (
+                  <Button
+                    type="button"
+                    onClick={() => remove(fields.length - 1)}
+                    variant="destructive"
+                    className="flex items-center space-x-2"
+                  >
+                    <MinusIcon className="w-5 h-5" />
+                  </Button>
+                )}
                 <Button
                   type="button"
-                  onClick={() => remove(fields.length - 1)}
-                  variant="destructive"
+                  onClick={() =>
+                    append({ question: "", type: "", position: fields.length })
+                  }
                   className="flex items-center space-x-2"
                 >
-                  <MinusIcon className="w-5 h-5" />
+                  <PlusIcon className="w-5 h-5" />
                 </Button>
-              )}
-              <Button
-                type="button"
-                onClick={() =>
-                  append({ question: "", type: "", position: fields.length })
-                }
-                className="flex items-center space-x-2"
-              >
-                <PlusIcon className="w-5 h-5" />
-              </Button>
-            </div>
-            <div className="flex justify-center">
+              </div>
               <Button type="submit">Submit</Button>
             </div>
           </form>
