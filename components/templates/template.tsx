@@ -3,7 +3,13 @@
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Form, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader } from "@/components/ui/card";
 import { MinusIcon, PlusIcon } from "lucide-react";
@@ -25,6 +31,7 @@ import { FormInput } from "./form-input";
 import { FormSelect } from "./form-select";
 import { Switch } from "@/components/ui/switch";
 import { useState, useEffect } from "react";
+import { ImageUpload } from "@/components/image-upload";
 
 const topics = ["Geography", "Quiz", "History"];
 
@@ -49,7 +56,7 @@ const formSchema = z.object({
       question: z.string().min(1, { message: "Question is required." }),
       type: z.string().min(1, { message: "Type is required." }),
       position: z.number(),
-    })
+    }),
   ),
   isPublic: z.boolean(),
 });
@@ -98,7 +105,7 @@ export default function Template() {
       const reorderedQuestions = arrayMove(
         updatedQuestions,
         oldIndex,
-        newIndex
+        newIndex,
       ).map((q, index) => ({
         ...q,
         position: index,
@@ -157,11 +164,17 @@ export default function Template() {
                 control={form.control}
                 name="imageUrl"
                 render={({ field }) => (
-                  <FormInput
-                    label="Template Image (optional)"
-                    placeholder="Enter image url"
-                    field={field}
-                  />
+                  <FormItem>
+                    <FormLabel className="mr-4 uppercase font-bold">
+                      Template Image (optional)
+                    </FormLabel>
+                    <FormControl>
+                      <ImageUpload
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
                 )}
               />
               <FormField
