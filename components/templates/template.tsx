@@ -56,7 +56,7 @@ const formSchema = z.object({
       question: z.string().min(1, { message: "Question is required." }),
       type: z.string().min(1, { message: "Type is required." }),
       position: z.number(),
-    }),
+    })
   ),
   isPublic: z.boolean(),
 });
@@ -105,7 +105,7 @@ export default function Template() {
       const reorderedQuestions = arrayMove(
         updatedQuestions,
         oldIndex,
-        newIndex,
+        newIndex
       ).map((q, index) => ({
         ...q,
         position: index,

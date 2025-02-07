@@ -8,7 +8,6 @@ import { LogIn, Loader2 } from "lucide-react";
 export function NaviHeader() {
   const router = useRouter();
   const { isSignedIn } = useAuth();
-  console.log(isSignedIn);
 
   return (
     <div className="w-full dark:bg-[#0C0A09] bg-[#E3E5E8]">
@@ -18,6 +17,14 @@ export function NaviHeader() {
             <strong className="text-2xl text-zinc-600 dark:text-zinc-300">
               Custom Forms
             </strong>
+          </Button>
+          <Button onClick={() => router.push("/templates")} variant="link">
+            <strong className="text-zinc-600 dark:text-zinc-300">
+              templates
+            </strong>
+          </Button>
+          <Button onClick={() => router.push("/forms")} variant="link">
+            <strong className="text-zinc-600 dark:text-zinc-300">forms</strong>
           </Button>
         </div>
         <div className="flex items-center pr-2">
