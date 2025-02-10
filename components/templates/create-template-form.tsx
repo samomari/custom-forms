@@ -32,6 +32,7 @@ import { FormSelect } from "./form-select";
 import { Switch } from "@/components/ui/switch";
 import { useState, useEffect } from "react";
 import { ImageUpload } from "@/components/image-upload";
+import { ActionTooltip } from "../action-tooltip";
 
 const topics = ["Geography", "Quiz", "History"];
 
@@ -61,7 +62,7 @@ const formSchema = z.object({
   isPublic: z.boolean(),
 });
 
-export default function Template() {
+export default function CreateTemplateForm() {
   const [isMounted, setIsMounted] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -225,24 +226,32 @@ export default function Template() {
             <div className="flex justify-between pb-2">
               <div className="flex space-x-2">
                 {fields.length > 1 && (
+                  <ActionTooltip label="Remove question">
+                    <Button
+                      type="button"
+                      onClick={() => remove(fields.length - 1)}
+                      variant="destructive"
+                      className="flex items-center space-x-2"
+                    >
+                      <MinusIcon className="w-5 h-5" />
+                    </Button>
+                  </ActionTooltip>
+                )}
+                <ActionTooltip label="Add question">
                   <Button
                     type="button"
-                    onClick={() => remove(fields.length - 1)}
-                    variant="destructive"
+                    onClick={() =>
+                      append({
+                        question: "",
+                        type: "",
+                        position: fields.length,
+                      })
+                    }
                     className="flex items-center space-x-2"
                   >
-                    <MinusIcon className="w-5 h-5" />
+                    <PlusIcon className="w-5 h-5" />
                   </Button>
-                )}
-                <Button
-                  type="button"
-                  onClick={() =>
-                    append({ question: "", type: "", position: fields.length })
-                  }
-                  className="flex items-center space-x-2"
-                >
-                  <PlusIcon className="w-5 h-5" />
-                </Button>
+                </ActionTooltip>
               </div>
               <Button type="submit">Submit</Button>
             </div>
