@@ -25,7 +25,7 @@ export const user = pgTable(
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
-  (t) => [uniqueIndex("username_idx").on(t.username)],
+  (t) => [uniqueIndex("username_idx").on(t.username)]
 );
 
 export const topic = pgTable(
@@ -34,12 +34,12 @@ export const topic = pgTable(
     id: uuid("id").defaultRandom().primaryKey(),
     name: varchar("name", { length: 255 }).notNull(),
   },
-  (t) => [unique("topic_name_idx").on(t.name)],
+  (t) => [unique("topic_name_idx").on(t.name)]
 );
 
 export const template = pgTable("templates", {
   id: uuid("id").defaultRandom().primaryKey(),
-  authorId: varchar("author_id")
+  userId: varchar("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
   title: varchar("title", { length: 255 }).notNull(),
@@ -49,6 +49,7 @@ export const template = pgTable("templates", {
     .references(() => topic.id),
   imageUrl: text("image_url"),
   isPublic: boolean("is_public").default(false).notNull(),
+  position: integer("position").default(0).notNull(),
   likeCount: integer("like_count").default(0).notNull(),
   custom_string1_state: boolean("custom_string1_state").default(false),
   custom_string1_question: varchar("custom_string1_question").default(""),
@@ -91,20 +92,27 @@ export const form = pgTable("forms", {
   templateId: uuid("template_id")
     .notNull()
     .references(() => template.id, { onDelete: "cascade" }),
-  authorId: varchar("author_id")
+  userId: varchar("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
+  custom_string1_question: varchar("custom_string1_question").default(""),
+  custom_string2_question: varchar("custom_string2_question").default(""),
+  custom_string3_question: varchar("custom_string3_question").default(""),
+  custom_string4_question: varchar("custom_string4_question").default(""),
+  custom_int1_question: integer("custom_int1_question").default(0),
+  custom_int2_question: integer("custom_int2_question").default(0),
+  custom_int3_question: integer("custom_int3_question").default(0),
+  custom_int4_question: integer("custom_int4_question").default(0),
+  custom_line1_question: text("custom_line1_question").default(""),
+  custom_line2_question: text("custom_line2_question").default(""),
+  custom_line3_question: text("custom_line3_question").default(""),
+  custom_line4_question: text("custom_line4_question").default(""),
+  custom_checkbox1_question: text("custom_checkbox1_question").default(""),
+  custom_checkbox2_question: text("custom_checkbox2_question").default(""),
+  custom_checkbox3_question: text("custom_checkbox3_question").default(""),
+  custom_checkbox4_question: text("custom_checkbox4_question").default(""),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
-});
-
-export const answer = pgTable("answers", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  formId: uuid("form_id")
-    .notNull()
-    .references(() => form.id, { onDelete: "cascade" }),
-  questionId: text("question_id").notNull(),
-  value: text("value").notNull(),
 });
 
 export const comment = pgTable("comments", {
@@ -112,7 +120,7 @@ export const comment = pgTable("comments", {
   templateId: uuid("template_id")
     .notNull()
     .references(() => template.id, { onDelete: "cascade" }),
-  authorId: varchar("author_id")
+  userId: varchar("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
   content: text("content").notNull(),
@@ -131,5 +139,5 @@ export const like = pgTable(
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
   },
-  (t) => [unique("unique_like").on(t.templateId, t.userId)],
+  (t) => [unique("unique_like").on(t.templateId, t.userId)]
 );
