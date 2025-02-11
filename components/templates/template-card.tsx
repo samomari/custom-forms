@@ -3,12 +3,9 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Heart } from "lucide-react";
 import Link from "next/link";
 
 interface TemplateCardProps {
@@ -23,7 +20,6 @@ export function TemplateCard({
   id,
   title,
   description,
-  likeCount,
   imageUrl,
 }: TemplateCardProps) {
   return (

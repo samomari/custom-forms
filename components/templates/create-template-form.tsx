@@ -34,13 +34,11 @@ import { useState, useEffect } from "react";
 import { ImageUpload } from "@/components/image-upload";
 import { ActionTooltip } from "../action-tooltip";
 
-const topics = ["Geography", "Quiz", "History"];
-
 const types = [
-  "Single-line string",
-  "Multiple-line text",
-  "Positive integer",
-  "Checkbox",
+  { id: "0", label: "Single-line string" },
+  { id: "1", label: "Multiple-line text" },
+  { id: "2", label: "Positive integer" },
+  { id: "3", label: "Checkbox" },
 ];
 
 const formSchema = z.object({
@@ -48,7 +46,7 @@ const formSchema = z.object({
     message: "Title is required.",
   }),
   description: z.string(),
-  topic: z.string().refine((value) => topics.includes(value), {
+  topicId: z.string().min(1, {
     message: "Topic is required.",
   }),
   imageUrl: z.string(),
@@ -57,20 +55,21 @@ const formSchema = z.object({
       question: z.string().min(1, { message: "Question is required." }),
       type: z.string().min(1, { message: "Type is required." }),
       position: z.number(),
-    })
+    }),
   ),
   isPublic: z.boolean(),
 });
 
 export default function CreateTemplateForm() {
   const [isMounted, setIsMounted] = useState(false);
+  const [topics, setTopics] = useState<{ id: string; name: string }[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
       description: "",
-      topic: "",
+      topicId: "",
       imageUrl: "",
       questions: [{ question: "", type: "", position: 0 }],
       isPublic: true,
@@ -79,6 +78,17 @@ export default function CreateTemplateForm() {
 
   useEffect(() => {
     setIsMounted(true);
+    const fetchTopics = async () => {
+      try {
+        const response = await fetch("/api/topics");
+        const data = await response.json();
+        setTopics(data);
+      } catch (error) {
+        console.log("Error fetching topics:", error);
+      }
+    };
+
+    fetchTopics();
   }, []);
 
   const { fields, append, remove } = useFieldArray({
@@ -106,7 +116,7 @@ export default function CreateTemplateForm() {
       const reorderedQuestions = arrayMove(
         updatedQuestions,
         oldIndex,
-        newIndex
+        newIndex,
       ).map((q, index) => ({
         ...q,
         position: index,
@@ -152,11 +162,14 @@ export default function CreateTemplateForm() {
               />
               <FormField
                 control={form.control}
-                name="topic"
+                name="topicId"
                 render={({ field }) => (
                   <FormSelect
                     label="Template Topic"
-                    options={topics}
+                    options={topics.map((topic) => ({
+                      value: topic.id,
+                      label: topic.name,
+                    }))}
                     field={field}
                   />
                 )}

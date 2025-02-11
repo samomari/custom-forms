@@ -14,7 +14,7 @@ import {
 
 interface FormSelectProps {
   label: string;
-  options: string[];
+  options: { value: string; label: string }[];
   // eslint-disable-next-line
   field: any;
 }
@@ -30,8 +30,12 @@ export const FormSelect = ({ label, options, field }: FormSelectProps) => (
       </FormControl>
       <SelectContent>
         {options.map((option) => (
-          <SelectItem key={option} value={option} className="font-semibold">
-            {option}
+          <SelectItem
+            key={option.value}
+            value={option.value}
+            className="font-semibold"
+          >
+            {option.label}
           </SelectItem>
         ))}
       </SelectContent>

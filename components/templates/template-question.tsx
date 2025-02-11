@@ -12,7 +12,7 @@ interface TemplateQuestionProps {
   index: number;
   // eslint-disable-next-line
   form: any;
-  types: string[];
+  types: { id: string; label: string }[];
 }
 
 export const TemplateQuestion = ({
@@ -60,7 +60,14 @@ export const TemplateQuestion = ({
           control={form.control}
           name={`questions.${index}.type`}
           render={({ field }) => (
-            <FormSelect label="Question Type" options={types} field={field} />
+            <FormSelect
+              label="Question Type"
+              options={types.map((type) => ({
+                value: type.id,
+                label: type.label,
+              }))}
+              field={field}
+            />
           )}
         />
       </div>

@@ -9,17 +9,16 @@ import { Heart, Pencil } from "lucide-react";
 import { ActionTooltip } from "../action-tooltip";
 
 interface ViewTemplateProps {
-  id: string;
   title: string;
   description: string;
   likeCount: number;
   questions: { id: string; text: string; type: string; position: number }[];
   isEditor: boolean;
+  // eslint-disable-next-line
   user: any;
 }
 
 export default function ViewTemplate({
-  id,
   title,
   description,
   likeCount,
