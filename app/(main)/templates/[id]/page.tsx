@@ -1,12 +1,12 @@
 import ViewTemplate from "@/components/templates/view-template-form";
 import { currentUser } from "@/features/users/current-user";
 import { fakeTemplates } from "@/features/fakeTemplates";
-interface TemplatePageProps {
-  params: {
-    id: string;
-  };
-}
-export default async function Page({ params }: TemplatePageProps) {
+
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
   const user = await currentUser();
   if (!user) {
@@ -27,7 +27,6 @@ export default async function Page({ params }: TemplatePageProps) {
     <div className="h-full w-full flex justify-center pt-4">
       {template && (
         <ViewTemplate
-          id={template.id}
           title={template.title}
           description={template.description}
           likeCount={template.likeCount}

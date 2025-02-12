@@ -50,72 +50,20 @@ export const template = pgTable("templates", {
   imageUrl: text("image_url"),
   isPublic: boolean("is_public").default(false).notNull(),
   likeCount: integer("like_count").default(0).notNull(),
-  custom_string1_state: boolean("custom_string1_state").default(false),
-  custom_string1_position: integer("custom_string1_position")
-    .default(0)
-    .notNull(),
-  custom_string1_question: varchar("custom_string1_question").default(""),
-  custom_string2_state: boolean("custom_string2_state").default(false),
-  custom_string2_position: integer("custom_string2_position")
-    .default(0)
-    .notNull(),
-  custom_string2_question: varchar("custom_string2_question").default(""),
-  custom_string3_state: boolean("custom_string3_state").default(false),
-  custom_string3_position: integer("custom_string3_position")
-    .default(0)
-    .notNull(),
-  custom_string3_question: varchar("custom_string3_question").default(""),
-  custom_string4_state: boolean("custom_string4_state").default(false),
-  custom_string4_position: integer("custom_string4_position")
-    .default(0)
-    .notNull(),
-  custom_string4_question: varchar("custom_string4_question").default(""),
-  custom_int1_state: boolean("custom_int1_state").default(false),
-  custom_int1_position: integer("custom_int1_position").default(0).notNull(),
-  custom_int1_question: integer("custom_int1_question").default(0),
-  custom_int2_state: boolean("custom_int2_state").default(false),
-  custom_int2_position: integer("custom_int2_position").default(0).notNull(),
-  custom_int2_question: integer("custom_int2_question").default(0),
-  custom_int3_state: boolean("custom_int3_state").default(false),
-  custom_int3_position: integer("custom_int3_position").default(0).notNull(),
-  custom_int3_question: integer("custom_int3_question").default(0),
-  custom_int4_state: boolean("custom_int4_state").default(false),
-  custom_int4_position: integer("custom_int4_position").default(0).notNull(),
-  custom_int4_question: integer("custom_int4_question").default(0),
-  custom_line1_state: boolean("custom_line1_state").default(false),
-  custom_line1_position: integer("custom_line1_position").default(0).notNull(),
-  custom_line1_question: text("custom_line1_question").default(""),
-  custom_line2_state: boolean("custom_line2_state").default(false),
-  custom_line2_position: integer("custom_line2_position").default(0).notNull(),
-  custom_line2_question: text("custom_line2_question").default(""),
-  custom_line3_state: boolean("custom_line3_state").default(false),
-  custom_line3_position: integer("custom_line3_position").default(0).notNull(),
-  custom_line3_question: text("custom_line3_question").default(""),
-  custom_line4_state: boolean("custom_line4_state").default(false),
-  custom_line4_position: integer("custom_line4_position").default(0).notNull(),
-  custom_line4_question: text("custom_line4_question").default(""),
-  custom_checkbox1_state: boolean("custom_checkbox1_state").default(false),
-  custom_checkbox1_position: integer("custom_checkbox1_position")
-    .default(0)
-    .notNull(),
-  custom_checkbox1_question: text("custom_checkbox1_question").default(""),
-  custom_checkbox2_state: boolean("custom_checkbox2_state").default(false),
-  custom_checkbox2_position: integer("custom_checkbox2_position")
-    .default(0)
-    .notNull(),
-  custom_checkbox2_question: text("custom_checkbox2_question").default(""),
-  custom_checkbox3_state: boolean("custom_checkbox3_state").default(false),
-  custom_checkbox3_position: integer("custom_checkbox3_position")
-    .default(0)
-    .notNull(),
-  custom_checkbox3_question: text("custom_checkbox3_question").default(""),
-  custom_checkbox4_state: boolean("custom_checkbox4_state").default(false),
-  custom_checkbox4_position: integer("custom_checkbox4_position")
-    .default(0)
-    .notNull(),
-  custom_checkbox4_question: text("custom_checkbox4_question").default(""),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const question = pgTable("questions", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  templateId: uuid("template_id")
+    .notNull()
+    .references(() => template.id, { onDelete: "cascade" }),
+  type: text("type", {
+    enum: ["text", "number", "checkbox", "line"],
+  }).notNull(),
+  position: integer("position").notNull(),
+  content: text("content").notNull(),
 });
 
 export const form = pgTable("forms", {
@@ -126,24 +74,19 @@ export const form = pgTable("forms", {
   userId: varchar("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
-  custom_string1_question: varchar("custom_string1_question").default(""),
-  custom_string2_question: varchar("custom_string2_question").default(""),
-  custom_string3_question: varchar("custom_string3_question").default(""),
-  custom_string4_question: varchar("custom_string4_question").default(""),
-  custom_int1_question: integer("custom_int1_question").default(0),
-  custom_int2_question: integer("custom_int2_question").default(0),
-  custom_int3_question: integer("custom_int3_question").default(0),
-  custom_int4_question: integer("custom_int4_question").default(0),
-  custom_line1_question: text("custom_line1_question").default(""),
-  custom_line2_question: text("custom_line2_question").default(""),
-  custom_line3_question: text("custom_line3_question").default(""),
-  custom_line4_question: text("custom_line4_question").default(""),
-  custom_checkbox1_question: text("custom_checkbox1_question").default(""),
-  custom_checkbox2_question: text("custom_checkbox2_question").default(""),
-  custom_checkbox3_question: text("custom_checkbox3_question").default(""),
-  custom_checkbox4_question: text("custom_checkbox4_question").default(""),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const answer = pgTable("answers", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  formId: uuid("form_id")
+    .notNull()
+    .references(() => form.id, { onDelete: "cascade" }),
+  questionId: uuid("question_id")
+    .notNull()
+    .references(() => question.id, { onDelete: "cascade" }),
+  value: text("value").notNull(),
 });
 
 export const comment = pgTable("comments", {
@@ -171,4 +114,20 @@ export const like = pgTable(
       .references(() => user.id, { onDelete: "cascade" }),
   },
   (t) => [unique("unique_like").on(t.templateId, t.userId)],
+);
+
+export const privateTemplateAcces = pgTable(
+  "private_templates_access",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    templateId: uuid("template_id")
+      .notNull()
+      .references(() => template.id, { onDelete: "cascade" }),
+    userId: varchar("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  },
+  (t) => [unique("unique_template_user_access").on(t.templateId, t.userId)],
 );

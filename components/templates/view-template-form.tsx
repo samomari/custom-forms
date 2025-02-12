@@ -27,7 +27,7 @@ export default function ViewTemplate({
   user,
 }: ViewTemplateProps) {
   const sortedQuestions = [...questions].sort(
-    (a, b) => a.position - b.position
+    (a, b) => a.position - b.position,
   );
   return (
     <div className="xl:w-1/2 md:w-1/2 flex justify-center items-baseline">

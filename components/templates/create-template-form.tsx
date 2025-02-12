@@ -33,11 +33,15 @@ import { Switch } from "@/components/ui/switch";
 import { useState, useEffect } from "react";
 import { ImageUpload } from "@/components/image-upload";
 import { ActionTooltip } from "../action-tooltip";
+import axios from "axios";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
+import { UsersSelect } from "./users-select";
 
 const types = [
-  { id: "0", label: "Single-line string" },
-  { id: "1", label: "Multiple-line text" },
-  { id: "2", label: "Positive integer" },
+  { id: "0", label: "String" },
+  { id: "1", label: "Text" },
+  { id: "2", label: "Integer" },
   { id: "3", label: "Checkbox" },
 ];
 
@@ -58,11 +62,17 @@ const formSchema = z.object({
     }),
   ),
   isPublic: z.boolean(),
+  selectedUsers: z.array(z.string()).optional(),
 });
 
 export default function CreateTemplateForm() {
   const [isMounted, setIsMounted] = useState(false);
   const [topics, setTopics] = useState<{ id: string; name: string }[]>([]);
+  const [isPublic, setIsPublic] = useState(true);
+  const [users, setUsers] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
+  const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -73,16 +83,28 @@ export default function CreateTemplateForm() {
       imageUrl: "",
       questions: [{ question: "", type: "", position: 0 }],
       isPublic: true,
+      selectedUsers: [],
     },
   });
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get("/api/users");
+        setUsers(response.data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   useEffect(() => {
     setIsMounted(true);
     const fetchTopics = async () => {
       try {
-        const response = await fetch("/api/topics");
-        const data = await response.json();
-        setTopics(data);
+        const response = await axios.get("/api/topics");
+        setTopics(response.data);
       } catch (error) {
         console.log("Error fetching topics:", error);
       }
@@ -96,8 +118,27 @@ export default function CreateTemplateForm() {
     name: "questions",
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      await axios.post("/api/templates", {
+        title: values.title,
+        description: values.description,
+        topicId: values.topicId,
+        imageUrl: values.imageUrl,
+        questions: values.questions,
+        isPublic: values.isPublic,
+        selectedUsers: values.selectedUsers,
+      });
+      console.log(values);
+
+      toast({
+        title: "Success",
+        description: "Template created",
+      });
+      router.push("/");
+    } catch (error) {
+      console.error("Error creating template:", error);
+    }
   };
 
   const sensors = useSensors(useSensor(PointerSensor));
@@ -126,6 +167,16 @@ export default function CreateTemplateForm() {
         shouldValidate: false,
         shouldDirty: true,
       });
+    }
+  };
+
+  const handleSwitchChange = (checked: boolean) => {
+    setIsPublic(checked);
+    form.setValue("isPublic", checked);
+
+    if (checked) {
+      setSelectedUsers([]);
+      form.setValue("selectedUsers", []);
     }
   };
 
@@ -196,15 +247,23 @@ export default function CreateTemplateForm() {
                 name="isPublic"
                 render={({ field }) => (
                   <FormItem>
-                    <div className="flex items-center">
+                    <div className="flex items-center space-x-4">
                       <FormLabel className="mr-4 uppercase font-bold">
                         Public Template
                       </FormLabel>
                       <Switch
                         id="visibility-switch"
                         checked={field.value}
-                        onCheckedChange={(checked) => field.onChange(checked)}
+                        onCheckedChange={handleSwitchChange}
                       />
+                      {!isPublic && (
+                        <UsersSelect
+                          form={form}
+                          users={users}
+                          selectedUsers={selectedUsers}
+                          setSelectedUsers={setSelectedUsers}
+                        />
+                      )}
                     </div>
                   </FormItem>
                 )}
