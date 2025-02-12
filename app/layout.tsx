@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { NaviHeader } from "@/components/navigation/navi-header";
+import { Toaster } from "@/components/ui/toaster";
 
 const font = Open_Sans({ subsets: ["latin"] });
 
@@ -36,6 +37,7 @@ export default function RootLayout({
           >
             <NaviHeader />
             <main className="overflow-auto">{children}</main>
+            <Toaster />
           </ThemeProvider>
         </body>
       </html>
