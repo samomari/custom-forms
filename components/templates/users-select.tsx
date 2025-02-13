@@ -1,12 +1,12 @@
 import { ChevronDown } from "lucide-react";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { FormControl, FormField, FormItem } from "../ui/form";
+} from "@/components/ui/dropdown-menu";
+import { FormControl, FormField, FormItem } from "@/components/ui/form";
 
 interface UsersSelectProps {
   // eslint-disable-next-line

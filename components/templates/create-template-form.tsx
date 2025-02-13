@@ -32,7 +32,7 @@ import { FormSelect } from "./form-select";
 import { Switch } from "@/components/ui/switch";
 import { useState, useEffect } from "react";
 import { ImageUpload } from "@/components/image-upload";
-import { ActionTooltip } from "../action-tooltip";
+import { ActionTooltip } from "@/components/action-tooltip";
 import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
