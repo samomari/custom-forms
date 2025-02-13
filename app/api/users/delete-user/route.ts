@@ -9,7 +9,7 @@ export async function DELETE(req: Request) {
     await client.users.deleteUser(userId);
     return NextResponse.json({ message: "User deleted" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return NextResponse.json({ error: "Error deleting user" });
   }
 }

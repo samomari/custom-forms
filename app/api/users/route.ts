@@ -14,7 +14,7 @@ export async function GET(req: Request) {
     const filteredUsers = users.filter((u) => u.id !== activeUser.id);
     return NextResponse.json(filteredUsers);
   } catch (error) {
-    console.log("GET_USERS_ERROR", error);
+    console.error("GET_USERS_ERROR", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

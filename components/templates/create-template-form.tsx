@@ -106,7 +106,7 @@ export default function CreateTemplateForm() {
         const response = await axios.get("/api/topics");
         setTopics(response.data);
       } catch (error) {
-        console.log("Error fetching topics:", error);
+        console.error("Error fetching topics:", error);
       }
     };
 
@@ -129,7 +129,6 @@ export default function CreateTemplateForm() {
         isPublic: values.isPublic,
         selectedUsers: values.selectedUsers,
       });
-      console.log(values);
 
       toast({
         title: "Success",

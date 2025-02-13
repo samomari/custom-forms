@@ -99,8 +99,6 @@ export async function POST(req: Request) {
         })
         .where(eq(user.id, id))
         .execute();
-
-      console.log("user updated");
     }
   }
 

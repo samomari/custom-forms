@@ -1,5 +1,5 @@
 import { db } from "@/drizzle";
-import { privateTemplateAcces, question, template } from "@/drizzle/schema";
+import { privateTemplateAccess, question, template } from "@/drizzle/schema";
 import { currentUser } from "@/features/users/current-user";
 import { NextResponse } from "next/server";
 
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
         templateId: newTemplate[0].id,
         userId,
       }));
-      await db.insert(privateTemplateAcces).values(privateTemplateAccessData);
+      await db.insert(privateTemplateAccess).values(privateTemplateAccessData);
     }
 
     return NextResponse.json(newTemplate[0]);

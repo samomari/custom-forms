@@ -7,12 +7,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Heart, Pencil } from "lucide-react";
 import { ActionTooltip } from "@/components/action-tooltip";
+import { QuestionType } from "@/types";
 
 interface ViewTemplateProps {
   title: string;
-  description: string;
+  description?: string | null;
   likeCount: number;
-  questions: { id: string; text: string; type: string; position: number }[];
+  questions: QuestionType[];
   isEditor: boolean;
   // eslint-disable-next-line
   user: any;
@@ -26,21 +27,20 @@ export default function ViewTemplate({
   isEditor,
   user,
 }: ViewTemplateProps) {
-  const sortedQuestions = [...questions].sort(
-    (a, b) => a.position - b.position,
-  );
   return (
     <div className="xl:w-1/2 md:w-1/2 flex justify-center items-baseline">
       <div className="w-full text-zinc-600 dark:text-zinc-300 ">
         <Card className="p-6 shadow-lg rounded-xl space-y-4">
           <CardHeader className="text-xl uppercase text-center">
             <CardTitle>{title}</CardTitle>
-            <CardDescription>{description}</CardDescription>
+            <CardDescription className="break-words">
+              {description}
+            </CardDescription>
           </CardHeader>
           <div className="mt-6">
             <h2 className="text-xl font-semibold mb-3">Questions</h2>
             <ul className="space-y-3">
-              {sortedQuestions.map((q) => (
+              {questions.map((q) => (
                 <li key={q.id} className="p-3 border rounded-lg">
                   <div className="flex justify-between">
                     <span className="font-medium">{q.text}</span>

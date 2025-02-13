@@ -7,7 +7,7 @@ export async function GET() {
     const topics = await db.select().from(topic);
     return NextResponse.json(topics);
   } catch (error) {
-    console.log("GET_TOPICS_ERROR", error);
+    console.error("GET_TOPICS_ERROR", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }

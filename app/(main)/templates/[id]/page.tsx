@@ -1,6 +1,7 @@
 import ViewTemplate from "@/components/templates/view-template-form";
 import { currentUser } from "@/features/users/current-user";
-import { fakeTemplates } from "@/features/fakeTemplates";
+import { GetTemplateData } from "@/features/templates/get-template-data";
+import { GetTemplateQuestions } from "@/features/questions/get-template-questions";
 
 export default async function Page({
   params,
@@ -9,14 +10,12 @@ export default async function Page({
 }) {
   const { id } = await params;
   const user = await currentUser();
-  if (!user) {
-    console.log("You must be logged in to view this page");
-  }
 
-  const template = fakeTemplates.find((t) => t.id === id);
+  const template = await GetTemplateData(id);
+  const questions = (await GetTemplateQuestions(id)) ?? [];
 
   if (!template) {
-    console.log("Template not found");
+    console.error("Template not found");
   }
 
   const isOwner = user?.id === template?.userId;
@@ -30,7 +29,7 @@ export default async function Page({
           title={template.title}
           description={template.description}
           likeCount={template.likeCount}
-          questions={template.questions}
+          questions={questions}
           isEditor={isEditor}
           user={user}
         />

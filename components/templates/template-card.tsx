@@ -7,21 +7,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
-
-interface TemplateCardProps {
-  id: string;
-  title: string;
-  description: string;
-  likeCount: number;
-  imageUrl?: string;
-}
+import { GalleryTemplateType } from "@/types";
 
 export function TemplateCard({
   id,
   title,
   description,
   imageUrl,
-}: TemplateCardProps) {
+}: GalleryTemplateType) {
   return (
     <Link href={`/templates/${id}`}>
       <Card className="shadow-lg rounded-lg overflow-hidden group relative hover:scale-105 transition-transform">
@@ -35,7 +28,7 @@ export function TemplateCard({
         </CardContent>
         <CardHeader className="p-4">
           <CardTitle className="text-xl font-semibold ">{title}</CardTitle>
-          <CardDescription className="text-sm mt-2">
+          <CardDescription className="text-sm mt-2 truncate">
             {description}
           </CardDescription>
         </CardHeader>
