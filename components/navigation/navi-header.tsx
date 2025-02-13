@@ -1,45 +1,50 @@
-"use client";
-import { useAuth, UserButton } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { ModeToggle } from "../mode-toggle";
 import { Button } from "../ui/button";
-import { LogIn, Loader2 } from "lucide-react";
+import { LogIn } from "lucide-react";
+import Link from "next/link";
 
 export function NaviHeader() {
-  const router = useRouter();
-  const { isSignedIn } = useAuth();
-
   return (
     <div className="w-full dark:bg-[#0C0A09] bg-[#E3E5E8]">
-      <div className="flex justify-between">
-        <div className="flex justify-start">
-          <Button onClick={() => router.push("/")} variant="ghost">
-            <strong className="text-2xl text-zinc-600 dark:text-zinc-300">
-              Custom Forms
-            </strong>
-          </Button>
-          <Button onClick={() => router.push("/templates")} variant="link">
-            <strong className="text-zinc-600 dark:text-zinc-300">
-              templates
-            </strong>
-          </Button>
-          <Button onClick={() => router.push("/forms")} variant="link">
-            <strong className="text-zinc-600 dark:text-zinc-300">forms</strong>
-          </Button>
-        </div>
-        <div className="flex items-center pr-2">
+      <nav className="flex justify-between items-center">
+        <ul className="pl-2 flex gap-6 items-center">
+          <li>
+            <Link
+              href="/"
+              className="text-3xl text-zinc-600 dark:text-zinc-300"
+            >
+              Custom forms
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/templates"
+              className="text-zinc-600 dark:text-zinc-300"
+            >
+              Templates
+            </Link>
+          </li>
+          <li>
+            <Link href="/forms" className="text-zinc-600 dark:text-zinc-300">
+              Forms
+            </Link>
+          </li>
+        </ul>
+        <div className="flex pr-2">
           <ModeToggle />
-          {isSignedIn === true && <UserButton />}
-          {isSignedIn === undefined && (
-            <Loader2 className="animate-spin w-6 h-6" />
-          )}
-          {isSignedIn === false && (
-            <Button onClick={() => router.push("/sign-in")} variant="ghost">
-              <LogIn />
-            </Button>
-          )}
+          <SignedOut>
+            <SignInButton>
+              <Button variant="ghost">
+                <LogIn />
+              </Button>
+            </SignInButton>
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
         </div>
-      </div>
+      </nav>
     </div>
   );
 }
