@@ -1,6 +1,5 @@
 import TemplatesGallery from "@/components/templates/template-gallery";
 import { Button } from "@/components/ui/button";
-import { initialUser } from "@/features/users/initial-user";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -43,8 +42,6 @@ const fakeTemplates = [
 ];
 
 export default async function Home() {
-  // eslint-disable-next-line
-  const user = await initialUser();
   return (
     <div className="h-full w-full">
       <div className="p-6">
