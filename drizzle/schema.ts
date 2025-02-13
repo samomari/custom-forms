@@ -50,6 +50,7 @@ export const template = pgTable("templates", {
   imageUrl: text("image_url"),
   isPublic: boolean("is_public").default(false).notNull(),
   likeCount: integer("like_count").default(0).notNull(),
+  formCount: integer("form_count").default(0).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
@@ -116,7 +117,7 @@ export const like = pgTable(
   (t) => [unique("unique_like").on(t.templateId, t.userId)],
 );
 
-export const privateTemplateAcces = pgTable(
+export const privateTemplateAccess = pgTable(
   "private_templates_access",
   {
     id: uuid("id").defaultRandom().primaryKey(),
@@ -126,8 +127,6 @@ export const privateTemplateAcces = pgTable(
     userId: varchar("user_id")
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },
   (t) => [unique("unique_template_user_access").on(t.templateId, t.userId)],
 );
