@@ -7,11 +7,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
+import { UserType } from "@/types";
 
 interface UsersSelectProps {
   // eslint-disable-next-line
   form: any;
-  users: { id: string; username: string }[];
+  users: UserType[];
   selectedUsers: string[];
   setSelectedUsers: (users: string[]) => void;
 }

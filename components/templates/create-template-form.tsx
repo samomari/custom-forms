@@ -11,7 +11,7 @@ import {
   FormLabel,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import {
   DndContext,
@@ -37,13 +37,7 @@ import axios from "axios";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { UsersSelect } from "./users-select";
-
-const types = [
-  { id: "0", label: "String" },
-  { id: "1", label: "Text" },
-  { id: "2", label: "Integer" },
-  { id: "3", label: "Checkbox" },
-];
+import { TopicType, UserType } from "@/types";
 
 const formSchema = z.object({
   title: z.string().min(1, {
@@ -65,11 +59,17 @@ const formSchema = z.object({
   selectedUsers: z.array(z.string()).optional(),
 });
 
-export default function CreateTemplateForm() {
+interface CreateTemplateFormProps {
+  users: UserType[];
+  topics: TopicType[];
+}
+
+export default function CreateTemplateForm({
+  users,
+  topics,
+}: CreateTemplateFormProps) {
   const [isMounted, setIsMounted] = useState(false);
-  const [topics, setTopics] = useState<{ id: string; name: string }[]>([]);
   const [isPublic, setIsPublic] = useState(true);
-  const [users, setUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const { toast } = useToast();
   const router = useRouter();
@@ -88,29 +88,7 @@ export default function CreateTemplateForm() {
   });
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get("/api/users");
-        setUsers(response.data);
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
-    fetchUsers();
-  }, []);
-
-  useEffect(() => {
     setIsMounted(true);
-    const fetchTopics = async () => {
-      try {
-        const response = await axios.get("/api/topics");
-        setTopics(response.data);
-      } catch (error) {
-        console.error("Error fetching topics:", error);
-      }
-    };
-
-    fetchTopics();
   }, []);
 
   const { fields, append, remove } = useFieldArray({
@@ -186,7 +164,7 @@ export default function CreateTemplateForm() {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <Card className="p-6 shadow-lg rounded-xl space-y-4">
               <CardHeader className="text-xl uppercase text-center">
-                Create Template
+                <CardTitle>Create Template</CardTitle>
               </CardHeader>
               <FormField
                 control={form.control}
@@ -287,7 +265,6 @@ export default function CreateTemplateForm() {
                         field={field}
                         index={index}
                         form={form}
-                        types={types}
                       />
                     ))}
                   </div>

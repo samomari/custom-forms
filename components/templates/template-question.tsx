@@ -5,6 +5,7 @@ import { GripHorizontal } from "lucide-react";
 import { FormField } from "@/components/ui/form";
 import { FormInput } from "./form-input";
 import { FormSelect } from "./form-select";
+import { ResponseTypes } from "@/types";
 
 interface TemplateQuestionProps {
   // eslint-disable-next-line
@@ -12,14 +13,12 @@ interface TemplateQuestionProps {
   index: number;
   // eslint-disable-next-line
   form: any;
-  types: { id: string; label: string }[];
 }
 
 export const TemplateQuestion = ({
   field,
   index,
   form,
-  types,
 }: TemplateQuestionProps) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: field.id });
@@ -62,7 +61,7 @@ export const TemplateQuestion = ({
           render={({ field }) => (
             <FormSelect
               label="Question Type"
-              options={types.map((type) => ({
+              options={ResponseTypes.map((type) => ({
                 value: type.id,
                 label: type.label,
               }))}

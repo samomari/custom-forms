@@ -3,13 +3,6 @@ import { privateTemplateAccess, question, template } from "@/drizzle/schema";
 import { currentUser } from "@/features/users/current-user";
 import { NextResponse } from "next/server";
 
-const questionTypes: { [key: string]: string } = {
-  "0": "string",
-  "1": "text",
-  "2": "integer",
-  "3": "checkbox",
-};
-
 export async function POST(req: Request) {
   try {
     const {
@@ -46,7 +39,7 @@ export async function POST(req: Request) {
     const questionsData = questions.map(
       (q: { question: string; type: string; position: number }) => ({
         content: q.question,
-        type: questionTypes[q.type],
+        type: q.type,
         position: q.position,
         templateId: newTemplate[0].id,
       }),
