@@ -74,6 +74,10 @@ export default function ViewTemplate({
     setOpen(false);
   };
 
+  const handleEdit = () => {
+    router.push(`/templates/${id}/edit`);
+  };
+
   const handleDelete = async () => {
     try {
       const response = await axios.delete(`/api/templates/${id}`);
@@ -138,7 +142,7 @@ export default function ViewTemplate({
                 {isEditor && (
                   <>
                     <ActionTooltip label="Edit Template">
-                      <Button variant="ghost">
+                      <Button variant="ghost" onClick={handleEdit}>
                         <Pencil className="h-5 w-5 mr-1" />
                       </Button>
                     </ActionTooltip>

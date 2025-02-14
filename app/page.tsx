@@ -10,7 +10,7 @@ export default async function Home() {
     <div className="h-full w-full">
       <div className="p-6">
         <h1 className="text-2xl font-bold mb-4 text-center">
-          Most popular templates
+          Most popular public templates
         </h1>
         <TemplatesGallery templates={templates} />
         <div className="pt-4 flex justify-end">
