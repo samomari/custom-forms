@@ -13,13 +13,15 @@ export const GetTemplateData = async (templateId: string) => {
         topicId: template.topicId,
         imageUrl: template.imageUrl,
         likeCount: template.likeCount,
+        isPublic: template.isPublic,
       })
       .from(template)
       .where(eq(template.id, templateId))
       .limit(1);
 
-    return templateData.length > 0 ? templateData[0] : null;
+    return templateData[0];
   } catch (error) {
     console.error("ERROR_FETCHING_TEMPLATE_DATA", error);
+    return null;
   }
 };

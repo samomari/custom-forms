@@ -14,8 +14,9 @@ export const GetTemplateQuestions = async (templateId: string) => {
       .where(eq(question.templateId, templateId))
       .orderBy(asc(question.position));
 
-    return questions.length > 0 ? questions : null;
+    return questions;
   } catch (error) {
     console.error("ERROR_FETCHING_TEMPLATE_QUESTIONS", error);
+    return [];
   }
 };
