@@ -1,3 +1,4 @@
+"use client";
 import {
   Card,
   CardDescription,
@@ -8,8 +9,12 @@ import { Button } from "@/components/ui/button";
 import { Heart, Pencil } from "lucide-react";
 import { ActionTooltip } from "@/components/action-tooltip";
 import { QuestionType } from "@/types";
+import { toast } from "@/hooks/use-toast";
+import { useState } from "react";
+import axios from "axios";
 
 interface ViewTemplateProps {
+  id: string;
   title: string;
   description?: string | null;
   likeCount: number;
@@ -20,6 +25,7 @@ interface ViewTemplateProps {
 }
 
 export default function ViewTemplate({
+  id,
   title,
   description,
   likeCount,
@@ -27,6 +33,31 @@ export default function ViewTemplate({
   isEditor,
   user,
 }: ViewTemplateProps) {
+  const [likes, setLikes] = useState(likeCount);
+
+  const handleLike = async () => {
+    try {
+      const response = await axios.post("/api/likes", {
+        userId: user.id,
+        templateId: id,
+      });
+      if (response.status === 200) {
+        setLikes((prev) => prev + 1);
+        toast({
+          title: "Success",
+          description: "Template liked",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description:
+          // @ts-expect-error ignore
+          error.response?.data?.message || "An unexpected error occurred",
+        variant: "destructive",
+      });
+    }
+  };
   return (
     <div className="xl:w-1/2 md:w-1/2 flex justify-center items-baseline">
       <div className="w-full text-zinc-600 dark:text-zinc-300 ">
@@ -57,8 +88,9 @@ export default function ViewTemplate({
                   <Button
                     variant="ghost"
                     className="text-red-500 hover:text-red-600"
+                    onClick={() => handleLike()}
                   >
-                    <Heart className="h-5 w-5 mr-1" /> {likeCount}
+                    <Heart className="h-5 w-5 mr-1" /> {likes}
                   </Button>
                 </ActionTooltip>
                 {isEditor && (

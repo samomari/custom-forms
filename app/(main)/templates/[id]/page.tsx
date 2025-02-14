@@ -26,6 +26,7 @@ export default async function Page({
     <div className="h-full w-full flex justify-center pt-4">
       {template && (
         <ViewTemplate
+          id={id}
           title={template.title}
           description={template.description}
           likeCount={template.likeCount}

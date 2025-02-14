@@ -1,7 +1,7 @@
 import { db } from "@/drizzle";
 import { template, privateTemplateAccess } from "@/drizzle/schema";
 import { currentUser } from "@clerk/nextjs/server";
-import { and, or, eq } from "drizzle-orm";
+import { desc, or, eq } from "drizzle-orm";
 
 export const GetAvailableTemplates = async () => {
   try {
@@ -16,7 +16,8 @@ export const GetAvailableTemplates = async () => {
           imageUrl: template.imageUrl,
         })
         .from(template)
-        .where(eq(template.isPublic, true));
+        .where(eq(template.isPublic, true))
+        .orderBy(desc(template.formCount));
     }
 
     const userTemplates = await db
@@ -38,6 +39,7 @@ export const GetAvailableTemplates = async () => {
           eq(privateTemplateAccess.userId, user.id),
         ),
       )
+      .orderBy(desc(template.formCount))
       .execute();
 
     return userTemplates;

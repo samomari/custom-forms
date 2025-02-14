@@ -23,7 +23,7 @@ export function TemplateCard({
             src={imageUrl || "/images/default-template-image.png"}
             alt="Template Image"
             fill
-            objectFit="cover"
+            style={{ objectFit: "cover" }}
           />
         </CardContent>
         <CardHeader className="p-4">
