@@ -8,27 +8,20 @@ export function NaviHeader() {
   return (
     <div className="w-full dark:bg-[#0C0A09] bg-[#E3E5E8]">
       <nav className="flex justify-between items-center">
-        <ul className="pl-2 flex gap-6 items-center">
+        <ul className="pl-2 flex gap-6 items-center text-zinc-600 dark:text-zinc-300">
           <li>
-            <Link
-              href="/"
-              className="text-3xl text-zinc-600 dark:text-zinc-300"
-            >
+            <Link href="/" className="text-3xl">
               Custom forms
             </Link>
           </li>
           <li>
-            <Link
-              href="/templates"
-              className="text-zinc-600 dark:text-zinc-300"
-            >
-              Templates
-            </Link>
+            <Link href="/templates">Templates</Link>
           </li>
           <li>
-            <Link href="/forms" className="text-zinc-600 dark:text-zinc-300">
-              Forms
-            </Link>
+            <Link href="/templates/new">Create a template</Link>
+          </li>
+          <li>
+            <Link href="/forms">Forms</Link>
           </li>
         </ul>
         <div className="flex pr-2">

@@ -2,6 +2,7 @@ import ViewTemplate from "@/components/templates/view-template-form";
 import { currentUser } from "@/features/users/current-user";
 import { GetTemplateData } from "@/features/templates/get-template-data";
 import { GetTemplateQuestions } from "@/features/questions/get-template-questions";
+import { redirect } from "next/navigation";
 
 export default async function Page({
   params,
@@ -15,7 +16,7 @@ export default async function Page({
   const questions = (await GetTemplateQuestions(id)) ?? [];
 
   if (!template) {
-    console.error("Template not found");
+    return redirect("/templates");
   }
 
   const isOwner = user?.id === template?.userId;

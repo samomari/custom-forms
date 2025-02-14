@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     if (isLiked.length) {
       return NextResponse.json(
         { message: "You can like template only once" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -40,7 +40,7 @@ export async function POST(req: Request) {
     console.error("ERROR_ADDING_LIKE", error);
     return NextResponse.json(
       { message: "Failed to add like", error },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
