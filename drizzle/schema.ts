@@ -60,9 +60,7 @@ export const question = pgTable("questions", {
   templateId: uuid("template_id")
     .notNull()
     .references(() => template.id, { onDelete: "cascade" }),
-  type: text("type", {
-    enum: ["text", "number", "checkbox", "line"],
-  }).notNull(),
+  type: integer("type").notNull(),
   position: integer("position").notNull(),
   content: text("content").notNull(),
 });

@@ -22,7 +22,7 @@ export const ResponseTypes = [
 export type QuestionType = {
   id: string;
   text: string;
-  type: string;
+  type: number;
 };
 
 export type UserType = {
