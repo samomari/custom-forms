@@ -33,9 +33,9 @@ import { Switch } from "@/components/ui/switch";
 import { useState, useEffect } from "react";
 import { ImageUpload } from "@/components/image-upload";
 import { ActionTooltip } from "@/components/action-tooltip";
-// import axios from "axios";
-// import { useToast } from "@/hooks/use-toast";
-// import { useRouter } from "next/navigation";
+import axios from "axios";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 import { UsersSelect } from "./users-select";
 import { QuestionType, TemplateType, TopicType, UserType } from "@/types";
 
@@ -50,8 +50,9 @@ const formSchema = z.object({
   imageUrl: z.string(),
   questions: z.array(
     z.object({
+      id: z.string(),
       question: z.string().min(1, { message: "Question is required." }),
-      type: z.string().min(1, { message: "Type is required." }),
+      type: z.number().min(1, { message: "Type is required." }),
       position: z.number(),
     }),
   ),
@@ -75,12 +76,11 @@ export default function EditTemplateForm({
   topics,
 }: EditTemplateFormProps) {
   const [isMounted, setIsMounted] = useState(false);
-  const [isPublic, setIsPublic] = useState(template?.isPublic);
   const [selectedUsers, setSelectedUsers] = useState<string[]>(
     allowedUsers?.map((user) => user.id) || [],
   );
-  // const { toast } = useToast();
-  // const router = useRouter();
+  const { toast } = useToast();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -90,11 +90,12 @@ export default function EditTemplateForm({
       topicId: template?.topicId || "",
       imageUrl: template?.imageUrl || "",
       questions: questions.map((q, index) => ({
+        id: q.id,
         question: q.text,
         type: q.type,
         position: index,
       })) || [{ question: "", type: "", position: 0 }],
-      isPublic: template?.isPublic || true,
+      isPublic: template?.isPublic === undefined ? true : template.isPublic,
       selectedUsers: allowedUsers?.map((user) => user.id) || [],
     },
   });
@@ -110,21 +111,22 @@ export default function EditTemplateForm({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       console.log(values);
-      // await axios.post("/api/templates", {
-      //   title: values.title,
-      //   description: values.description,
-      //   topicId: values.topicId,
-      //   imageUrl: values.imageUrl,
-      //   questions: values.questions,
-      //   isPublic: values.isPublic,
-      //   selectedUsers: values.selectedUsers,
-      // });
-
-      // toast({
-      //   title: "Success",
-      //   description: "Template created",
-      // });
-      // router.push("/");
+      const response = await axios.patch(`/api/templates/${template?.id}`, {
+        title: values.title,
+        description: values.description,
+        topicId: values.topicId,
+        imageUrl: values.imageUrl,
+        questions: values.questions,
+        isPublic: values.isPublic,
+        selectedUsers: values.selectedUsers,
+      });
+      if (response.status === 200) {
+        toast({
+          title: "Success",
+          description: response.data.message || "Template updated",
+        });
+      }
+      router.push(`/templates/${template?.id}`);
     } catch (error) {
       console.error("Error creating template:", error);
     }
@@ -160,7 +162,6 @@ export default function EditTemplateForm({
   };
 
   const handleSwitchChange = (checked: boolean) => {
-    setIsPublic(checked);
     form.setValue("isPublic", checked);
 
     if (checked) {
@@ -234,7 +235,6 @@ export default function EditTemplateForm({
               <FormField
                 control={form.control}
                 name="isPublic"
-                // eslint-disable-next-line
                 render={({ field }) => (
                   <FormItem>
                     <div className="flex items-center space-x-4">
@@ -243,10 +243,10 @@ export default function EditTemplateForm({
                       </FormLabel>
                       <Switch
                         id="visibility-switch"
-                        checked={isPublic}
+                        checked={field.value}
                         onCheckedChange={handleSwitchChange}
                       />
-                      {!isPublic && (
+                      {!field.value && (
                         <UsersSelect
                           form={form}
                           users={users}
@@ -303,8 +303,9 @@ export default function EditTemplateForm({
                     type="button"
                     onClick={() =>
                       append({
+                        id: "",
                         question: "",
-                        type: "",
+                        type: 0,
                         position: fields.length,
                       })
                     }
