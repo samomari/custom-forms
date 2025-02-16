@@ -38,6 +38,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { UsersSelect } from "./users-select";
 import { QuestionType, TemplateType, TopicType, UserType } from "@/types";
+import { FormTextArea } from "./form-textarea";
 
 const formSchema = z.object({
   title: z.string().min(1, {
@@ -194,7 +195,7 @@ export default function EditTemplateForm({
                 control={form.control}
                 name="description"
                 render={({ field }) => (
-                  <FormInput
+                  <FormTextArea
                     label="Description (optional)"
                     placeholder="Enter template description"
                     field={field}
