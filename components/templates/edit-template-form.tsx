@@ -39,27 +39,7 @@ import { useRouter } from "next/navigation";
 import { UsersSelect } from "./users-select";
 import { QuestionType, TemplateType, TopicType, UserType } from "@/types";
 import { FormTextArea } from "./form-textarea";
-
-const formSchema = z.object({
-  title: z.string().min(1, {
-    message: "Title is required.",
-  }),
-  description: z.string(),
-  topicId: z.string().min(1, {
-    message: "Topic is required.",
-  }),
-  imageUrl: z.string(),
-  questions: z.array(
-    z.object({
-      id: z.string(),
-      question: z.string().min(1, { message: "Question is required." }),
-      type: z.number(),
-      position: z.number(),
-    })
-  ),
-  isPublic: z.boolean(),
-  selectedUsers: z.array(z.string()).optional(),
-});
+import { templateSchema } from "@/schema";
 
 interface EditTemplateFormProps {
   template: TemplateType | null;
@@ -78,13 +58,13 @@ export default function EditTemplateForm({
 }: EditTemplateFormProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState<string[]>(
-    allowedUsers?.map((user) => user.id) || []
+    allowedUsers?.map((user) => user.id) || [],
   );
   const { toast } = useToast();
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof templateSchema>>({
+    resolver: zodResolver(templateSchema),
     defaultValues: {
       title: template?.title || "",
       description: template?.description || "",
@@ -109,9 +89,8 @@ export default function EditTemplateForm({
     name: "questions",
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof templateSchema>) => {
     try {
-      console.log(values);
       const response = await axios.patch(`/api/templates/${template?.id}`, {
         title: values.title,
         description: values.description,
@@ -149,7 +128,7 @@ export default function EditTemplateForm({
       const reorderedQuestions = arrayMove(
         updatedQuestions,
         oldIndex,
-        newIndex
+        newIndex,
       ).map((q, index) => ({
         ...q,
         position: index,

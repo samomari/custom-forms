@@ -193,7 +193,6 @@ export async function PATCH(
         .where(eq(privateTemplateAccess.templateId, id));
     }
 
-    console.log(isPublic);
     if (!isPublic && selectedUsers?.length > 0) {
       const existingUsers = await db
         .select({ userId: privateTemplateAccess.userId })
@@ -207,10 +206,7 @@ export async function PATCH(
       const usersToDelete = existingUsers.filter(
         (u) => !newUserIds.has(u.userId),
       );
-      console.log(existingUsersIds);
-      console.log("selectedUsers:", selectedUsers);
 
-      console.log(usersToDelete);
       if (usersToDelete.length) {
         await db.delete(privateTemplateAccess).where(
           inArray(

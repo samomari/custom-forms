@@ -23,7 +23,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "../ui/alert-dialog";
+} from "@/components/ui/alert-dialog";
 
 interface ViewTemplateProps {
   id: string;
@@ -106,7 +106,7 @@ export default function ViewTemplate({
 
   const getResponseType = (typeId: number) => {
     const type = ResponseTypes.find(
-      (responseType) => responseType.id === typeId
+      (responseType) => responseType.id === typeId,
     );
     return type ? type.label : "Unknown";
   };
@@ -174,7 +174,7 @@ export default function ViewTemplate({
                             This action cannot be undone.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
-                        <AlertDialogFooter>
+                        <AlertDialogFooter className="flex items-baseline">
                           <AlertDialogCancel onClick={() => setOpen(false)}>
                             Cancel
                           </AlertDialogCancel>
@@ -188,7 +188,10 @@ export default function ViewTemplate({
                 )}
               </div>
 
-              <Button className="bg-indigo-600 text-white hover:bg-indigo-700">
+              <Button
+                className="bg-indigo-600 text-white hover:bg-indigo-700"
+                onClick={() => router.push(`/forms/new/${id}`)}
+              >
                 Use Template
               </Button>
             </div>

@@ -39,26 +39,7 @@ import { useRouter } from "next/navigation";
 import { UsersSelect } from "./users-select";
 import { TopicType, UserType } from "@/types";
 import { FormTextArea } from "./form-textarea";
-
-const formSchema = z.object({
-  title: z.string().min(1, {
-    message: "Title is required.",
-  }),
-  description: z.string(),
-  topicId: z.string().min(1, {
-    message: "Topic is required.",
-  }),
-  imageUrl: z.string(),
-  questions: z.array(
-    z.object({
-      question: z.string().min(1, { message: "Question is required." }),
-      type: z.number().int().lte(5, { message: "Type is required." }),
-      position: z.number(),
-    })
-  ),
-  isPublic: z.boolean(),
-  selectedUsers: z.array(z.string()).optional(),
-});
+import { templateSchema } from "@/schema";
 
 interface CreateTemplateFormProps {
   users: UserType[];
@@ -75,8 +56,8 @@ export default function CreateTemplateForm({
   const { toast } = useToast();
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof templateSchema>>({
+    resolver: zodResolver(templateSchema),
     defaultValues: {
       title: "",
       description: "",
@@ -97,7 +78,7 @@ export default function CreateTemplateForm({
     name: "questions",
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof templateSchema>) => {
     try {
       await axios.post("/api/templates", {
         title: values.title,
@@ -135,7 +116,7 @@ export default function CreateTemplateForm({
       const reorderedQuestions = arrayMove(
         updatedQuestions,
         oldIndex,
-        newIndex
+        newIndex,
       ).map((q, index) => ({
         ...q,
         position: index,

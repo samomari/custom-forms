@@ -59,7 +59,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(newTemplate[0]);
   } catch (error) {
-    console.log("TEMPLATES_POST_ERROR", error);
+    console.error("TEMPLATES_POST_ERROR", error);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
