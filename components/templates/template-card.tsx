@@ -17,7 +17,7 @@ export function TemplateCard({
 }: GalleryTemplateType) {
   return (
     <Link href={`/templates/${id}`}>
-      <Card className="shadow-lg rounded-lg overflow-hidden group relative hover:scale-105 transition-transform">
+      <Card className="shadow-lg rounded-lg overflow-hidden group relative hover:scale-105 transition-transform h-full">
         <CardContent className="relative w-full h-56">
           <Image
             src={imageUrl || "/images/default-template-image.png"}
@@ -27,7 +27,9 @@ export function TemplateCard({
           />
         </CardContent>
         <CardHeader className="p-4">
-          <CardTitle className="text-xl font-semibold ">{title}</CardTitle>
+          <CardTitle className="text-xl font-semibold truncate">
+            {title}
+          </CardTitle>
           <CardDescription className="text-sm mt-2 truncate">
             {description}
           </CardDescription>
