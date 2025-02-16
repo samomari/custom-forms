@@ -13,10 +13,10 @@ export type TemplateType = GalleryTemplateType & {
 };
 
 export const ResponseTypes = [
-  { id: "0", label: "String" },
-  { id: "1", label: "Text" },
-  { id: "2", label: "Integer" },
-  { id: "3", label: "Checkbox" },
+  { id: 0, label: "String" },
+  { id: 1, label: "Text" },
+  { id: 2, label: "Integer" },
+  { id: 3, label: "Checkbox" },
 ];
 
 export type QuestionType = {

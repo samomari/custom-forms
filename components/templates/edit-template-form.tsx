@@ -52,9 +52,9 @@ const formSchema = z.object({
     z.object({
       id: z.string(),
       question: z.string().min(1, { message: "Question is required." }),
-      type: z.number().min(1, { message: "Type is required." }),
+      type: z.number(),
       position: z.number(),
-    }),
+    })
   ),
   isPublic: z.boolean(),
   selectedUsers: z.array(z.string()).optional(),
@@ -77,7 +77,7 @@ export default function EditTemplateForm({
 }: EditTemplateFormProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState<string[]>(
-    allowedUsers?.map((user) => user.id) || [],
+    allowedUsers?.map((user) => user.id) || []
   );
   const { toast } = useToast();
   const router = useRouter();
@@ -148,7 +148,7 @@ export default function EditTemplateForm({
       const reorderedQuestions = arrayMove(
         updatedQuestions,
         oldIndex,
-        newIndex,
+        newIndex
       ).map((q, index) => ({
         ...q,
         position: index,

@@ -62,10 +62,14 @@ export const TemplateQuestion = ({
             <FormSelect
               label="Question Type"
               options={ResponseTypes.map((type) => ({
-                value: type.id,
+                value: type.id.toString(),
                 label: type.label,
               }))}
-              field={field}
+              field={{
+                ...field,
+                value: String(field.value),
+                onChange: (val: string) => field.onChange(parseInt(val, 10)),
+              }}
             />
           )}
         />
