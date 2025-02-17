@@ -22,37 +22,12 @@ export const templateSchema = z.object({
 });
 
 export const formSchema = z.object({
-  answers: z
-    .array(
-      z.object({
-        questionId: z.string(),
-        answerType: z.number().int(),
-        answer: z.any(),
-      }),
-    )
-    .refine(
-      (answers) => {
-        return answers.every((answer) => {
-          const { answerType, answer: userAnswer } = answer;
-
-          switch (answerType) {
-            case 0:
-              return (
-                typeof userAnswer === "string" && userAnswer.trim().length > 0
-              );
-            case 1:
-              return typeof userAnswer === "string";
-            case 2:
-              return Number.isInteger(userAnswer) && userAnswer > 0;
-            case 3:
-              return true;
-            default:
-              return false;
-          }
-        });
-      },
-      {
-        message: "Some answers do not match their question types.",
-      },
-    ),
+  templateId: z.string(),
+  userId: z.string(),
+  answers: z.array(
+    z.object({
+      questionId: z.string(),
+      answer: z.any(),
+    }),
+  ),
 });
