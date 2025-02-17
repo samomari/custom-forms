@@ -3,6 +3,7 @@ export type GalleryTemplateType = {
   title: string;
   description?: string | null;
   imageUrl?: string | null;
+  username?: string;
 };
 
 export type TemplateType = GalleryTemplateType & {
@@ -36,4 +37,14 @@ export type UserType = {
 export type TopicType = {
   id: string;
   name: string;
+};
+
+export type FormAnswer = {
+  questionId: string;
+  answer?: string | number | boolean;
+};
+
+export type ValidationError = {
+  questionId: string;
+  message: string;
 };

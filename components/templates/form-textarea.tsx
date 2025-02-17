@@ -4,6 +4,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Textarea } from "../ui/textarea";
 
 type Field = {
   value: string;
@@ -24,10 +25,10 @@ export const FormTextArea = ({
     <FormItem>
       <FormLabel className="uppercase font-bold">{label}</FormLabel>
       <FormControl>
-        <textarea
+        <Textarea
           placeholder={placeholder}
           {...field}
-          className="w-full font-semibold border p-2 resize-none"
+          className="font-semibold resize-none"
           rows={4}
         />
       </FormControl>

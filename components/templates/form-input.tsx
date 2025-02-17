@@ -14,9 +14,15 @@ interface FormInputProps {
   label: string;
   placeholder: string;
   field: Field;
+  answerType?: number;
 }
 
-export const FormInput = ({ label, placeholder, field }: FormInputProps) => {
+export const FormInput = ({
+  label,
+  placeholder,
+  field,
+  answerType,
+}: FormInputProps) => {
   return (
     <FormItem>
       <FormLabel className="uppercase font-bold">{label}</FormLabel>
@@ -25,6 +31,8 @@ export const FormInput = ({ label, placeholder, field }: FormInputProps) => {
           placeholder={placeholder}
           {...field}
           className="w-full font-semibold"
+          type={answerType === 2 ? "number" : "text"}
+          min={answerType === 2 ? 1 : ""}
         />
       </FormControl>
       <FormMessage />
