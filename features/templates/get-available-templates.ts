@@ -1,21 +1,23 @@
 import { db } from "@/drizzle";
-import { template, privateTemplateAccess } from "@/drizzle/schema";
+import { template, privateTemplateAccess, user } from "@/drizzle/schema";
 import { currentUser } from "@clerk/nextjs/server";
 import { desc, or, eq } from "drizzle-orm";
 
 export const GetAvailableTemplates = async () => {
   try {
-    const user = await currentUser();
+    const userData = await currentUser();
 
-    if (!user) {
+    if (!userData) {
       return await db
         .select({
           id: template.id,
           title: template.title,
           description: template.description,
           imageUrl: template.imageUrl,
+          username: user.username,
         })
         .from(template)
+        .innerJoin(user, eq(user.id, template.userId))
         .where(eq(template.isPublic, true))
         .orderBy(desc(template.formCount));
     }
@@ -26,8 +28,10 @@ export const GetAvailableTemplates = async () => {
         title: template.title,
         description: template.description,
         imageUrl: template.imageUrl,
+        username: user.username,
       })
       .from(template)
+      .innerJoin(user, eq(user.id, template.userId))
       .leftJoin(
         privateTemplateAccess,
         eq(privateTemplateAccess.templateId, template.id),
@@ -35,8 +39,8 @@ export const GetAvailableTemplates = async () => {
       .where(
         or(
           eq(template.isPublic, true),
-          eq(template.userId, user.id),
-          eq(privateTemplateAccess.userId, user.id),
+          eq(template.userId, userData.id),
+          eq(privateTemplateAccess.userId, userData.id),
         ),
       )
       .orderBy(desc(template.formCount))

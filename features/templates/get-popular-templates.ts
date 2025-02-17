@@ -1,8 +1,10 @@
 import { db } from "@/drizzle";
-import { template } from "@/drizzle/schema";
+import { template, user } from "@/drizzle/schema";
 import { desc, eq } from "drizzle-orm";
 
-export const GetPopularTemplates = async () => {
+type SortByField = typeof template.createdAt | typeof template.formCount;
+
+const getTemplates = async (sortBy: SortByField) => {
   try {
     const templates = await db
       .select({
@@ -10,10 +12,12 @@ export const GetPopularTemplates = async () => {
         title: template.title,
         description: template.description,
         imageUrl: template.imageUrl,
+        username: user.username,
       })
       .from(template)
+      .innerJoin(user, eq(template.userId, user.id))
       .where(eq(template.isPublic, true))
-      .orderBy(desc(template.formCount))
+      .orderBy(desc(sortBy))
       .limit(5);
 
     return templates;
@@ -22,3 +26,7 @@ export const GetPopularTemplates = async () => {
     return [];
   }
 };
+
+export const GetLatestTemplates = () => getTemplates(template.createdAt);
+
+export const GetPopularTemplates = () => getTemplates(template.formCount);
