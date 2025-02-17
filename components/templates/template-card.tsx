@@ -14,6 +14,7 @@ export function TemplateCard({
   title,
   description,
   imageUrl,
+  username,
 }: GalleryTemplateType) {
   return (
     <Link href={`/templates/${id}`}>
@@ -33,6 +34,9 @@ export function TemplateCard({
           <CardDescription className="text-sm mt-2 truncate">
             {description}
           </CardDescription>
+          <p className="text-xs text-muted-foreground italic mt-2 text-end">
+            Author : {username}
+          </p>
         </CardHeader>
       </Card>
     </Link>

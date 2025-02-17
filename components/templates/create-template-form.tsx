@@ -34,7 +34,7 @@ import { useState, useEffect } from "react";
 import { ImageUpload } from "@/components/image-upload";
 import { ActionTooltip } from "@/components/action-tooltip";
 import axios from "axios";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { UsersSelect } from "./users-select";
 import { TopicType, UserType } from "@/types";
@@ -53,7 +53,6 @@ export default function CreateTemplateForm({
   const [isMounted, setIsMounted] = useState(false);
   const [isPublic, setIsPublic] = useState(true);
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
-  const { toast } = useToast();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof templateSchema>>({
@@ -116,7 +115,7 @@ export default function CreateTemplateForm({
       const reorderedQuestions = arrayMove(
         updatedQuestions,
         oldIndex,
-        newIndex,
+        newIndex
       ).map((q, index) => ({
         ...q,
         position: index,

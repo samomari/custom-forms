@@ -1,18 +1,27 @@
 import TemplatesGallery from "@/components/templates/template-gallery";
 import { Button } from "@/components/ui/button";
-import { GetPopularTemplates } from "@/features/templates/get-popular-templates";
+import {
+  GetLatestTemplates,
+  GetPopularTemplates,
+} from "@/features/templates/get-popular-templates";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export default async function Home() {
-  const templates = await GetPopularTemplates();
+  const populartemplates = await GetPopularTemplates();
+  const latestTemplates = await GetLatestTemplates();
   return (
     <div className="h-full w-full">
       <div className="p-6">
-        <h1 className="text-2xl font-bold mb-4 text-center">
+        <p className="text-2xl font-bold mb-4 text-center">
           Most popular public templates
-        </h1>
-        <TemplatesGallery templates={templates} />
+        </p>
+        <TemplatesGallery templates={populartemplates} />
+
+        <p className="text-2xl font-bold py-2 text-center">
+          Most recent templates
+        </p>
+        <TemplatesGallery templates={latestTemplates} />
         <div className="pt-4 flex justify-end">
           <Link href="/templates">
             <Button variant="link">

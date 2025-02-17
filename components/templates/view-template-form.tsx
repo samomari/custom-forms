@@ -8,7 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Heart, Pencil, Trash } from "lucide-react";
 import { ActionTooltip } from "@/components/action-tooltip";
-import { QuestionType, ResponseTypes } from "@/types";
+import { QuestionType } from "@/types";
 import { toast } from "@/hooks/use-toast";
 import { useState } from "react";
 import axios from "axios";
@@ -24,6 +24,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { GetResponseType } from "@/lib/utils/get-response-type";
 
 interface ViewTemplateProps {
   id: string;
@@ -104,13 +105,6 @@ export default function ViewTemplate({
     }
   };
 
-  const getResponseType = (typeId: number) => {
-    const type = ResponseTypes.find(
-      (responseType) => responseType.id === typeId,
-    );
-    return type ? type.label : "Unknown";
-  };
-
   return (
     <div className="xl:w-1/2 md:w-1/2 flex justify-center items-baseline">
       <div className="w-full text-zinc-600 dark:text-zinc-300 ">
@@ -129,7 +123,8 @@ export default function ViewTemplate({
                   <div className="flex justify-between">
                     <span className="font-medium">{q.text}</span>
                     <span className="text-sm">
-                      Answer type {getResponseType(q.type)}
+                      Expected {GetResponseType(q.type).toLowerCase()} answer
+                      type
                     </span>
                   </div>
                 </li>
