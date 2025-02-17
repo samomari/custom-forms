@@ -25,7 +25,7 @@ export default async function Page({
   }
   return (
     <div className="w-full h-full flex justify-center pt-4">
-      <CreateFormForm user={user} template={template} questions={questions} />
+      <CreateFormForm template={template} questions={questions} />
     </div>
   );
 }
