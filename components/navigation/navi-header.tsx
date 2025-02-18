@@ -20,9 +20,11 @@ export function NaviHeader() {
           <li>
             <Link href="/templates/new">Create a template</Link>
           </li>
-          <li>
-            <Link href="/forms">Forms</Link>
-          </li>
+          <SignedIn>
+            <li>
+              <Link href="/forms/my">My Filled Forms</Link>
+            </li>
+          </SignedIn>
         </ul>
         <div className="flex pr-2">
           <ModeToggle />

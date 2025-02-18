@@ -9,10 +9,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Form, FormField } from "@/components/ui/form";
-import { FormInput } from "@/components/templates/form-input";
+import { FormInput } from "@/components/ui/form-input";
 import { Button } from "@/components/ui/button";
-import { FormTextArea } from "@/components/templates/form-textarea";
-import { FormCheckbox } from "@/components/templates/form-checkbox";
+import { FormTextArea } from "@/components/ui/form-textarea";
+import { FormCheckbox } from "@/components/ui/form-checkbox";
 import { formSchema } from "@/schema";
 import FormValidator from "@/lib/utils/form-validator";
 import { GetResponseType } from "@/lib/utils/get-response-type";
@@ -24,12 +24,12 @@ const setFormErrors = (
   errors: ValidationError[],
   // eslint-disable-next-line
   form: any,
-  questions: QuestionType[]
+  questions: QuestionType[],
 ) => {
   errors.forEach((error) => {
     form.setError(
       `answers.${questions.findIndex((q) => q.id === error.questionId)}.answer`,
-      { type: "manual", message: error.message }
+      { type: "manual", message: error.message },
     );
   });
 };
@@ -140,7 +140,7 @@ export default function CreateFormForm({
                               onChange: (checked) =>
                                 form.setValue(
                                   `answers.${index}.answer`,
-                                  checked
+                                  checked,
                                 ),
                             }}
                           />

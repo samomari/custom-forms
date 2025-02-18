@@ -27,8 +27,8 @@ import {
 } from "@dnd-kit/sortable";
 import { TemplateQuestion } from "./template-question";
 import { restrictToParentElement } from "@dnd-kit/modifiers";
-import { FormInput } from "./form-input";
-import { FormSelect } from "./form-select";
+import { FormInput } from "../ui/form-input";
+import { FormSelect } from "../ui/form-select";
 import { Switch } from "@/components/ui/switch";
 import { useState, useEffect } from "react";
 import { ImageUpload } from "@/components/image-upload";
@@ -38,7 +38,7 @@ import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { UsersSelect } from "./users-select";
 import { TopicType, UserType } from "@/types";
-import { FormTextArea } from "./form-textarea";
+import { FormTextArea } from "../ui/form-textarea";
 import { templateSchema } from "@/schema";
 
 interface CreateTemplateFormProps {
@@ -115,7 +115,7 @@ export default function CreateTemplateForm({
       const reorderedQuestions = arrayMove(
         updatedQuestions,
         oldIndex,
-        newIndex
+        newIndex,
       ).map((q, index) => ({
         ...q,
         position: index,

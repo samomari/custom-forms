@@ -4,7 +4,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Textarea } from "../ui/textarea";
+import { Textarea } from "./textarea";
 
 type Field = {
   value: string;

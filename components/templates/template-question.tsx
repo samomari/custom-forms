@@ -3,8 +3,8 @@ import { CSS } from "@dnd-kit/utilities";
 import { Card } from "@/components/ui/card";
 import { GripHorizontal } from "lucide-react";
 import { FormField } from "@/components/ui/form";
-import { FormInput } from "./form-input";
-import { FormSelect } from "./form-select";
+import { FormInput } from "../ui/form-input";
+import { FormSelect } from "../ui/form-select";
 import { ResponseTypes } from "@/types";
 
 interface TemplateQuestionProps {

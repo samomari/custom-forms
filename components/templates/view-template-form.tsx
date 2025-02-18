@@ -185,7 +185,7 @@ export default function ViewTemplate({
 
               <Button
                 className="bg-indigo-600 text-white hover:bg-indigo-700"
-                onClick={() => router.push(`/forms/new/${id}`)}
+                onClick={() => router.push(`/forms/${id}`)}
               >
                 Use Template
               </Button>

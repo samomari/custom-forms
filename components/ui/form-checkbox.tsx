@@ -1,5 +1,5 @@
-import { Checkbox } from "../ui/checkbox";
-import { FormControl, FormItem, FormLabel } from "../ui/form";
+import { Checkbox } from "./checkbox";
+import { FormControl, FormItem, FormLabel } from "./form";
 
 type Field = {
   value: boolean;
