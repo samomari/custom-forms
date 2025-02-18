@@ -16,7 +16,7 @@ export default async function Page({
   const questions = await GetTemplateQuestions(id);
 
   if (!template) {
-    return redirect("/templates");
+    redirect("/templates");
   }
 
   const isOwner = user?.id === template?.userId;

@@ -15,14 +15,14 @@ export default async function Page({
   const { id } = await params;
   const user = await currentUser();
   if (!user) {
-    return redirect(`/templates/${id}`);
+    redirect(`/templates/${id}`);
   }
   const template = await GetTemplateData(id);
   if (!template) {
     redirect("/templates");
   }
   if (template.userId !== user.id && user.role !== "ADMIN") {
-    return redirect(`/templates/${id}`);
+    redirect(`/templates/${id}`);
   }
   const questions = await GetTemplateQuestions(id);
   const allowedUsers = await GetUsersWithAccess(id);

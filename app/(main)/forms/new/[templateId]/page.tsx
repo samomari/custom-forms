@@ -12,7 +12,7 @@ export default async function Page({
   const { templateId } = await params;
   const user = await currentUser();
   if (!user) {
-    return redirect(`/templates/${templateId}`);
+    redirect(`/templates/${templateId}`);
   }
 
   const template = await GetTemplateData(templateId);
