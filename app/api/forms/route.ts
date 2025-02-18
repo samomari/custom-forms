@@ -1,7 +1,8 @@
 import { db } from "@/drizzle";
-import { answer, form } from "@/drizzle/schema";
+import { answer, form, template } from "@/drizzle/schema";
 import { GetTemplateData } from "@/features/templates/get-template-data";
 import { currentUser } from "@/features/users/current-user";
+import { eq, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -17,7 +18,7 @@ export async function POST(req: Request) {
     if (!templateData) {
       return NextResponse.json(
         { message: "Template not found" },
-        { status: 404 },
+        { status: 404 }
       );
     }
 
@@ -32,7 +33,7 @@ export async function POST(req: Request) {
     if (newForm.length === 0 || !newForm[0]) {
       return NextResponse.json(
         { message: "Failed to create form" },
-        { status: 500 },
+        { status: 500 }
       );
     }
 
@@ -41,12 +42,17 @@ export async function POST(req: Request) {
         value: a.answer,
         questionId: a.questionId,
         formId: newForm[0].id,
-      }),
+      })
     );
 
     if (answersData.length > 0) {
       await db.insert(answer).values(answersData);
     }
+
+    await db
+      .update(template)
+      .set({ formCount: sql`${template.formCount} +1` })
+      .where(eq(template.id, templateId));
 
     return NextResponse.json(newForm[0]);
   } catch (error) {
