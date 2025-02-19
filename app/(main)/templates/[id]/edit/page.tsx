@@ -1,4 +1,4 @@
-import EditTemplateForm from "@/components/templates/edit-template-form";
+import EditTemplate from "@/components/templates/edit-template";
 import { GetTemplateQuestions } from "@/features/questions/get-template-questions";
 import { GetTemplateData } from "@/features/templates/get-template-data";
 import { GetUsersWithAccess } from "@/features/templates/get-users-with-access";
@@ -30,7 +30,7 @@ export default async function Page({
   const topics = await GetTopics();
   return (
     <div className="w-full h-full flex justify-center pt-4">
-      <EditTemplateForm
+      <EditTemplate
         template={template}
         questions={questions}
         users={users}

@@ -102,7 +102,9 @@ export const allFormsColumns: ColumnDef<FormType>[] = [
             <DropdownMenuItem>
               <Link href={`/forms/${row.original.id}`}>View Form</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>Edit Form</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href={`/forms/${row.original.id}/edit`}>Edit Form</Link>
+            </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => console.log("Delete Form:", row.original.id)}
               className="text-red-600"

@@ -1,18 +1,20 @@
 import { db } from "@/drizzle";
 import { answer, question } from "@/drizzle/schema";
-import { eq } from "drizzle-orm";
+import { eq, asc } from "drizzle-orm";
 
 export const GetQA = async (formId: string) => {
   try {
     const answers = await db
       .select({
         id: answer.id,
+        type: question.type,
         question: question.content,
         answer: answer.value,
       })
       .from(answer)
       .innerJoin(question, eq(answer.questionId, question.id))
-      .where(eq(answer.formId, formId));
+      .where(eq(answer.formId, formId))
+      .orderBy(asc(question.position));
 
     return answers;
   } catch (error) {

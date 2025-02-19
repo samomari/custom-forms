@@ -1,4 +1,4 @@
-import CreateFormForm from "@/components/forms/create-form-form";
+import CreateForm from "@/components/forms/create-form";
 import { GetTemplateQuestions } from "@/features/questions/get-template-questions";
 import { GetTemplateData } from "@/features/templates/get-template-data";
 import { redirect } from "next/navigation";
@@ -20,7 +20,7 @@ export default async function Page({
   }
   return (
     <div className="w-full h-full flex justify-center pt-4">
-      <CreateFormForm template={template} questions={questions} />
+      <CreateForm template={template} questions={questions} />
     </div>
   );
 }

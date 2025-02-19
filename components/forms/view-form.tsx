@@ -23,8 +23,10 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
 import { QuestionAnswer } from "@/types";
+import { useRouter } from "next/navigation";
 
 interface ViewFormProps {
+  id: string;
   title: string;
   description?: string | null;
   qa: QuestionAnswer[];
@@ -32,12 +34,19 @@ interface ViewFormProps {
 }
 
 export default function ViewForm({
+  id,
   title,
   description,
   qa,
   isEditor,
 }: ViewFormProps) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
+
+  const handleEdit = () => {
+    router.push(`/forms/${id}/edit`);
+  };
+
   return (
     <div className="xl:w-1/2 md:w-1/2 flex justify-center items-baseline">
       <div className="w-full text-zinc-600 dark:text-zinc-300 ">
@@ -61,10 +70,7 @@ export default function ViewForm({
           {isEditor && (
             <>
               <ActionTooltip label="Edit Form">
-                <Button
-                  variant="ghost"
-                  onClick={() => console.log("Edit form")}
-                >
+                <Button variant="ghost" onClick={() => handleEdit()}>
                   <Pencil className="h-5 w-5 mr-1" />
                 </Button>
               </ActionTooltip>

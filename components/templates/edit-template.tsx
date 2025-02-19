@@ -34,40 +34,52 @@ import { useState, useEffect } from "react";
 import { ImageUpload } from "@/components/image-upload";
 import { ActionTooltip } from "@/components/action-tooltip";
 import axios from "axios";
-import { toast } from "@/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { UsersSelect } from "./users-select";
-import { TopicType, UserType } from "@/types";
+import { QuestionType, TemplateType, TopicType, UserType } from "@/types";
 import { FormTextArea } from "@/components/ui/form-textarea";
 import { templateSchema } from "@/schema";
 
-interface CreateTemplateFormProps {
+interface EditTemplateProps {
+  template: TemplateType | null;
+  questions: QuestionType[];
   users: UserType[];
+  allowedUsers: { id: string }[];
   topics: TopicType[];
 }
 
-export default function CreateTemplateForm({
+export default function EditTemplate({
+  template,
+  questions,
   users,
+  allowedUsers,
   topics,
-}: CreateTemplateFormProps) {
+}: EditTemplateProps) {
   const [isMounted, setIsMounted] = useState(false);
-  const [isPublic, setIsPublic] = useState(true);
-  const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<string[]>(
+    allowedUsers?.map((user) => user.id) || [],
+  );
+  const { toast } = useToast();
   const router = useRouter();
 
   const form = useForm<z.infer<typeof templateSchema>>({
     resolver: zodResolver(templateSchema),
     defaultValues: {
-      title: "",
-      description: "",
-      topicId: "",
-      imageUrl: "",
-      questions: [{ question: "", type: 0, position: 0 }],
-      isPublic: true,
-      selectedUsers: [],
+      title: template?.title || "",
+      description: template?.description || "",
+      topicId: template?.topicId || "",
+      imageUrl: template?.imageUrl || "",
+      questions: questions.map((q, index) => ({
+        id: q.id,
+        question: q.text,
+        type: q.type,
+        position: index,
+      })) || [{ question: "", type: "", position: 0 }],
+      isPublic: template?.isPublic === undefined ? true : template.isPublic,
+      selectedUsers: allowedUsers?.map((user) => user.id) || [],
     },
   });
-
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -79,7 +91,7 @@ export default function CreateTemplateForm({
 
   const onSubmit = async (values: z.infer<typeof templateSchema>) => {
     try {
-      await axios.post("/api/templates", {
+      const response = await axios.patch(`/api/templates/${template?.id}`, {
         title: values.title,
         description: values.description,
         topicId: values.topicId,
@@ -88,12 +100,13 @@ export default function CreateTemplateForm({
         isPublic: values.isPublic,
         selectedUsers: values.selectedUsers,
       });
-
-      toast({
-        title: "Success",
-        description: "Template created",
-      });
-      router.push("/");
+      if (response.status === 200) {
+        toast({
+          title: "Success",
+          description: response.data.message || "Template updated",
+        });
+      }
+      router.push(`/templates/${template?.id}`);
     } catch (error) {
       console.error("Error creating template:", error);
     }
@@ -129,7 +142,6 @@ export default function CreateTemplateForm({
   };
 
   const handleSwitchChange = (checked: boolean) => {
-    setIsPublic(checked);
     form.setValue("isPublic", checked);
 
     if (checked) {
@@ -145,7 +157,7 @@ export default function CreateTemplateForm({
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <Card className="p-6 shadow-lg rounded-xl space-y-4">
               <CardHeader className="text-xl uppercase text-center">
-                <CardTitle>Create Template</CardTitle>
+                <CardTitle>Edit Template</CardTitle>
               </CardHeader>
               <FormField
                 control={form.control}
@@ -214,7 +226,7 @@ export default function CreateTemplateForm({
                         checked={field.value}
                         onCheckedChange={handleSwitchChange}
                       />
-                      {!isPublic && (
+                      {!field.value && (
                         <UsersSelect
                           form={form}
                           users={users}
@@ -271,6 +283,7 @@ export default function CreateTemplateForm({
                     type="button"
                     onClick={() =>
                       append({
+                        id: "",
                         question: "",
                         type: 0,
                         position: fields.length,
