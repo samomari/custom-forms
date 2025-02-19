@@ -1,16 +1,22 @@
-import { FormAnswer, QuestionType, ValidationError } from "@/types";
+import { ValidationError } from "@/types";
 
 export default function FormValidator(
-  answers: FormAnswer[],
-  questions: QuestionType[],
-) {
+  answers: {
+    questionId?: string;
+    answerId?: string;
+    answer?: string | number | boolean;
+  }[],
+  questions: { id: string; type: number }[],
+): ValidationError[] {
   const errors: ValidationError[] = [];
 
   answers.forEach((ans) => {
-    const question = questions.find((q) => q.id === ans.questionId);
+    const question = questions.find(
+      (q) => q.id === ans.questionId || q.id === ans.answerId,
+    );
     if (!question) return;
 
-    const { answer, questionId } = ans;
+    const { answer } = ans;
     const { type } = question;
 
     let errorMessage = "";
@@ -25,8 +31,12 @@ export default function FormValidator(
       }
     }
 
-    if (errorMessage) {
-      errors.push({ questionId, message: errorMessage });
+    const errorId = ans.questionId || ans.answerId;
+    if (errorMessage && errorId) {
+      errors.push({
+        questionId: errorId,
+        message: errorMessage,
+      });
     }
   });
 

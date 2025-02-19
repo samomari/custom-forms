@@ -21,12 +21,21 @@ export const templateSchema = z.object({
   selectedUsers: z.array(z.string()).optional(),
 });
 
-export const formSchema = z.object({
+export const formCreationSchema = z.object({
   templateId: z.string(),
-  userId: z.string(),
   answers: z.array(
     z.object({
       questionId: z.string(),
+      answer: z.any(),
+    }),
+  ),
+});
+
+export const formEditSchema = z.object({
+  formId: z.string(),
+  answers: z.array(
+    z.object({
+      answerId: z.string(),
       answer: z.any(),
     }),
   ),

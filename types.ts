@@ -17,6 +17,7 @@ export type QuestionAnswer = {
   id: string;
   question: string;
   answer: string;
+  type: number;
 };
 
 export const ResponseTypes = [
