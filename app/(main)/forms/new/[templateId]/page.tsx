@@ -1,7 +1,6 @@
 import CreateFormForm from "@/components/forms/create-form-form";
 import { GetTemplateQuestions } from "@/features/questions/get-template-questions";
 import { GetTemplateData } from "@/features/templates/get-template-data";
-import { currentUser } from "@/features/users/current-user";
 import { redirect } from "next/navigation";
 
 export default async function Page({
@@ -10,10 +9,6 @@ export default async function Page({
   params: Promise<{ templateId: string }>;
 }) {
   const { templateId } = await params;
-  const user = await currentUser();
-  if (!user) {
-    redirect(`/templates/${templateId}`);
-  }
 
   const template = await GetTemplateData(templateId);
   if (!template) {

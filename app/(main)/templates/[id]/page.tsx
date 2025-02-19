@@ -3,6 +3,7 @@ import { currentUser } from "@/features/users/current-user";
 import { GetTemplateData } from "@/features/templates/get-template-data";
 import { GetTemplateQuestions } from "@/features/questions/get-template-questions";
 import { redirect } from "next/navigation";
+import { getUserRole } from "@/features/roles/get-user-role";
 
 export default async function Page({
   params,
@@ -20,8 +21,8 @@ export default async function Page({
   }
 
   const isOwner = user?.id === template?.userId;
-  const isAdmin = user?.role === "ADMIN";
-  const isEditor = isOwner || isAdmin;
+  const role = await getUserRole();
+  const isEditor = isOwner || role === "ADMIN";
 
   return (
     <div className="h-full w-full flex justify-center pt-4">

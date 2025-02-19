@@ -25,6 +25,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { GetResponseType } from "@/lib/utils/get-response-type";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 interface ViewTemplateProps {
   id: string;
@@ -110,24 +112,22 @@ export default function ViewTemplate({
       <div className="w-full text-zinc-600 dark:text-zinc-300 ">
         <Card className="p-6 shadow-lg rounded-xl space-y-4">
           <CardHeader className="text-xl uppercase text-center">
-            <CardTitle>{title}</CardTitle>
+            <CardTitle className="break-words">{title}</CardTitle>
             <CardDescription className="break-words">
               {description}
             </CardDescription>
           </CardHeader>
           <div className="mt-6">
-            <h2 className="text-xl font-semibold mb-3">Questions</h2>
             <ul className="space-y-3">
               {questions.map((q) => (
-                <li key={q.id} className="p-3 border rounded-lg">
-                  <div className="flex justify-between">
-                    <span className="font-medium">{q.text}</span>
-                    <span className="text-sm">
-                      Expected {GetResponseType(q.type).toLowerCase()} answer
-                      type
-                    </span>
-                  </div>
-                </li>
+                <div key={q.id} className="space-y-2">
+                  <Label className="font-medium">{q.text}</Label>
+                  <Input
+                    value={`Expected ${GetResponseType(q.type).toLowerCase()} answer type`}
+                    disabled
+                    className="font=medium"
+                  ></Input>
+                </div>
               ))}
             </ul>
           </div>

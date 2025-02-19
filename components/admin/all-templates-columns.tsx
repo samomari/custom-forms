@@ -49,7 +49,11 @@ export const allTemplatesColumns: ColumnDef<TemplateType>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="px-4">{row.original.title}</div>,
+    cell: ({ row }) => (
+      <div className="px-4 md:max-w-[200px] lg:max-w-[400px] truncate">
+        {row.original.title}
+      </div>
+    ),
   },
   {
     accessorKey: "username",

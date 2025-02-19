@@ -13,6 +13,12 @@ export type TemplateType = GalleryTemplateType & {
   isPublic: boolean;
 };
 
+export type QuestionAnswer = {
+  id: string;
+  question: string;
+  answer: string;
+};
+
 export const ResponseTypes = [
   { id: 0, label: "String" },
   { id: 1, label: "Text" },
