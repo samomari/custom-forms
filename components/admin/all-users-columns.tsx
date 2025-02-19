@@ -9,44 +9,85 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
+import { UserType } from "@/types";
 import Link from "next/link";
 
-type UserFormType = {
-  id: string;
-  updatedAt: Date;
-  title: string;
-};
-
-export const templatesTableColumns: ColumnDef<UserFormType>[] = [
+export const allUsersColumns: ColumnDef<UserType>[] = [
   {
-    accessorKey: "title",
+    accessorKey: "id",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Title
+          User ID
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({ row }) => <div className="capitalize">{row.original.title}</div>,
+    cell: ({ row }) => <div>{row.original.id}</div>,
   },
   {
-    accessorKey: "updatedAt",
+    accessorKey: "username",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Last updated
+          Username
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({ row }) => new Date(row.original.updatedAt).toLocaleString("lt-LT"),
+    cell: ({ row }) => <div className="px-4">{row.original.username}</div>,
+  },
+  {
+    accessorKey: "email",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Email
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className="px-4">{row.original.email}</div>,
+  },
+
+  {
+    accessorKey: "role",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Role
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className="px-4">{row.original.role}</div>,
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Status
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className="px-4">{row.original.status}</div>,
   },
   {
     id: "actions",
@@ -65,17 +106,7 @@ export const templatesTableColumns: ColumnDef<UserFormType>[] = [
             <DropdownMenuItem>
               <Link href={`/templates/${row.original.id}`}>View Template</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link href={`/templates/${row.original.id}/edit`}>
-                Edit Template
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => console.log("Delete Form:", row.original.id)}
-              className="text-red-600"
-            >
-              Delete Template
-            </DropdownMenuItem>
+            <DropdownMenuItem>User Managment</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { LogIn } from "lucide-react";
 import Link from "next/link";
 
-export function NaviHeader() {
+export async function NaviHeader({ role }: { role?: string }) {
   return (
     <div className="w-full dark:bg-[#0C0A09] bg-[#E3E5E8]">
       <nav className="flex justify-between items-center">
@@ -17,12 +17,13 @@ export function NaviHeader() {
           <li>
             <Link href="/templates">Templates</Link>
           </li>
-          <li>
-            <Link href="/templates/new">Create a template</Link>
-          </li>
           <SignedIn>
             <li>
-              <Link href="/dashboard">User dashboard</Link>
+              {role === "ADMIN" ? (
+                <Link href="/admin">Admin dashboard</Link>
+              ) : (
+                <Link href="/dashboard">User dashboard</Link>
+              )}
             </li>
           </SignedIn>
         </ul>

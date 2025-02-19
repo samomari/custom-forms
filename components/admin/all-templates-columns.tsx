@@ -11,13 +11,31 @@ import { Button } from "@/components/ui/button";
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import Link from "next/link";
 
-type UserFormType = {
+type TemplateType = {
   id: string;
   updatedAt: Date;
   title: string;
+  likeCount: number;
+  formCount: number;
+  username: string;
 };
 
-export const templatesTableColumns: ColumnDef<UserFormType>[] = [
+export const allTemplatesColumns: ColumnDef<TemplateType>[] = [
+  {
+    accessorKey: "id",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Template ID
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div>{row.original.id}</div>,
+  },
   {
     accessorKey: "title",
     header: ({ column }) => {
@@ -31,7 +49,52 @@ export const templatesTableColumns: ColumnDef<UserFormType>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="capitalize">{row.original.title}</div>,
+    cell: ({ row }) => <div className="px-4">{row.original.title}</div>,
+  },
+  {
+    accessorKey: "username",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Author
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className="px-4">{row.original.username}</div>,
+  },
+  {
+    accessorKey: "likeCount",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Likes Count
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className="px-4">{row.original.likeCount}</div>,
+  },
+  {
+    accessorKey: "formCount",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Forms Count
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className="px-4">{row.original.formCount}</div>,
   },
   {
     accessorKey: "updatedAt",
@@ -46,7 +109,11 @@ export const templatesTableColumns: ColumnDef<UserFormType>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => new Date(row.original.updatedAt).toLocaleString("lt-LT"),
+    cell: ({ row }) => (
+      <div className="px-2">
+        {new Date(row.original.updatedAt).toLocaleString("lt-LT")}
+      </div>
+    ),
   },
   {
     id: "actions",

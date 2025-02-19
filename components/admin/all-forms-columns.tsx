@@ -11,13 +11,29 @@ import { Button } from "@/components/ui/button";
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import Link from "next/link";
 
-type UserFormType = {
+type FormType = {
   id: string;
   updatedAt: Date;
   title: string;
+  username: string;
 };
 
-export const formsTableColumns: ColumnDef<UserFormType>[] = [
+export const allFormsColumns: ColumnDef<FormType>[] = [
+  {
+    accessorKey: "id",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Form ID
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div>{row.original.id}</div>,
+  },
   {
     accessorKey: "title",
     header: ({ column }) => {
@@ -26,12 +42,27 @@ export const formsTableColumns: ColumnDef<UserFormType>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Title
+          Template Title
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
-    cell: ({ row }) => <div className="capitalize">{row.original.title}</div>,
+    cell: ({ row }) => <div className="px-4">{row.original.title}</div>,
+  },
+  {
+    accessorKey: "username",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Author
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className="px-4">{row.original.username}</div>,
   },
   {
     accessorKey: "updatedAt",
@@ -46,7 +77,11 @@ export const formsTableColumns: ColumnDef<UserFormType>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => new Date(row.original.updatedAt).toLocaleString("lt-LT"),
+    cell: ({ row }) => (
+      <div className="px-2">
+        {new Date(row.original.updatedAt).toLocaleString("lt-LT")}
+      </div>
+    ),
   },
   {
     id: "actions",
