@@ -9,12 +9,10 @@ export const GetUserFilledForms = async (userId: string) => {
         id: form.id,
         updatedAt: form.updatedAt,
         title: template.title,
-        imageUrl: template.imageUrl,
       })
       .from(form)
       .innerJoin(template, eq(form.templateId, template.id))
-      .where(eq(form.userId, userId))
-      .orderBy(desc(form.updatedAt));
+      .where(eq(form.userId, userId));
 
     return userForms;
   } catch (error) {

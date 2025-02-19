@@ -22,7 +22,7 @@ export function NaviHeader() {
           </li>
           <SignedIn>
             <li>
-              <Link href="/forms">My Filled Forms</Link>
+              <Link href="/dashboard">User dashboard</Link>
             </li>
           </SignedIn>
         </ul>

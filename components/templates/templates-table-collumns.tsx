@@ -17,7 +17,7 @@ type UserFormType = {
   title: string;
 };
 
-export const formsTableColumns: ColumnDef<UserFormType>[] = [
+export const templatesTableColumns: ColumnDef<UserFormType>[] = [
   {
     accessorKey: "title",
     header: ({ column }) => {
@@ -63,14 +63,18 @@ export const formsTableColumns: ColumnDef<UserFormType>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem>
-              <Link href={`/forms/${row.original.id}`}>View Form</Link>
+              <Link href={`/templates/${row.original.id}`}>View Template</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>Edit Form</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link href={`/templates/${row.original.id}/edit`}>
+                Edit Template
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => console.log("Delete Form:", row.original.id)}
               className="text-red-600"
             >
-              Delete Form
+              Delete Template
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
