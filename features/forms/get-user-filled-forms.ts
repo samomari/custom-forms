@@ -1,5 +1,5 @@
 import { db } from "@/drizzle";
-import { form, template } from "@/drizzle/schema";
+import { form, template, topic } from "@/drizzle/schema";
 import { eq, desc } from "drizzle-orm";
 
 export const GetUserFilledForms = async (userId: string) => {
@@ -9,9 +9,11 @@ export const GetUserFilledForms = async (userId: string) => {
         id: form.id,
         updatedAt: form.updatedAt,
         title: template.title,
+        topic: topic.name,
       })
       .from(form)
       .innerJoin(template, eq(form.templateId, template.id))
+      .innerJoin(topic, eq(template.topicId, topic.id))
       .where(eq(form.userId, userId));
 
     return userForms;

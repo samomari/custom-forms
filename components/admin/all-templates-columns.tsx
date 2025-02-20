@@ -15,6 +15,7 @@ type TemplateType = {
   id: string;
   updatedAt: Date;
   title: string;
+  topic: string;
   likeCount: number;
   formCount: number;
   username: string;
@@ -53,6 +54,23 @@ export const allTemplatesColumns: ColumnDef<TemplateType>[] = [
       <div className="px-4 md:max-w-[200px] lg:max-w-[400px] truncate">
         {row.original.title}
       </div>
+    ),
+  },
+  {
+    accessorKey: "topic",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Topic
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="capitalize px-4">{row.original.topic}</div>
     ),
   },
   {

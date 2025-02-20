@@ -15,6 +15,7 @@ type FormType = {
   id: string;
   updatedAt: Date;
   title: string;
+  topic: string;
   username: string;
 };
 
@@ -48,7 +49,26 @@ export const allFormsColumns: ColumnDef<FormType>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="px-4 md:max-w-[200px] truncate">{row.original.title}</div>
+      <div className="capitalize px-4 md:max-w-[200px] truncate">
+        {row.original.title}
+      </div>
+    ),
+  },
+  {
+    accessorKey: "topic",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Topic
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => (
+      <div className="capitalize px-4">{row.original.topic}</div>
     ),
   },
   {

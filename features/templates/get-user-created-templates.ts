@@ -1,5 +1,5 @@
 import { db } from "@/drizzle";
-import { template } from "@/drizzle/schema";
+import { template, topic } from "@/drizzle/schema";
 import { eq } from "drizzle-orm";
 
 export const GetUserTemplates = async (userId: string) => {
@@ -8,9 +8,11 @@ export const GetUserTemplates = async (userId: string) => {
       .select({
         id: template.id,
         updatedAt: template.updatedAt,
+        topic: topic.name,
         title: template.title,
       })
       .from(template)
+      .innerJoin(topic, eq(template.topicId, topic.id))
       .where(eq(template.userId, userId));
 
     return userTemplates;
