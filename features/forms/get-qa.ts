@@ -8,6 +8,7 @@ export const GetQA = async (formId: string) => {
       .select({
         id: answer.id,
         type: question.type,
+        description: question.description,
         question: question.content,
         answer: answer.value,
       })

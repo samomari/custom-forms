@@ -16,6 +16,7 @@ export type TemplateType = GalleryTemplateType & {
 export type QuestionAnswer = {
   id: string;
   question: string;
+  description?: string | null;
   answer: string;
   type: number;
 };
@@ -30,6 +31,7 @@ export const ResponseTypes = [
 export type QuestionType = {
   id: string;
   text: string;
+  description?: string | null;
   type: number;
 };
 

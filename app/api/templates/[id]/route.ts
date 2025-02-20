@@ -155,8 +155,14 @@ export async function PATCH(
 
     if (toInsertIds.length) {
       const insertQuestions = toInsertIds.map(
-        (q: { question: string; type: number; position: number }) => ({
+        (q: {
+          question: string;
+          description: string;
+          type: number;
+          position: number;
+        }) => ({
           content: q.question,
+          description: q.description,
           type: q.type,
           position: q.position,
           templateId: id,
@@ -171,12 +177,18 @@ export async function PATCH(
           (q: {
             id: string;
             question: string;
+            description: string;
             type: number;
             position: number;
           }) =>
             db
               .update(question)
-              .set({ content: q.question, type: q.type, position: q.position })
+              .set({
+                content: q.question,
+                description: q.description,
+                type: q.type,
+                position: q.position,
+              })
               .where(eq(question.id, q.id)),
         ),
       );

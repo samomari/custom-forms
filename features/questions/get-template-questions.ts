@@ -8,6 +8,7 @@ export const GetTemplateQuestions = async (templateId: string) => {
       .select({
         id: question.id,
         text: question.content,
+        description: question.description,
         type: question.type,
       })
       .from(question)

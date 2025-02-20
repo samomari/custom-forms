@@ -63,6 +63,7 @@ export const question = pgTable("questions", {
   type: integer("type").notNull(),
   position: integer("position").notNull(),
   content: text("content").notNull(),
+  description: text("description"),
 });
 
 export const form = pgTable("forms", {

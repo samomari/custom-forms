@@ -61,7 +61,12 @@ export default function ViewForm({
             <ul className="space-y-3">
               {qa.map((q: QuestionAnswer) => (
                 <div key={q.id} className="space-y-2">
-                  <Label className="font-medium">{q.question}</Label>
+                  <Label className="text-md">{q.question}</Label>
+                  {q.description && (
+                    <Label className="text-sm text-muted-foreground block">
+                      {q.description}
+                    </Label>
+                  )}
                   <Input value={q.answer} disabled className="font-medium" />
                 </div>
               ))}

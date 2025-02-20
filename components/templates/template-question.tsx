@@ -33,7 +33,7 @@ export const TemplateQuestion = ({
       ref={setNodeRef}
       {...attributes}
       style={style}
-      className="group flex justify-between p-6 shadow-lg rounded-xl relative"
+      className="group p-6 shadow-lg rounded-xl relative"
     >
       <button
         {...listeners}
@@ -41,35 +41,51 @@ export const TemplateQuestion = ({
       >
         <GripHorizontal className="w-5 h-5 text-gray-500" />
       </button>
-      <div className="w-2/3">
+      <div className="flex justify justify-between">
+        <div className="w-2/3">
+          <FormField
+            control={form.control}
+            name={`questions.${index}.question`}
+            render={({ field }) => (
+              <FormInput
+                label="Question"
+                placeholder="Enter your question"
+                field={field}
+              />
+            )}
+          />
+        </div>
+
+        <div className="ml-4 w-1/3">
+          <FormField
+            control={form.control}
+            name={`questions.${index}.type`}
+            render={({ field }) => (
+              <FormSelect
+                label="Question Type"
+                options={ResponseTypes.map((type) => ({
+                  value: type.id.toString(),
+                  label: type.label,
+                }))}
+                field={{
+                  ...field,
+                  value: String(field.value),
+                  onChange: (val: string) => field.onChange(parseInt(val, 10)),
+                }}
+              />
+            )}
+          />
+        </div>
+      </div>
+      <div className="w-full mt-2">
         <FormField
           control={form.control}
-          name={`questions.${index}.question`}
+          name={`questions.${index}.description`}
           render={({ field }) => (
             <FormInput
-              label="Question"
-              placeholder="Enter your question"
+              label="Description (optional)"
+              placeholder="Question Description"
               field={field}
-            />
-          )}
-        />
-      </div>
-      <div className="ml-4 w-1/3">
-        <FormField
-          control={form.control}
-          name={`questions.${index}.type`}
-          render={({ field }) => (
-            <FormSelect
-              label="Question Type"
-              options={ResponseTypes.map((type) => ({
-                value: type.id.toString(),
-                label: type.label,
-              }))}
-              field={{
-                ...field,
-                value: String(field.value),
-                onChange: (val: string) => field.onChange(parseInt(val, 10)),
-              }}
             />
           )}
         />

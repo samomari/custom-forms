@@ -73,9 +73,10 @@ export default function EditTemplate({
       questions: questions.map((q, index) => ({
         id: q.id,
         question: q.text,
+        description: q.description ?? "",
         type: q.type,
         position: index,
-      })) || [{ question: "", type: "", position: 0 }],
+      })) || [{ question: "", description: "", type: "", position: 0 }],
       isPublic: template?.isPublic === undefined ? true : template.isPublic,
       selectedUsers: allowedUsers?.map((user) => user.id) || [],
     },
@@ -106,8 +107,12 @@ export default function EditTemplate({
 
     const hasQuestionChanges = values.questions.some((question, index) => {
       const originalQuestion = questions[index];
+      if (!originalQuestion) {
+        return true;
+      }
       return (
         question.question !== originalQuestion.text ||
+        question.description !== originalQuestion.description ||
         question.type !== originalQuestion.type
       );
     });
@@ -310,6 +315,7 @@ export default function EditTemplate({
                       append({
                         id: "",
                         question: "",
+                        description: "",
                         type: 0,
                         position: fields.length,
                       })

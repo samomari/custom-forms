@@ -13,6 +13,7 @@ export const templateSchema = z.object({
     z.object({
       id: z.string().optional(),
       question: z.string().min(1, { message: "Question is required." }),
+      description: z.string(),
       type: z.number().int().lte(3, { message: "Type is required." }),
       position: z.number(),
     }),

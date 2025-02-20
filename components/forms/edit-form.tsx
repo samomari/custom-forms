@@ -121,6 +121,7 @@ export default function EditForm({
                         {q.type === 0 && (
                           <FormInput
                             label={q.question}
+                            description={q.description}
                             placeholder={`Enter ${GetResponseType(q.type).toLowerCase()} type answer `}
                             field={field}
                           />
@@ -128,6 +129,7 @@ export default function EditForm({
                         {q.type === 1 && (
                           <FormTextArea
                             label={q.question}
+                            description={q.description}
                             placeholder={`Enter ${GetResponseType(q.type).toLowerCase()} type answer `}
                             field={field}
                           />
@@ -135,6 +137,7 @@ export default function EditForm({
                         {q.type === 2 && (
                           <FormInput
                             label={q.question}
+                            description={q.description}
                             placeholder={`Enter ${GetResponseType(q.type).toLowerCase()} type answer `}
                             field={field}
                             answerType={2}

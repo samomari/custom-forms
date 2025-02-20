@@ -13,6 +13,7 @@ type Field = {
 interface FormInputProps {
   label: string;
   placeholder: string;
+  description?: string | null;
   field: Field;
   answerType?: number;
 }
@@ -20,12 +21,18 @@ interface FormInputProps {
 export const FormInput = ({
   label,
   placeholder,
+  description,
   field,
   answerType,
 }: FormInputProps) => {
   return (
     <FormItem>
       <FormLabel className="uppercase font-bold">{label}</FormLabel>
+      {description && (
+        <FormLabel className="text-sm text-muted-foreground block">
+          {description}
+        </FormLabel>
+      )}
       <FormControl>
         <Input
           placeholder={placeholder}

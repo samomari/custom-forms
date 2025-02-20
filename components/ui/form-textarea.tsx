@@ -12,18 +12,25 @@ type Field = {
 
 interface FormTextAreaProps {
   label: string;
+  description?: string | null;
   placeholder: string;
   field: Field;
 }
 
 export const FormTextArea = ({
   label,
+  description,
   placeholder,
   field,
 }: FormTextAreaProps) => {
   return (
     <FormItem>
       <FormLabel className="uppercase font-bold">{label}</FormLabel>
+      {description && (
+        <FormLabel className="text-sm text-muted-foreground block">
+          {description}
+        </FormLabel>
+      )}
       <FormControl>
         <Textarea
           placeholder={placeholder}

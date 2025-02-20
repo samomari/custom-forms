@@ -121,11 +121,22 @@ export default function ViewTemplate({
             <ul className="space-y-3">
               {questions.map((q) => (
                 <div key={q.id} className="space-y-2">
-                  <Label className="font-medium">{q.text}</Label>
+                  <Label htmlFor={`question-${q.id}-input`} className="text-md">
+                    {q.text}
+                  </Label>
+                  {q.description && (
+                    <Label
+                      htmlFor={`question-${q.id}-input`}
+                      className="text-sm text-muted-foreground block"
+                    >
+                      {q.description}
+                    </Label>
+                  )}
                   <Input
+                    id={`question-${q.id}-input`}
                     value={`Expected ${GetResponseType(q.type).toLowerCase()} answer type`}
                     disabled
-                    className="font=medium"
+                    className="font-medium"
                   ></Input>
                 </div>
               ))}

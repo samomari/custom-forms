@@ -37,8 +37,14 @@ export async function POST(req: Request) {
     }
 
     const questionsData = questions.map(
-      (q: { question: string; type: string; position: number }) => ({
+      (q: {
+        question: string;
+        description: string;
+        type: string;
+        position: number;
+      }) => ({
         content: q.question,
+        description: q.description,
         type: q.type,
         position: q.position,
         templateId: newTemplate[0].id,

@@ -59,7 +59,7 @@ export default function CreateTemplate({ users, topics }: CreateTemplateProps) {
       description: "",
       topicId: "",
       imageUrl: "",
-      questions: [{ question: "", type: 0, position: 0 }],
+      questions: [{ question: "", description: "", type: 0, position: 0 }],
       isPublic: true,
       selectedUsers: [],
     },
@@ -140,7 +140,7 @@ export default function CreateTemplate({ users, topics }: CreateTemplateProps) {
       <div className="w-full text-zinc-600 dark:text-zinc-300 ">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <Card className="p-6 shadow-lg rounded-xl space-y-4">
+            <Card className="p-6 shadow-lg rounded-xl space-y-2">
               <CardHeader className="text-xl uppercase text-center">
                 <CardTitle>Create Template</CardTitle>
               </CardHeader>
@@ -269,6 +269,7 @@ export default function CreateTemplate({ users, topics }: CreateTemplateProps) {
                     onClick={() =>
                       append({
                         question: "",
+                        description: "",
                         type: 0,
                         position: fields.length,
                       })
