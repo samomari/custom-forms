@@ -76,7 +76,7 @@ export default function CreateTemplate({ users, topics }: CreateTemplateProps) {
 
   const onSubmit = async (values: z.infer<typeof templateSchema>) => {
     try {
-      await axios.post("/api/templates", {
+      const response = await axios.post("/api/templates", {
         title: values.title,
         description: values.description,
         topicId: values.topicId,
@@ -90,7 +90,7 @@ export default function CreateTemplate({ users, topics }: CreateTemplateProps) {
         title: "Success",
         description: "Template created",
       });
-      router.push("/");
+      router.push(`/templates/${response.data.id}`);
     } catch (error) {
       console.error("Error creating template:", error);
     }

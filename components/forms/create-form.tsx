@@ -58,7 +58,7 @@ export default function CreateForm({ template, questions }: CreateFormProps) {
       setFormErrors(errors, form, questions);
     } else {
       try {
-        await axios.post("/api/forms", {
+        const response = await axios.post("/api/forms", {
           templateId: template.id,
           answers: values.answers,
         });
@@ -67,7 +67,7 @@ export default function CreateForm({ template, questions }: CreateFormProps) {
           title: "Success",
           description: "Form submited",
         });
-        router.push("/");
+        router.push(`/forms/${response.data.id}`);
       } catch (error) {
         toast({
           title: "Error",

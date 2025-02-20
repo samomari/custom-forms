@@ -27,7 +27,6 @@ export async function DELETE(
       .select({ userId: template.userId })
       .from(template)
       .where(eq(template.id, id))
-      .limit(1)
       .execute();
 
     if (templateExists.length === 0) {

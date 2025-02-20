@@ -42,7 +42,7 @@ import { FormTextArea } from "@/components/ui/form-textarea";
 import { templateSchema } from "@/schema";
 
 interface EditTemplateProps {
-  template: TemplateType | null;
+  template: TemplateType;
   questions: QuestionType[];
   users: UserType[];
   allowedUsers: { id: string }[];
@@ -89,9 +89,36 @@ export default function EditTemplate({
     name: "questions",
   });
 
+  const hasChanges = (
+    values: z.infer<typeof templateSchema>,
+    template: TemplateType,
+    questions: QuestionType[],
+    allowedUsers: { id: string }[],
+  ) => {
+    const hasFieldChanges =
+      values.title !== template?.title ||
+      values.description !== template?.description ||
+      values.topicId !== template?.topicId ||
+      values.imageUrl !== template?.imageUrl ||
+      values.isPublic !== template?.isPublic ||
+      JSON.stringify(values.selectedUsers) !==
+        JSON.stringify(allowedUsers.map((user) => user.id));
+
+    const hasQuestionChanges = values.questions.some((question, index) => {
+      const originalQuestion = questions[index];
+      return (
+        question.question !== originalQuestion.text ||
+        question.type !== originalQuestion.type
+      );
+    });
+
+    return hasFieldChanges || hasQuestionChanges;
+  };
+
   const onSubmit = async (values: z.infer<typeof templateSchema>) => {
+    if (!hasChanges(values, template, questions, allowedUsers)) return;
     try {
-      const response = await axios.patch(`/api/templates/${template?.id}`, {
+      await axios.patch(`/api/templates/${template?.id}`, {
         title: values.title,
         description: values.description,
         topicId: values.topicId,
@@ -100,12 +127,10 @@ export default function EditTemplate({
         isPublic: values.isPublic,
         selectedUsers: values.selectedUsers,
       });
-      if (response.status === 200) {
-        toast({
-          title: "Success",
-          description: response.data.message || "Template updated",
-        });
-      }
+      toast({
+        title: "Success",
+        description: "Template updated",
+      });
       router.push(`/templates/${template?.id}`);
     } catch (error) {
       console.error("Error creating template:", error);

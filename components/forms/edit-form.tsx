@@ -16,6 +16,10 @@ import { FormInput } from "@/components/ui/form-input";
 import { FormTextArea } from "@/components/ui/form-textarea";
 import { FormCheckbox } from "@/components/ui/form-checkbox";
 import FormValidator from "@/lib/utils/form-validator";
+import axios from "axios";
+import { toast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const setFormErrors = (
   errors: ValidationError[],
@@ -44,6 +48,8 @@ export default function EditForm({
   description,
   qa,
 }: EditFormProps) {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const form = useForm<z.infer<typeof formEditSchema>>({
     defaultValues: {
       formId: id,
@@ -54,14 +60,40 @@ export default function EditForm({
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formEditSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formEditSchema>) => {
+    const hasChanges = values.answers.some((answer, index) => {
+      return String(answer.answer) !== String(qa[index].answer);
+    });
+    if (!hasChanges) return;
+
     const errors = FormValidator(values.answers, qa);
     if (errors.length > 0) {
       setFormErrors(errors, form, qa);
     } else {
-      console.log(values);
+      setLoading(true);
+      try {
+        await axios.patch(`/api/forms/${id}`, {
+          answers: values.answers,
+        });
+        toast({
+          title: "Success",
+          description: "Form answers updated",
+        });
+        router.push(`/forms/${id}`);
+      } catch (error) {
+        toast({
+          title: "Error",
+          description:
+            // @ts-expect-error ignore
+            error.response?.data.message || "An unexpected error occcured",
+          variant: "destructive",
+        });
+      } finally {
+        setLoading(false);
+      }
     }
   };
+
   return (
     <div className="xl:w-1/2 md:w-1/2 flex justify-center items-baseline">
       <div className="w-full text-zinc-600 dark:text-zinc-300 ">
@@ -127,7 +159,9 @@ export default function EditForm({
                 </Card>
               ))}
               <div className="flex justify-end pb-2">
-                <Button type="submit">Submit</Button>
+                <Button type="submit" disabled={loading}>
+                  Submit
+                </Button>
               </div>
             </div>
           </form>
