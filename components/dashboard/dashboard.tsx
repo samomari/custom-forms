@@ -6,9 +6,7 @@ import { Button } from "@/components/ui/button";
 type Tab = {
   value: string;
   label: string;
-  // eslint-disable-next-line
   data: any[];
-  // eslint-disable-next-line
   columns: any[];
   emptyMessage: string;
   link?: string | null;

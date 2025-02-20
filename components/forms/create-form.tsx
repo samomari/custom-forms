@@ -22,7 +22,6 @@ import FormValidator from "@/lib/utils/form-validator";
 
 const setFormErrors = (
   errors: ValidationError[],
-  // eslint-disable-next-line
   form: any,
   questions: QuestionType[],
 ) => {

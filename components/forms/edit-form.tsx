@@ -23,7 +23,6 @@ import { useState } from "react";
 
 const setFormErrors = (
   errors: ValidationError[],
-  // eslint-disable-next-line
   form: any,
   qa: QuestionAnswer[],
 ) => {

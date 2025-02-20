@@ -8,10 +8,8 @@ import { FormSelect } from "@/components/ui/form-select";
 import { ResponseTypes } from "@/types";
 
 interface TemplateQuestionProps {
-  // eslint-disable-next-line
   field: any;
   index: number;
-  // eslint-disable-next-line
   form: any;
 }
 

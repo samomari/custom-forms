@@ -17,6 +17,9 @@ export async function NaviHeader({ role }: { role?: string }) {
           <li>
             <Link href="/templates">Templates</Link>
           </li>
+          <li>
+            <Link href="/dashboard">User dashboard</Link>
+          </li>
           <SignedIn>
             <li>
               {role === "ADMIN" ? (

@@ -13,20 +13,11 @@ import { toast } from "@/hooks/use-toast";
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { GetResponseType } from "@/lib/utils/get-response-type";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { useDeleteTemplate } from "@/lib/utils/delete-template";
+import { ConfirmDialog } from "../ui/confirm-dialog";
 
 interface ViewTemplateProps {
   id: string;
@@ -35,7 +26,6 @@ interface ViewTemplateProps {
   likeCount: number;
   questions: QuestionType[];
   isEditor: boolean;
-  // eslint-disable-next-line
   user: any;
 }
 
@@ -51,6 +41,7 @@ export default function ViewTemplate({
   const router = useRouter();
   const [likes, setLikes] = useState(likeCount);
   const [open, setOpen] = useState(false);
+  const { deleteTemplate } = useDeleteTemplate();
 
   const handleLike = async () => {
     try {
@@ -81,30 +72,8 @@ export default function ViewTemplate({
     router.push(`/templates/${id}/edit`);
   };
 
-  const handleDelete = async () => {
-    try {
-      const response = await axios.delete(`/api/templates/${id}`);
-
-      if (response.status === 200) {
-        toast({
-          title: "Success",
-          description: "Template successfully deleted",
-        });
-        router.push("/templates");
-      }
-    } catch (error) {
-      toast({
-        title: "Error",
-        description:
-          // @ts-expect-error ignore
-          error.response?.data.message || "An unexpected error occured",
-        variant: "destructive",
-      });
-      // @ts-expect-error ignore
-      if (error.response?.status === 404) {
-        router.push("/templates");
-      }
-    }
+  const handleDelete = () => {
+    deleteTemplate(id);
   };
 
   return (
@@ -161,35 +130,15 @@ export default function ViewTemplate({
                         <Pencil className="h-5 w-5 mr-1" />
                       </Button>
                     </ActionTooltip>
-                    <AlertDialog open={open} onOpenChange={setOpen}>
-                      <AlertDialogTrigger asChild>
-                        <ActionTooltip label="Delete Template">
-                          <Button
-                            variant="ghost"
-                            className="text-red-500 hover:text-red-600"
-                            onClick={() => setOpen(true)}
-                          >
-                            <Trash className="h-5 w-5" />
-                          </Button>
-                        </ActionTooltip>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            This action cannot be undone.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter className="flex items-baseline">
-                          <AlertDialogCancel onClick={() => setOpen(false)}>
-                            Cancel
-                          </AlertDialogCancel>
-                          <AlertDialogAction onClick={() => handleDelete()}>
-                            Continue
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
+                    <ActionTooltip label="Delete Template">
+                      <Button
+                        variant="ghost"
+                        className="text-red-500 hover:text-red-600"
+                        onClick={() => setOpen(true)}
+                      >
+                        <Trash className="h-5 w-5" />
+                      </Button>
+                    </ActionTooltip>
                   </>
                 )}
               </div>
@@ -204,6 +153,13 @@ export default function ViewTemplate({
           )}
         </Card>
       </div>
+      <ConfirmDialog
+        title="Are you sure?"
+        description="This action cannot be undone."
+        onConfirm={handleDelete}
+        open={open}
+        setOpen={setOpen}
+      />
     </div>
   );
 }

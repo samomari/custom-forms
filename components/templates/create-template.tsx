@@ -98,7 +98,6 @@ export default function CreateTemplate({ users, topics }: CreateTemplateProps) {
 
   const sensors = useSensors(useSensor(PointerSensor));
 
-  // eslint-disable-next-line
   const handleDragEnd = (event: any) => {
     const { active, over } = event;
     if (!over || active.id === over.id) return;

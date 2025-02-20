@@ -15,7 +15,6 @@ import {
 interface FormSelectProps {
   label: string;
   options: { value: string; label: string }[];
-  // eslint-disable-next-line
   field: any;
 }
 

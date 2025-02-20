@@ -10,7 +10,6 @@ import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { UserType } from "@/types";
 
 interface UsersSelectProps {
-  // eslint-disable-next-line
   form: any;
   users: UserType[];
   selectedUsers: string[];
