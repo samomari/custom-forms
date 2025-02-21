@@ -1,13 +1,13 @@
 import { db } from "@/drizzle";
-import { user } from "@/drizzle/schema";
+import { like, template, user } from "@/drizzle/schema";
 import { currentUser } from "@/features/users/current-user";
 import { clerkClient } from "@clerk/nextjs/server";
-import { eq } from "drizzle-orm";
+import { eq, inArray, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
@@ -24,13 +24,29 @@ export async function DELETE(
     if (!isAdmin) {
       return NextResponse.json(
         { message: "Unauthorized for this action" },
-        { status: 403 },
+        { status: 403 }
       );
     }
 
     const client = await clerkClient();
     await client.users.deleteUser(id);
+
+    const hasLiked = await db
+      .select({ templateId: like.templateId })
+      .from(like)
+      .where(eq(like.userId, id));
+
+    if (hasLiked.length > 0) {
+      const likedTemplates = hasLiked.map((l) => l.templateId);
+
+      await db
+        .update(template)
+        .set({ likeCount: sql`${template.likeCount} -1` })
+        .where(inArray(template.id, likedTemplates));
+    }
+
     await db.delete(user).where(eq(user.id, id));
+
     return NextResponse.json({ message: "User deleted" });
   } catch (error) {
     console.error(error);
