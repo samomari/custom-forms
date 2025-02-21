@@ -16,6 +16,7 @@ export const useDeleteTemplate = () => {
         router.refresh();
       }
     } catch (error) {
+      router.refresh();
       toast({
         title: "Error",
         description:

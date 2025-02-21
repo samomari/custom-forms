@@ -23,12 +23,12 @@ import FormValidator from "@/lib/utils/form-validator";
 const setFormErrors = (
   errors: ValidationError[],
   form: any,
-  questions: QuestionType[]
+  questions: QuestionType[],
 ) => {
   errors.forEach((error) => {
     form.setError(
       `answers.${questions.findIndex((q) => q.id === error.questionId)}.answer`,
-      { type: "manual", message: error.message }
+      { type: "manual", message: error.message },
     );
   });
 };
@@ -144,7 +144,7 @@ export default function CreateForm({ template, questions }: CreateFormProps) {
                               onChange: (checked) =>
                                 form.setValue(
                                   `answers.${index}.answer`,
-                                  checked
+                                  checked,
                                 ),
                             }}
                           />

@@ -40,14 +40,14 @@ const getTemplates = async (sortBy: SortByField, limit: number | null) => {
       .innerJoin(user, eq(user.id, template.userId))
       .leftJoin(
         privateTemplateAccess,
-        eq(privateTemplateAccess.templateId, template.id)
+        eq(privateTemplateAccess.templateId, template.id),
       )
       .where(
         or(
           eq(template.isPublic, true),
           eq(template.userId, userData.id),
-          eq(privateTemplateAccess.userId, userData.id)
-        )
+          eq(privateTemplateAccess.userId, userData.id),
+        ),
       )
       .orderBy(desc(sortBy));
 

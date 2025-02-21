@@ -24,12 +24,12 @@ import { useState } from "react";
 const setFormErrors = (
   errors: ValidationError[],
   form: any,
-  qa: QuestionAnswer[]
+  qa: QuestionAnswer[],
 ) => {
   errors.forEach((error) => {
     form.setError(
       `answers.${qa.findIndex((q) => q.id === error.questionId)}.answer`,
-      { type: "manual", message: error.message }
+      { type: "manual", message: error.message },
     );
   });
 };
@@ -155,7 +155,7 @@ export default function EditForm({
                               onChange: (checked) =>
                                 form.setValue(
                                   `answers.${index}.answer`,
-                                  checked
+                                  checked,
                                 ),
                             }}
                           />

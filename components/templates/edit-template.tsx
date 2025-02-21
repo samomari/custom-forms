@@ -58,7 +58,7 @@ export default function EditTemplate({
 }: EditTemplateProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState<string[]>(
-    allowedUsers?.map((user) => user.id) || []
+    allowedUsers?.map((user) => user.id) || [],
   );
   const { toast } = useToast();
   const router = useRouter();
@@ -94,7 +94,7 @@ export default function EditTemplate({
     values: z.infer<typeof templateSchema>,
     template: TemplateType,
     questions: QuestionType[],
-    allowedUsers: { id: string }[]
+    allowedUsers: { id: string }[],
   ) => {
     const hasFieldChanges =
       values.title !== template?.title ||
@@ -163,7 +163,7 @@ export default function EditTemplate({
       const reorderedQuestions = arrayMove(
         updatedQuestions,
         oldIndex,
-        newIndex
+        newIndex,
       ).map((q, index) => ({
         ...q,
         position: index,

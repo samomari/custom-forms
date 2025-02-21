@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     if (isLiked.length) {
       return NextResponse.json(
         { message: "You can like template only once" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 

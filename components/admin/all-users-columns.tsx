@@ -10,7 +10,46 @@ import {
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import { UserType } from "@/types";
-import Link from "next/link";
+import { useState } from "react";
+import { useDeleteUser } from "@/lib/utils/delete-user";
+import { ConfirmDialog } from "../ui/confirm-dialog";
+
+const ActionCell = ({ row }: { row: any }) => {
+  const [open, setOpen] = useState(false);
+  const { deleteUser } = useDeleteUser();
+
+  const handleDelete = () => {
+    deleteUser(row.original.id);
+  };
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuItem
+            onClick={() => setOpen(true)}
+            className="text-red-600 hover:cursor-pointer"
+          >
+            Delete User
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <ConfirmDialog
+        title="Are you sure?"
+        description="This action cannot be undone."
+        onConfirm={handleDelete}
+        open={open}
+        setOpen={setOpen}
+      />
+    </>
+  );
+};
 
 export const allUsersColumns: ColumnDef<UserType>[] = [
   {
@@ -92,24 +131,6 @@ export const allUsersColumns: ColumnDef<UserType>[] = [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>
-              <Link href={`/templates/${row.original.id}`}>View Template</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>User Managment</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: ({ row }) => <ActionCell row={row} />,
   },
 ];

@@ -117,7 +117,7 @@ export default function CreateTemplate({ users, topics }: CreateTemplateProps) {
       const reorderedQuestions = arrayMove(
         updatedQuestions,
         oldIndex,
-        newIndex
+        newIndex,
       ).map((q, index) => ({
         ...q,
         position: index,
