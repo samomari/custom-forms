@@ -18,8 +18,7 @@ export const GetAllUsers = async () => {
       })
       .from(user);
 
-    const filteredUsers = users.filter((u) => u.id !== activeUser.id);
-    return activeUser.role === "ADMIN" ? users : filteredUsers;
+    return users;
   } catch (error) {
     console.error("GET_USERS_ERROR", error);
     return [];

@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     if (!templateData) {
       return NextResponse.json(
         { message: "Template not found" },
-        { status: 404 },
+        { status: 404 }
       );
     }
 
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
     if (newForm.length === 0 || !newForm[0]) {
       return NextResponse.json(
         { message: "Failed to create form" },
-        { status: 500 },
+        { status: 500 }
       );
     }
 
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
         value: a.answer,
         questionId: a.questionId,
         formId: newForm[0].id,
-      }),
+      })
     );
 
     if (answersData.length > 0) {

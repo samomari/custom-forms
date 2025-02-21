@@ -10,20 +10,11 @@ import { Label } from "@/components/ui/label";
 import { ActionTooltip } from "@/components/action-tooltip";
 import { Button } from "@/components/ui/button";
 import { Pencil, Trash } from "lucide-react";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { useState } from "react";
 import { QuestionAnswer } from "@/types";
 import { useRouter } from "next/navigation";
+import { ConfirmDialog } from "../ui/confirm-dialog";
+import { useDeleteForm } from "@/lib/utils/delete-form";
 
 interface ViewFormProps {
   id: string;
@@ -42,9 +33,14 @@ export default function ViewForm({
 }: ViewFormProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const { deleteForm } = useDeleteForm();
 
   const handleEdit = () => {
     router.push(`/forms/${id}/edit`);
+  };
+
+  const handleDelete = () => {
+    deleteForm(id);
   };
 
   return (
@@ -79,41 +75,26 @@ export default function ViewForm({
                   <Pencil className="h-5 w-5 mr-1" />
                 </Button>
               </ActionTooltip>
-              <AlertDialog open={open} onOpenChange={setOpen}>
-                <AlertDialogTrigger asChild>
-                  <ActionTooltip label="Delete Form">
-                    <Button
-                      variant="ghost"
-                      className="text-red-500 hover:text-red-600"
-                      onClick={() => setOpen(true)}
-                    >
-                      <Trash className="h-5 w-5" />
-                    </Button>
-                  </ActionTooltip>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter className="flex items-baseline">
-                    <AlertDialogCancel onClick={() => setOpen(false)}>
-                      Cancel
-                    </AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={() => console.log("Delete form")}
-                    >
-                      Continue
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+              <ActionTooltip label="Delete Form">
+                <Button
+                  variant="ghost"
+                  className="text-red-500 hover:text-red-600"
+                  onClick={() => setOpen(true)}
+                >
+                  <Trash className="h-5 w-5" />
+                </Button>
+              </ActionTooltip>
             </>
           )}
         </Card>
       </div>
+      <ConfirmDialog
+        title="Are you sure?"
+        description="This action cannot be undone."
+        onConfirm={handleDelete}
+        open={open}
+        setOpen={setOpen}
+      />
     </div>
   );
 }

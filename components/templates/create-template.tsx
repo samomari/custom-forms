@@ -88,11 +88,17 @@ export default function CreateTemplate({ users, topics }: CreateTemplateProps) {
 
       toast({
         title: "Success",
-        description: "Template created",
+        description: response.data.message,
       });
       router.push(`/templates/${response.data.id}`);
     } catch (error) {
-      console.error("Error creating template:", error);
+      toast({
+        title: "Error",
+        description:
+          // @ts-expect-error ignore
+          error.response?.data?.message,
+        variant: "destructive",
+      });
     }
   };
 
@@ -111,7 +117,7 @@ export default function CreateTemplate({ users, topics }: CreateTemplateProps) {
       const reorderedQuestions = arrayMove(
         updatedQuestions,
         oldIndex,
-        newIndex,
+        newIndex
       ).map((q, index) => ({
         ...q,
         position: index,
@@ -132,6 +138,11 @@ export default function CreateTemplate({ users, topics }: CreateTemplateProps) {
       setSelectedUsers([]);
       form.setValue("selectedUsers", []);
     }
+  };
+
+  const handleBack = () => {
+    form.reset();
+    router.back();
   };
 
   return (
@@ -279,7 +290,12 @@ export default function CreateTemplate({ users, topics }: CreateTemplateProps) {
                   </Button>
                 </ActionTooltip>
               </div>
-              <Button type="submit">Submit</Button>
+              <div className="flex space-x-2">
+                <Button variant="outline" onClick={() => handleBack()}>
+                  Back
+                </Button>
+                <Button type="submit">Submit</Button>
+              </div>
             </div>
           </form>
         </Form>

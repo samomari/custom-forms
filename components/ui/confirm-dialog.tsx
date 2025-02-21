@@ -24,8 +24,6 @@ export const ConfirmDialog = ({
   open,
   setOpen,
 }: ConfirmDialogProps) => {
-  console.log("isOpen dialog", open);
-
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent>

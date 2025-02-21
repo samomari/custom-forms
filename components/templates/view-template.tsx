@@ -53,7 +53,7 @@ export default function ViewTemplate({
         setLikes((prev) => prev + 1);
         toast({
           title: "Success",
-          description: "Template liked",
+          description: response.data.message,
         });
       }
     } catch (error) {
@@ -61,7 +61,7 @@ export default function ViewTemplate({
         title: "Error",
         description:
           // @ts-expect-error ignore
-          error.response?.data?.message || "An unexpected error occurred",
+          error.response?.data?.message,
         variant: "destructive",
       });
     }

@@ -6,7 +6,7 @@ import { eq, inArray, sql } from "drizzle-orm";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
@@ -19,7 +19,7 @@ export async function DELETE(
     if (!id) {
       return NextResponse.json(
         { message: "Template ID Missing" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -32,7 +32,7 @@ export async function DELETE(
     if (templateExists.length === 0) {
       return NextResponse.json(
         { message: "Template not found" },
-        { status: 404 },
+        { status: 404 }
       );
     }
 
@@ -42,7 +42,7 @@ export async function DELETE(
     if (!isAdmin && !isOwner) {
       return NextResponse.json(
         { message: "Unauthorized for this action" },
-        { status: 403 },
+        { status: 403 }
       );
     }
 
@@ -54,15 +54,15 @@ export async function DELETE(
   } catch (error) {
     console.error("TEMPLATE_DELETE_ERROR", error);
     return NextResponse.json(
-      { message: "Failed to delete template", error },
-      { status: 500 },
+      { message: "Failed to delete template" },
+      { status: 500 }
     );
   }
 }
 
 export async function PATCH(
   req: Request,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
@@ -84,7 +84,7 @@ export async function PATCH(
     if (!id) {
       return NextResponse.json(
         { message: "Template ID Missing" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -98,7 +98,7 @@ export async function PATCH(
     if (templateExists.length === 0) {
       return NextResponse.json(
         { message: "Template not found" },
-        { status: 404 },
+        { status: 404 }
       );
     }
 
@@ -108,7 +108,7 @@ export async function PATCH(
     if (!isAdmin && !isOwner) {
       return NextResponse.json(
         { message: "Unauthorized for this action" },
-        { status: 403 },
+        { status: 403 }
       );
     }
 
@@ -128,7 +128,7 @@ export async function PATCH(
     if (!updatedTemplate.length) {
       return NextResponse.json(
         { message: "Template was not updated" },
-        { status: 404 },
+        { status: 404 }
       );
     }
 
@@ -144,11 +144,11 @@ export async function PATCH(
     const incomingIds = new Set(questions.map((q: { id: string }) => q.id));
 
     const toInsertIds = questions.filter(
-      (q: { id: string }) => !existingIds.has(q.id),
+      (q: { id: string }) => !existingIds.has(q.id)
     );
 
     const toUpdateIds = questions.filter((q: { id: string }) =>
-      existingIds.has(q.id),
+      existingIds.has(q.id)
     );
 
     const toDeleteIds = [...existingIds].filter((id) => !incomingIds.has(id));
@@ -166,7 +166,7 @@ export async function PATCH(
           type: q.type,
           position: q.position,
           templateId: id,
-        }),
+        })
       );
       await db.insert(question).values(insertQuestions);
     }
@@ -189,8 +189,8 @@ export async function PATCH(
                 type: q.type,
                 position: q.position,
               })
-              .where(eq(question.id, q.id)),
-        ),
+              .where(eq(question.id, q.id))
+        )
       );
     }
 
@@ -215,20 +215,20 @@ export async function PATCH(
       const newUserIds = new Set(selectedUsers);
 
       const usersToDelete = existingUsers.filter(
-        (u) => !newUserIds.has(u.userId),
+        (u) => !newUserIds.has(u.userId)
       );
 
       if (usersToDelete.length) {
         await db.delete(privateTemplateAccess).where(
           inArray(
             privateTemplateAccess.userId,
-            usersToDelete.map((u) => u.userId),
-          ),
+            usersToDelete.map((u) => u.userId)
+          )
         );
       }
 
       const usersToInsert = selectedUsers.filter(
-        (uid: string) => !existingUsersIds.has(uid),
+        (uid: string) => !existingUsersIds.has(uid)
       );
       if (usersToInsert.length) {
         const insertValues = usersToInsert.map((userId: string) => ({
@@ -243,7 +243,7 @@ export async function PATCH(
     console.error("TEMPLATE_UPDATE_ERROR", error);
     return NextResponse.json(
       { message: "Failed to update template", error },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

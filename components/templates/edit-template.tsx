@@ -58,7 +58,7 @@ export default function EditTemplate({
 }: EditTemplateProps) {
   const [isMounted, setIsMounted] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState<string[]>(
-    allowedUsers?.map((user) => user.id) || [],
+    allowedUsers?.map((user) => user.id) || []
   );
   const { toast } = useToast();
   const router = useRouter();
@@ -94,7 +94,7 @@ export default function EditTemplate({
     values: z.infer<typeof templateSchema>,
     template: TemplateType,
     questions: QuestionType[],
-    allowedUsers: { id: string }[],
+    allowedUsers: { id: string }[]
   ) => {
     const hasFieldChanges =
       values.title !== template?.title ||
@@ -123,7 +123,7 @@ export default function EditTemplate({
   const onSubmit = async (values: z.infer<typeof templateSchema>) => {
     if (!hasChanges(values, template, questions, allowedUsers)) return;
     try {
-      await axios.patch(`/api/templates/${template?.id}`, {
+      const response = await axios.patch(`/api/templates/${template?.id}`, {
         title: values.title,
         description: values.description,
         topicId: values.topicId,
@@ -134,11 +134,17 @@ export default function EditTemplate({
       });
       toast({
         title: "Success",
-        description: "Template updated",
+        description: response.data.message,
       });
       router.push(`/templates/${template?.id}`);
     } catch (error) {
-      console.error("Error creating template:", error);
+      toast({
+        title: "Error",
+        description:
+          // @ts-expect-error ignore
+          error.response?.data?.message,
+        variant: "destructive",
+      });
     }
   };
 
@@ -157,7 +163,7 @@ export default function EditTemplate({
       const reorderedQuestions = arrayMove(
         updatedQuestions,
         oldIndex,
-        newIndex,
+        newIndex
       ).map((q, index) => ({
         ...q,
         position: index,
@@ -177,6 +183,11 @@ export default function EditTemplate({
       setSelectedUsers([]);
       form.setValue("selectedUsers", []);
     }
+  };
+
+  const handleBack = () => {
+    form.reset();
+    router.back();
   };
 
   return (
@@ -325,7 +336,12 @@ export default function EditTemplate({
                   </Button>
                 </ActionTooltip>
               </div>
-              <Button type="submit">Submit</Button>
+              <div className="flex space-x-2">
+                <Button variant="outline" onClick={() => handleBack()}>
+                  Back
+                </Button>
+                <Button type="submit">Submit</Button>
+              </div>
             </div>
           </form>
         </Form>

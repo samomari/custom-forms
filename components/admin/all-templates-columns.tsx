@@ -31,7 +31,7 @@ const ActionCell = ({ row }: { row: any }) => {
     deleteTemplate(row.original.id);
   };
   return (
-    <div>
+    <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
@@ -64,7 +64,7 @@ const ActionCell = ({ row }: { row: any }) => {
         open={open}
         setOpen={setOpen}
       />
-    </div>
+    </>
   );
 };
 

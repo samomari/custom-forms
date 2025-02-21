@@ -37,7 +37,7 @@ export const FormInput = ({
         <Input
           placeholder={placeholder}
           {...field}
-          className="w-full font-semibold"
+          className="w-full font-semibold text-md"
           type={answerType === 2 ? "number" : "text"}
           min={answerType === 2 ? 1 : ""}
         />

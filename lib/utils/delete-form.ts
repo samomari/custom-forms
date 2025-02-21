@@ -2,12 +2,12 @@ import axios from "axios";
 import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
-export const useDeleteTemplate = () => {
+export const useDeleteForm = () => {
   const router = useRouter();
 
-  const deleteTemplate = async (id: string) => {
+  const deleteForm = async (id: string) => {
     try {
-      const response = await axios.delete(`/api/templates/${id}`);
+      const response = await axios.delete(`/api/forms/${id}`);
       if (response.status === 200) {
         toast({
           title: "Success",
@@ -16,6 +16,7 @@ export const useDeleteTemplate = () => {
         router.refresh();
       }
     } catch (error) {
+      router.refresh();
       toast({
         title: "Error",
         description:
@@ -23,13 +24,8 @@ export const useDeleteTemplate = () => {
           error.response?.data?.message,
         variant: "destructive",
       });
-
-      // @ts-expect-error ignore
-      if (error.response?.status === 404) {
-        router.push("/templates");
-      }
     }
   };
 
-  return { deleteTemplate };
+  return { deleteForm };
 };

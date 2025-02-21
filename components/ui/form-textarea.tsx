@@ -35,7 +35,7 @@ export const FormTextArea = ({
         <Textarea
           placeholder={placeholder}
           {...field}
-          className="font-semibold resize-none"
+          className="font-semibold resize-none text-md"
           rows={4}
         />
       </FormControl>

@@ -28,12 +28,13 @@ export default async function Page({
   const allowedUsers = await GetUsersWithAccess(id);
   const users = await GetAllUsers();
   const topics = await GetTopics();
+  const filteredUsers = users.filter((u) => u.id !== user.id);
   return (
     <div className="w-full h-full flex justify-center pt-4">
       <EditTemplate
         template={template}
         questions={questions}
-        users={users}
+        users={filteredUsers}
         allowedUsers={allowedUsers}
         topics={topics}
       />

@@ -24,12 +24,12 @@ import { useState } from "react";
 const setFormErrors = (
   errors: ValidationError[],
   form: any,
-  qa: QuestionAnswer[],
+  qa: QuestionAnswer[]
 ) => {
   errors.forEach((error) => {
     form.setError(
       `answers.${qa.findIndex((q) => q.id === error.questionId)}.answer`,
-      { type: "manual", message: error.message },
+      { type: "manual", message: error.message }
     );
   });
 };
@@ -71,12 +71,12 @@ export default function EditForm({
     } else {
       setLoading(true);
       try {
-        await axios.patch(`/api/forms/${id}`, {
+        const response = await axios.patch(`/api/forms/${id}`, {
           answers: values.answers,
         });
         toast({
           title: "Success",
-          description: "Form answers updated",
+          description: response.data.message,
         });
         router.push(`/forms/${id}`);
       } catch (error) {
@@ -84,13 +84,18 @@ export default function EditForm({
           title: "Error",
           description:
             // @ts-expect-error ignore
-            error.response?.data.message || "An unexpected error occcured",
+            error.response?.data.message,
           variant: "destructive",
         });
       } finally {
         setLoading(false);
       }
     }
+  };
+
+  const handleBack = () => {
+    form.reset();
+    router.back();
   };
 
   return (
@@ -150,7 +155,7 @@ export default function EditForm({
                               onChange: (checked) =>
                                 form.setValue(
                                   `answers.${index}.answer`,
-                                  checked,
+                                  checked
                                 ),
                             }}
                           />
@@ -160,7 +165,14 @@ export default function EditForm({
                   />
                 </Card>
               ))}
-              <div className="flex justify-end pb-2">
+              <div className="flex justify-between pb-2">
+                <Button
+                  variant="outline"
+                  onClick={() => handleBack()}
+                  disabled={loading}
+                >
+                  Back
+                </Button>
                 <Button type="submit" disabled={loading}>
                   Submit
                 </Button>

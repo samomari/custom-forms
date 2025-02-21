@@ -56,7 +56,7 @@ const getTemplates = async (sortBy: SortByField, limit: number | null) => {
     }
     return await query;
   } catch (error) {
-    console.error("ERROR_FETCHING_POPULAR_TEMPLATES:", error);
+    console.error("ERROR_FETCHING_TEMPLATES:", error);
     return [];
   }
 };

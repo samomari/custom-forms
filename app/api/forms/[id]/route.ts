@@ -4,9 +4,63 @@ import { currentUser } from "@/features/users/current-user";
 import { NextResponse } from "next/server";
 import { eq, sql } from "drizzle-orm";
 
+export async function DELETE(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    const user = await currentUser();
+
+    if (!user) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+    if (!id) {
+      return NextResponse.json({ message: "Form ID Missing" }, { status: 400 });
+    }
+
+    const formExists = await db
+      .select({ userId: form.userId })
+      .from(form)
+      .where(eq(form.id, id))
+      .execute();
+
+    if (formExists.length === 0) {
+      return NextResponse.json(
+        {
+          message: "Form not found",
+        },
+        { status: 404 }
+      );
+    }
+
+    const isAdmin = user.role === "ADMIN";
+    const isOwner = formExists[0].userId === user.id;
+
+    if (!isAdmin && !isOwner) {
+      return NextResponse.json(
+        { message: "Unauthorized for this action" },
+        { status: 403 }
+      );
+    }
+
+    await db.delete(form).where(eq(form.id, id));
+
+    return NextResponse.json({
+      message: "Form deleted",
+    });
+  } catch (error) {
+    console.error("FORM_DELETE_ERROR", error);
+    return NextResponse.json(
+      { message: "Failed to delete form" },
+      { status: 500 }
+    );
+  }
+}
+
 export async function PATCH(
   req: Request,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const user = await currentUser();
@@ -37,7 +91,7 @@ export async function PATCH(
     if (!isAdmin && !isOwner) {
       return NextResponse.json(
         { message: "Unauthorized for this action" },
-        { status: 403 },
+        { status: 403 }
       );
     }
 
@@ -52,14 +106,14 @@ export async function PATCH(
     if (!updatedForm.length) {
       return NextResponse.json(
         { message: "Form was not updated" },
-        { status: 409 },
+        { status: 409 }
       );
     }
 
     if (!answers || answers.length === 0) {
       return NextResponse.json(
         { message: "No answers provided" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -69,21 +123,21 @@ export async function PATCH(
           .update(answer)
           .set({ value: a.answer })
           .where(eq(answer.id, a.answerId))
-          .returning(),
-      ),
+          .returning()
+      )
     );
 
     return NextResponse.json(
       {
         message: "Form updated succesfully",
       },
-      { status: 200 },
+      { status: 200 }
     );
   } catch (error) {
     console.error("FORM_UPDATE_ERROR", error);
     return NextResponse.json(
-      { message: "Failed to update template" },
-      { status: 500 },
+      { message: "Failed to update form" },
+      { status: 500 }
     );
   }
 }

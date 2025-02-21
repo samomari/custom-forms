@@ -20,7 +20,7 @@ export async function POST(req: Request) {
     if (isLiked.length) {
       return NextResponse.json(
         { message: "You can like template only once" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -34,9 +34,10 @@ export async function POST(req: Request) {
       .where(eq(template.id, templateId));
 
     return NextResponse.json({
-      message: "Like added",
+      message: "Like submitted",
     });
   } catch (error) {
     console.error("ERROR_ADDING_LIKE", error);
+    return NextResponse.json({ message: "Error adding like" }, { status: 500 });
   }
 }

@@ -10,6 +10,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
+import { useDeleteForm } from "@/lib/utils/delete-form";
+import { ConfirmDialog } from "../ui/confirm-dialog";
 
 type FormType = {
   id: string;
@@ -17,6 +20,49 @@ type FormType = {
   title: string;
   topic: string;
   username: string;
+};
+
+const ActionCell = ({ row }: { row: any }) => {
+  const [open, setOpen] = useState(false);
+  const { deleteForm } = useDeleteForm();
+
+  const handleDelete = () => {
+    deleteForm(row.original.id);
+  };
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuItem>
+            <Link href={`/forms/${row.original.id}`}>View Form</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link href={`/forms/${row.original.id}/edit`}>Edit Form</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => setOpen(true)}
+            className="text-red-600 hover:cursor-pointer"
+          >
+            Delete Form
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <ConfirmDialog
+        title="Are you sure?"
+        description="This action cannot be undone."
+        onConfirm={handleDelete}
+        open={open}
+        setOpen={setOpen}
+      />
+    </>
+  );
 };
 
 export const allFormsColumns: ColumnDef<FormType>[] = [
@@ -108,32 +154,6 @@ export const allFormsColumns: ColumnDef<FormType>[] = [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>
-              <Link href={`/forms/${row.original.id}`}>View Form</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link href={`/forms/${row.original.id}/edit`}>Edit Form</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={() => console.log("Delete Form:", row.original.id)}
-              className="text-red-600"
-            >
-              Delete Form
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
+    cell: ({ row }) => <ActionCell row={row} />,
   },
 ];
