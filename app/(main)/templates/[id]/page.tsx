@@ -1,4 +1,4 @@
-import ViewTemplate from "@/components/templates/view-template-form";
+import ViewTemplate from "@/components/templates/view-template";
 import { currentUser } from "@/features/users/current-user";
 import { GetTemplateData } from "@/features/templates/get-template-data";
 import { GetTemplateQuestions } from "@/features/questions/get-template-questions";
