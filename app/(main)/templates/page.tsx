@@ -1,5 +1,6 @@
 import TemplatesGallery from "@/components/templates/template-gallery";
 import { GetAvailableTemplates } from "@/features/templates/get-gallery-templates";
+export const dynamic = "force-dynamic";
 
 export default async function Page() {
   const templates = await GetAvailableTemplates();
