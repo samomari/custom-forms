@@ -5,6 +5,61 @@ import { clerkClient } from "@clerk/nextjs/server";
 import { eq, inArray, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
+export async function PATCH(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await params;
+    const { role } = await req.json();
+
+    const activeUser = await currentUser();
+    if (!activeUser) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    if (!role) {
+      return NextResponse.json({ message: "Missing role" }, { status: 400 });
+    }
+
+    if (!id) {
+      return NextResponse.json({ message: "User ID Missing" }, { status: 400 });
+    }
+
+    const isAdmin = activeUser.role === "ADMIN";
+
+    if (!isAdmin) {
+      return NextResponse.json(
+        { message: "Unauthorized for this action" },
+        { status: 403 }
+      );
+    }
+
+    const updatedUser = await db
+      .update(user)
+      .set({
+        role: role,
+        updatedAt: sql`CURRENT_TIMESTAMP`,
+      })
+      .where(eq(user.id, id))
+      .returning();
+
+    if (updatedUser.length === 0) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      message: "User role updated succesfully",
+    });
+  } catch (error) {
+    console.error("ROLE_CHANGE_ERROR", error);
+    return NextResponse.json(
+      { message: "Failed to update user role" },
+      { status: 500 }
+    );
+  }
+}
+
 export async function DELETE(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -29,7 +84,19 @@ export async function DELETE(
     }
 
     const client = await clerkClient();
-    await client.users.deleteUser(id);
+    let clerkUser;
+    try {
+      clerkUser = await client.users.getUser(id);
+    } catch (error) {
+      // @ts-expect-error ignore
+      if (error.status === 404) {
+        console.error(`User with ID ${id} already deleted from Clerk.`);
+      }
+    }
+
+    if (clerkUser) {
+      await client.users.deleteUser(id);
+    }
 
     const hasLiked = await db
       .select({ templateId: like.templateId })

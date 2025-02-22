@@ -5,33 +5,75 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, ArrowUpDown } from "lucide-react";
+import { MoreHorizontal, ArrowUpDown, Check, Loader2 } from "lucide-react";
 import { UserType } from "@/types";
 import { useState } from "react";
 import { useDeleteUser } from "@/lib/utils/delete-user";
 import { ConfirmDialog } from "../ui/confirm-dialog";
+import { useRoleChange } from "@/lib/utils/role-change";
 
 const ActionCell = ({ row }: { row: any }) => {
   const [open, setOpen] = useState(false);
   const { deleteUser } = useDeleteUser();
+  const { roleChange, loading } = useRoleChange();
 
   const handleDelete = () => {
     deleteUser(row.original.id);
   };
+
   return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
+            {loading ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              <MoreHorizontal />
+            )}
             <span className="sr-only">Open menu</span>
-            <MoreHorizontal />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>Role</DropdownMenuSubTrigger>
+            <DropdownMenuPortal>
+              <DropdownMenuSubContent>
+                <DropdownMenuItem
+                  onClick={() => roleChange(row.original.id, "USER")}
+                  className="hover:cursor-pointer"
+                  disabled={loading}
+                >
+                  USER
+                  {row.original.role === "USER" && (
+                    <Check className="ml-2 h-4 w-4" />
+                  )}
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => roleChange(row.original.id, "ADMIN")}
+                  className="hover:cursor-pointer"
+                >
+                  ADMIN
+                  {row.original.role === "ADMIN" && (
+                    <Check className="ml-2 h-4 w-4" />
+                  )}
+                </DropdownMenuItem>
+              </DropdownMenuSubContent>
+            </DropdownMenuPortal>
+          </DropdownMenuSub>
+          <DropdownMenuItem>
+            {row.original.status === "ACTIVE" ? "Block User" : "Unblock User"}
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => setOpen(true)}
             className="text-red-600 hover:cursor-pointer"
