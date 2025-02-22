@@ -5,9 +5,76 @@ import { clerkClient } from "@clerk/nextjs/server";
 import { eq, inArray, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
+export async function POST(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  try {
+    const { id } = await params;
+    const activeUser = await currentUser();
+    if (!activeUser) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    if (activeUser.status === "BLOCKED") {
+      return NextResponse.json(
+        {
+          message:
+            "Your account has been blocked, please contact administration.",
+        },
+        { status: 403 },
+      );
+    }
+    if (!id) {
+      return NextResponse.json({ message: "User ID Missing" }, { status: 400 });
+    }
+
+    const isAdmin = activeUser.role === "ADMIN";
+
+    if (!isAdmin) {
+      return NextResponse.json(
+        { message: "Unauthorized for this action" },
+        { status: 403 },
+      );
+    }
+
+    const userStatus = await db
+      .select({ status: user.status })
+      .from(user)
+      .where(eq(user.id, id));
+
+    if (userStatus.length === 0) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+
+    const client = await clerkClient();
+
+    if (userStatus[0].status === "BLOCKED") {
+      await client.users.unbanUser(id);
+      await db
+        .update(user)
+        .set({ status: "ACTIVE", updatedAt: sql`CURRENT_TIMESTAMP` })
+        .where(eq(user.id, id))
+        .returning();
+      return NextResponse.json({ message: "User has been unblocked" });
+    }
+
+    await client.users.banUser(id);
+
+    await db
+      .update(user)
+      .set({ status: "BLOCKED", updatedAt: sql`CURRENT_TIMESTAMP` })
+      .where(eq(user.id, id))
+      .returning();
+    return NextResponse.json({ message: "User has been blocked" });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export async function PATCH(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id } = await params;
@@ -16,6 +83,15 @@ export async function PATCH(
     const activeUser = await currentUser();
     if (!activeUser) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+    if (activeUser.status === "BLOCKED") {
+      return NextResponse.json(
+        {
+          message:
+            "Your account has been blocked, please contact administration.",
+        },
+        { status: 403 },
+      );
     }
 
     if (!role) {
@@ -31,7 +107,7 @@ export async function PATCH(
     if (!isAdmin) {
       return NextResponse.json(
         { message: "Unauthorized for this action" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -55,20 +131,29 @@ export async function PATCH(
     console.error("ROLE_CHANGE_ERROR", error);
     return NextResponse.json(
       { message: "Failed to update user role" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 export async function DELETE(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id } = await params;
     const activeUser = await currentUser();
     if (!activeUser) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+    if (activeUser.status === "BLOCKED") {
+      return NextResponse.json(
+        {
+          message:
+            "Your account has been blocked, please contact administration.",
+        },
+        { status: 403 },
+      );
     }
     if (!id) {
       return NextResponse.json({ message: "User ID Missing" }, { status: 400 });
@@ -79,7 +164,7 @@ export async function DELETE(
     if (!isAdmin) {
       return NextResponse.json(
         { message: "Unauthorized for this action" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 

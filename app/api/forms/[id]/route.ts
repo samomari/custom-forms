@@ -6,7 +6,7 @@ import { eq, sql } from "drizzle-orm";
 
 export async function DELETE(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id } = await params;
@@ -15,6 +15,17 @@ export async function DELETE(
     if (!user) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
+
+    if (user.status === "BLOCKED") {
+      return NextResponse.json(
+        {
+          message:
+            "Your account has been blocked, please contact administration.",
+        },
+        { status: 403 },
+      );
+    }
+
     if (!id) {
       return NextResponse.json({ message: "Form ID Missing" }, { status: 400 });
     }
@@ -30,7 +41,7 @@ export async function DELETE(
         {
           message: "Form not found",
         },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -40,7 +51,7 @@ export async function DELETE(
     if (!isAdmin && !isOwner) {
       return NextResponse.json(
         { message: "Unauthorized for this action" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -58,19 +69,29 @@ export async function DELETE(
     console.error("FORM_DELETE_ERROR", error);
     return NextResponse.json(
       { error: "Failed to delete form" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 export async function PATCH(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const user = await currentUser();
     if (!user) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    if (user.status === "BLOCKED") {
+      return NextResponse.json(
+        {
+          message:
+            "Your account has been blocked, please contact administration.",
+        },
+        { status: 403 },
+      );
     }
     const { id } = await params;
 
@@ -96,7 +117,7 @@ export async function PATCH(
     if (!isAdmin && !isOwner) {
       return NextResponse.json(
         { message: "Unauthorized for this action" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -111,14 +132,14 @@ export async function PATCH(
     if (!updatedForm.length) {
       return NextResponse.json(
         { message: "Form was not updated" },
-        { status: 409 }
+        { status: 409 },
       );
     }
 
     if (!answers || answers.length === 0) {
       return NextResponse.json(
         { message: "No answers provided" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -128,21 +149,21 @@ export async function PATCH(
           .update(answer)
           .set({ value: a.answer })
           .where(eq(answer.id, a.answerId))
-          .returning()
-      )
+          .returning(),
+      ),
     );
 
     return NextResponse.json(
       {
         message: "Form updated succesfully",
       },
-      { status: 200 }
+      { status: 200 },
     );
   } catch (error) {
     console.error("FORM_UPDATE_ERROR", error);
     return NextResponse.json(
       { message: "Failed to update form" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

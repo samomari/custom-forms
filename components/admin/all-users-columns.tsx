@@ -19,15 +19,13 @@ import { useState } from "react";
 import { useDeleteUser } from "@/lib/utils/delete-user";
 import { ConfirmDialog } from "../ui/confirm-dialog";
 import { useRoleChange } from "@/lib/utils/role-change";
+import { useBlockUser } from "@/lib/utils/block-user";
 
 const ActionCell = ({ row }: { row: any }) => {
   const [open, setOpen] = useState(false);
   const { deleteUser } = useDeleteUser();
+  const { blockUser } = useBlockUser();
   const { roleChange, loading } = useRoleChange();
-
-  const handleDelete = () => {
-    deleteUser(row.original.id);
-  };
 
   return (
     <>
@@ -70,7 +68,10 @@ const ActionCell = ({ row }: { row: any }) => {
               </DropdownMenuSubContent>
             </DropdownMenuPortal>
           </DropdownMenuSub>
-          <DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => blockUser(row.original.id)}
+            className={`hover:cursor-pointer ${row.original.status === "ACTIVE" ? "text-red-600" : "text-green-600"}`}
+          >
             {row.original.status === "ACTIVE" ? "Block User" : "Unblock User"}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
@@ -85,7 +86,7 @@ const ActionCell = ({ row }: { row: any }) => {
       <ConfirmDialog
         title="Are you sure?"
         description="This action cannot be undone."
-        onConfirm={handleDelete}
+        onConfirm={() => deleteUser(row.original.id)}
         open={open}
         setOpen={setOpen}
       />

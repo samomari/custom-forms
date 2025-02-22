@@ -14,6 +14,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
+    if (user.status === "BLOCKED") {
+      return NextResponse.json(
+        {
+          message:
+            "Your account has been blocked, please contact administration.",
+        },
+        { status: 403 },
+      );
+    }
+
     const templateData = await GetTemplateData(templateId);
     if (!templateData) {
       return NextResponse.json(
