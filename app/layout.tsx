@@ -5,7 +5,8 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { NaviHeader } from "@/components/navigation/navi-header";
 import { Toaster } from "@/components/ui/toaster";
-import { getUserRole } from "@/features/roles/get-user-role";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const role = await getUserRole();
+  //const locale = await getLocale();
+  const messages = await getMessages();
   return (
     <ClerkProvider
       appearance={{
@@ -40,8 +42,10 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <NaviHeader role={role} />
-            <main className="grow">{children}</main>
+            <NaviHeader />
+            <NextIntlClientProvider messages={messages}>
+              <main className="grow">{children}</main>
+            </NextIntlClientProvider>
             <Toaster />
           </ThemeProvider>
         </body>

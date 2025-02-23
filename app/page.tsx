@@ -7,11 +7,12 @@ import {
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 export const dynamic = "force-dynamic";
+import { getTranslations } from "next-intl/server";
 
 export default async function Home() {
   const populartemplates = await GetPopularTemplates();
   const latestTemplates = await GetLatestTemplates();
-
+  const t = await getTranslations("HomePage");
   return (
     <div className="h-full w-full">
       <div className="p-6">
@@ -21,9 +22,7 @@ export default async function Home() {
           </p>
         ) : (
           <>
-            <p className="text-2xl font-bold mb-4 text-center">
-              Most popular public templates
-            </p>
+            <p className="text-2xl font-bold mb-4 text-center">{t("title")}</p>
             <TemplatesGallery templates={populartemplates} />
 
             <p className="text-2xl font-bold py-2 text-center">

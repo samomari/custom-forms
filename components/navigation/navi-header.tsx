@@ -3,8 +3,11 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { LogIn } from "lucide-react";
 import Link from "next/link";
+import { getUserRole } from "@/features/roles/get-user-role";
+import { LangToggle } from "@/components/lang-toggle";
 
-export async function NaviHeader({ role }: { role?: string }) {
+export async function NaviHeader() {
+  const role = await getUserRole();
   return (
     <div className="w-full dark:bg-[#0C0A09] bg-[#E3E5E8]">
       <nav className="flex justify-between items-center">
@@ -17,20 +20,20 @@ export async function NaviHeader({ role }: { role?: string }) {
           <li>
             <Link href="/templates">Templates</Link>
           </li>
-          <li>
-            <Link href="/dashboard">User dashboard</Link>
-          </li>
           <SignedIn>
             <li>
-              {role === "ADMIN" ? (
-                <Link href="/admin">Admin dashboard</Link>
-              ) : (
-                <Link href="/dashboard">User dashboard</Link>
-              )}
+              <Link href="/dashboard">User dashboard</Link>
             </li>
+
+            {role === "ADMIN" && (
+              <li>
+                <Link href="/admin">Admin dashboard</Link>{" "}
+              </li>
+            )}
           </SignedIn>
         </ul>
         <div className="flex pr-2">
+          <LangToggle />
           <ModeToggle />
           <SignedOut>
             <SignInButton>
