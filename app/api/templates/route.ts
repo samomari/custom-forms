@@ -26,7 +26,7 @@ export async function POST(req: Request) {
           message:
             "Your account has been blocked, please contact administration.",
         },
-        { status: 403 },
+        { status: 403 }
       );
     }
 
@@ -58,7 +58,7 @@ export async function POST(req: Request) {
         type: q.type,
         position: q.position,
         templateId: newTemplate[0].id,
-      }),
+      })
     );
 
     if (questionsData.length > 0) {
@@ -73,7 +73,10 @@ export async function POST(req: Request) {
       await db.insert(privateTemplateAccess).values(privateTemplateAccessData);
     }
 
-    return NextResponse.json(newTemplate[0]);
+    return NextResponse.json({
+      template: newTemplate[0],
+      message: "Template created successfully",
+    });
   } catch (error) {
     console.error("TEMPLATES_POST_ERROR", error);
     return new NextResponse("Internal Error", { status: 500 });

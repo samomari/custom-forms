@@ -90,7 +90,7 @@ export default function CreateTemplate({ users, topics }: CreateTemplateProps) {
         title: "Success",
         description: response.data.message,
       });
-      router.push(`/templates/${response.data.id}`);
+      router.push(`/templates/${response.data.template.id}`);
     } catch (error) {
       toast({
         title: "Error",
@@ -117,7 +117,7 @@ export default function CreateTemplate({ users, topics }: CreateTemplateProps) {
       const reorderedQuestions = arrayMove(
         updatedQuestions,
         oldIndex,
-        newIndex,
+        newIndex
       ).map((q, index) => ({
         ...q,
         position: index,
