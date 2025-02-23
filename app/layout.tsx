@@ -7,6 +7,7 @@ import { NaviHeader } from "@/components/navigation/navi-header";
 import { Toaster } from "@/components/ui/toaster";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
+import { ruRU, enUS } from "@clerk/localizations";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,10 +21,16 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  //const locale = await getLocale();
+  const locale = await getLocale();
   const messages = await getMessages();
+  const clerkLocaleMap: Record<string, any> = {
+    en: enUS,
+    ru: ruRU,
+  };
+  const clerkLocale = clerkLocaleMap[locale] || enUS;
   return (
     <ClerkProvider
+      localization={clerkLocale}
       appearance={{
         variables: {
           colorPrimary: "hsl(263.4, 70%, 50.4%)",
@@ -31,7 +38,7 @@ export default async function RootLayout({
       }}
     >
       <html
-        lang="en"
+        lang={locale}
         suppressHydrationWarning
         className="scroll-smooth antialiased"
       >
