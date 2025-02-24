@@ -5,8 +5,10 @@ import { LogIn } from "lucide-react";
 import Link from "next/link";
 import { getUserRole } from "@/features/roles/get-user-role";
 import { LangToggle } from "@/components/lang-toggle";
+import { getTranslations } from "next-intl/server";
 
 export async function NaviHeader() {
+  const t = await getTranslations("Header");
   const role = await getUserRole();
   return (
     <div className="w-full dark:bg-[#0C0A09] bg-[#E3E5E8]">
@@ -18,16 +20,16 @@ export async function NaviHeader() {
             </Link>
           </li>
           <li>
-            <Link href="/templates">Templates</Link>
+            <Link href="/templates">{t("templates")}</Link>
           </li>
           <SignedIn>
             <li>
-              <Link href="/dashboard">User dashboard</Link>
+              <Link href="/dashboard">{t("dashboard")}</Link>
             </li>
 
             {role === "ADMIN" && (
               <li>
-                <Link href="/admin">Admin dashboard</Link>{" "}
+                <Link href="/admin">{t("admin")}</Link>{" "}
               </li>
             )}
           </SignedIn>

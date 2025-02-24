@@ -15,6 +15,7 @@ import { QuestionAnswer } from "@/types";
 import { useRouter } from "next/navigation";
 import { ConfirmDialog } from "../ui/confirm-dialog";
 import { useDeleteForm } from "@/lib/utils/delete-form";
+import { useTranslations } from "next-intl";
 
 interface ViewFormProps {
   id: string;
@@ -31,6 +32,7 @@ export default function ViewForm({
   qa,
   isEditor,
 }: ViewFormProps) {
+  const t = useTranslations("Form");
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const { deleteForm } = useDeleteForm();
@@ -70,12 +72,12 @@ export default function ViewForm({
           </div>
           {isEditor && (
             <>
-              <ActionTooltip label="Edit Form">
+              <ActionTooltip label={t("editForm")}>
                 <Button variant="ghost" onClick={() => handleEdit()}>
                   <Pencil className="h-5 w-5 mr-1" />
                 </Button>
               </ActionTooltip>
-              <ActionTooltip label="Delete Form">
+              <ActionTooltip label={t("deleteForm")}>
                 <Button
                   variant="ghost"
                   className="text-red-500 hover:text-red-600"
@@ -88,13 +90,7 @@ export default function ViewForm({
           )}
         </Card>
       </div>
-      <ConfirmDialog
-        title="Are you sure?"
-        description="This action cannot be undone."
-        onConfirm={handleDelete}
-        open={open}
-        setOpen={setOpen}
-      />
+      <ConfirmDialog onConfirm={handleDelete} open={open} setOpen={setOpen} />
     </div>
   );
 }

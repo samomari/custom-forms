@@ -8,32 +8,30 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "./alert-dialog";
+import { useTranslations } from "next-intl";
 
 interface ConfirmDialogProps {
-  title: string;
-  description: string;
   onConfirm: () => void;
   open: boolean;
   setOpen: (open: boolean) => void;
 }
 
 export const ConfirmDialog = ({
-  title,
-  description,
   onConfirm,
   open,
   setOpen,
 }: ConfirmDialogProps) => {
+  const t = useTranslations("ConfirmDialog");
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
+          <AlertDialogTitle>{t("title")}</AlertDialogTitle>
+          <AlertDialogDescription>{t("description")}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="flex items-baseline">
           <AlertDialogCancel onClick={() => setOpen(false)}>
-            Cancel
+            {t("cancel")}
           </AlertDialogCancel>
           <AlertDialogAction
             onClick={() => {
@@ -41,7 +39,7 @@ export const ConfirmDialog = ({
               setOpen(false);
             }}
           >
-            Continue
+            {t("continue")}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -10,18 +10,17 @@ export async function POST(req: Request) {
     const user = await currentUser();
 
     if (!userId || !templateId) {
-      return NextResponse.json({ message: "Missing data" }, { status: 400 });
+      return NextResponse.json({ message: "missingData" }, { status: 400 });
     }
 
     if (!user) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ message: "unauthorized" }, { status: 401 });
     }
 
     if (user.status === "BLOCKED") {
       return NextResponse.json(
         {
-          message:
-            "Your account has been blocked, please contact administration.",
+          message: "blocked",
         },
         { status: 403 },
       );
@@ -34,10 +33,7 @@ export async function POST(req: Request) {
       .limit(1);
 
     if (isLiked.length) {
-      return NextResponse.json(
-        { message: "You can like template only once" },
-        { status: 400 },
-      );
+      return NextResponse.json({ message: "likeOnce" }, { status: 400 });
     }
 
     await db.insert(like).values({ templateId, userId });
@@ -50,10 +46,10 @@ export async function POST(req: Request) {
       .where(eq(template.id, templateId));
 
     return NextResponse.json({
-      message: "Like submitted",
+      message: "liked",
     });
   } catch (error) {
     console.error("ERROR_ADDING_LIKE", error);
-    return NextResponse.json({ message: "Error adding like" }, { status: 500 });
+    return NextResponse.json({ message: "internalError" }, { status: 500 });
   }
 }

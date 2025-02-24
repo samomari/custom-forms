@@ -20,16 +20,18 @@ import axios from "axios";
 import { toast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 const setFormErrors = (
   errors: ValidationError[],
   form: any,
   qa: QuestionAnswer[],
+  t: (key: string) => string,
 ) => {
   errors.forEach((error) => {
     form.setError(
       `answers.${qa.findIndex((q) => q.id === error.questionId)}.answer`,
-      { type: "manual", message: error.message },
+      { type: "manual", message: t(error.message) },
     );
   });
 };
@@ -47,6 +49,9 @@ export default function EditForm({
   description,
   qa,
 }: EditFormProps) {
+  const tForm = useTranslations("Form");
+  const tApi = useTranslations("API");
+  const tType = useTranslations("QuestionType");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const form = useForm<z.infer<typeof formEditSchema>>({
@@ -67,7 +72,7 @@ export default function EditForm({
 
     const errors = FormValidator(values.answers, qa);
     if (errors.length > 0) {
-      setFormErrors(errors, form, qa);
+      setFormErrors(errors, form, qa, tForm);
     } else {
       setLoading(true);
       try {
@@ -75,16 +80,16 @@ export default function EditForm({
           answers: values.answers,
         });
         toast({
-          title: "Success",
-          description: response.data.message,
+          title: tApi("success"),
+          description: tApi(response.data.message),
         });
         router.push(`/forms/${id}`);
       } catch (error) {
         toast({
-          title: "Error",
+          title: tApi("error"),
           description:
             // @ts-expect-error ignore
-            error.response?.data.message,
+            tApi(error.response?.data.message),
           variant: "destructive",
         });
       } finally {
@@ -126,7 +131,11 @@ export default function EditForm({
                           <FormInput
                             label={q.question}
                             description={q.description}
-                            placeholder={`Enter ${GetResponseType(q.type).toLowerCase()} type answer `}
+                            placeholder={tForm("enterAnswer", {
+                              type: tType(
+                                GetResponseType(q.type),
+                              ).toLowerCase(),
+                            })}
                             field={field}
                           />
                         )}
@@ -134,7 +143,11 @@ export default function EditForm({
                           <FormTextArea
                             label={q.question}
                             description={q.description}
-                            placeholder={`Enter ${GetResponseType(q.type).toLowerCase()} type answer `}
+                            placeholder={tForm("enterAnswer", {
+                              type: tType(
+                                GetResponseType(q.type),
+                              ).toLowerCase(),
+                            })}
                             field={field}
                           />
                         )}
@@ -142,7 +155,11 @@ export default function EditForm({
                           <FormInput
                             label={q.question}
                             description={q.description}
-                            placeholder={`Enter ${GetResponseType(q.type).toLowerCase()} type answer `}
+                            placeholder={tForm("enterAnswer", {
+                              type: tType(
+                                GetResponseType(q.type),
+                              ).toLowerCase(),
+                            })}
                             field={field}
                             answerType={2}
                           />
@@ -171,10 +188,10 @@ export default function EditForm({
                   onClick={() => handleBack()}
                   disabled={loading}
                 >
-                  Back
+                  {tForm("backButton")}
                 </Button>
                 <Button type="submit" disabled={loading}>
-                  Submit
+                  {tForm("submitButton")}
                 </Button>
               </div>
             </div>

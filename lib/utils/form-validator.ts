@@ -23,11 +23,11 @@ export default function FormValidator(
 
     if (type === 0 || type === 1) {
       if (typeof answer !== "string" || answer.trim() === "") {
-        errorMessage = "This field cannot be empty";
+        errorMessage = "emptyError";
       }
     } else if (type === 2) {
       if (isNaN(Number(answer)) || Number(answer) <= 0) {
-        errorMessage = "Answer must be a positive number";
+        errorMessage = "numberError";
       }
     }
 

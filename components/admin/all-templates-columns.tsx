@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useDeleteTemplate } from "@/lib/utils/delete-template";
 import { useState } from "react";
 import { ConfirmDialog } from "../ui/confirm-dialog";
+import { useTranslations } from "next-intl";
 
 type TemplateType = {
   id: string;
@@ -26,6 +27,7 @@ type TemplateType = {
 };
 
 const ActionCell = ({ row }: { row: any }) => {
+  const t = useTranslations("DataTable");
   const [open, setOpen] = useState(false);
   const { deleteTemplate } = useDeleteTemplate();
   const handleDelete = () => {
@@ -41,13 +43,15 @@ const ActionCell = ({ row }: { row: any }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuLabel>{t("actions")}</DropdownMenuLabel>
           <DropdownMenuItem>
-            <Link href={`/templates/${row.original.id}`}>View Template</Link>
+            <Link href={`/templates/${row.original.id}`}>
+              {t("viewTemplate")}
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Link href={`/templates/${row.original.id}/edit`}>
-              Edit Template
+              {t("editTemplate")}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
@@ -55,17 +59,11 @@ const ActionCell = ({ row }: { row: any }) => {
             onClick={() => setOpen(true)}
             className="text-red-600 hover:cursor-pointer"
           >
-            Delete Template
+            {t("deleteTemplate")}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <ConfirmDialog
-        title="Are you sure?"
-        description="This action cannot be undone."
-        onConfirm={handleDelete}
-        open={open}
-        setOpen={setOpen}
-      />
+      <ConfirmDialog onConfirm={handleDelete} open={open} setOpen={setOpen} />
     </>
   );
 };

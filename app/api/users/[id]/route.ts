@@ -13,27 +13,26 @@ export async function POST(
     const { id } = await params;
     const activeUser = await currentUser();
     if (!activeUser) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ message: "unauthorized" }, { status: 401 });
     }
 
     if (activeUser.status === "BLOCKED") {
       return NextResponse.json(
         {
-          message:
-            "Your account has been blocked, please contact administration.",
+          message: "blocked",
         },
         { status: 403 },
       );
     }
     if (!id) {
-      return NextResponse.json({ message: "User ID Missing" }, { status: 400 });
+      return NextResponse.json({ message: "userIdMissing" }, { status: 400 });
     }
 
     const isAdmin = activeUser.role === "ADMIN";
 
     if (!isAdmin) {
       return NextResponse.json(
-        { message: "Unauthorized for this action" },
+        { message: "unauthorizedForThisAction" },
         { status: 403 },
       );
     }
@@ -44,7 +43,7 @@ export async function POST(
       .where(eq(user.id, id));
 
     if (userStatus.length === 0) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
+      return NextResponse.json({ message: "userNotFound" }, { status: 404 });
     }
 
     const client = await clerkClient();
@@ -56,7 +55,7 @@ export async function POST(
         .set({ status: "ACTIVE", updatedAt: sql`CURRENT_TIMESTAMP` })
         .where(eq(user.id, id))
         .returning();
-      return NextResponse.json({ message: "User has been unblocked" });
+      return NextResponse.json({ message: "userUnblock" });
     }
 
     await client.users.banUser(id);
@@ -66,7 +65,7 @@ export async function POST(
       .set({ status: "BLOCKED", updatedAt: sql`CURRENT_TIMESTAMP` })
       .where(eq(user.id, id))
       .returning();
-    return NextResponse.json({ message: "User has been blocked" });
+    return NextResponse.json({ message: "userBlock" });
   } catch (error) {
     console.error(error);
   }
@@ -82,31 +81,30 @@ export async function PATCH(
 
     const activeUser = await currentUser();
     if (!activeUser) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ message: "unauthorized" }, { status: 401 });
     }
     if (activeUser.status === "BLOCKED") {
       return NextResponse.json(
         {
-          message:
-            "Your account has been blocked, please contact administration.",
+          message: "blocked",
         },
         { status: 403 },
       );
     }
 
     if (!role) {
-      return NextResponse.json({ message: "Missing role" }, { status: 400 });
+      return NextResponse.json({ message: "missingRole" }, { status: 400 });
     }
 
     if (!id) {
-      return NextResponse.json({ message: "User ID Missing" }, { status: 400 });
+      return NextResponse.json({ message: "userIdMissing" }, { status: 400 });
     }
 
     const isAdmin = activeUser.role === "ADMIN";
 
     if (!isAdmin) {
       return NextResponse.json(
-        { message: "Unauthorized for this action" },
+        { message: "unauthorizedForThisAction" },
         { status: 403 },
       );
     }
@@ -121,18 +119,15 @@ export async function PATCH(
       .returning();
 
     if (updatedUser.length === 0) {
-      return NextResponse.json({ message: "User not found" }, { status: 404 });
+      return NextResponse.json({ message: "userNotFound" }, { status: 404 });
     }
 
     return NextResponse.json({
-      message: "User role updated succesfully",
+      message: "userRoleUpdated",
     });
   } catch (error) {
     console.error("ROLE_CHANGE_ERROR", error);
-    return NextResponse.json(
-      { message: "Failed to update user role" },
-      { status: 500 },
-    );
+    return NextResponse.json({ message: "internalError" }, { status: 500 });
   }
 }
 
@@ -144,26 +139,25 @@ export async function DELETE(
     const { id } = await params;
     const activeUser = await currentUser();
     if (!activeUser) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ message: "unauthorized" }, { status: 401 });
     }
     if (activeUser.status === "BLOCKED") {
       return NextResponse.json(
         {
-          message:
-            "Your account has been blocked, please contact administration.",
+          message: "blocked",
         },
         { status: 403 },
       );
     }
     if (!id) {
-      return NextResponse.json({ message: "User ID Missing" }, { status: 400 });
+      return NextResponse.json({ message: "userIdMissing" }, { status: 400 });
     }
 
     const isAdmin = activeUser.role === "ADMIN";
 
     if (!isAdmin) {
       return NextResponse.json(
-        { message: "Unauthorized for this action" },
+        { message: "unauthorizedForThisAction" },
         { status: 403 },
       );
     }
@@ -199,9 +193,9 @@ export async function DELETE(
 
     await db.delete(user).where(eq(user.id, id));
 
-    return NextResponse.json({ message: "User deleted" });
+    return NextResponse.json({ message: "userDelete" });
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: "Error deleting user" });
+    return NextResponse.json({ message: "internalError" }, { status: 500 });
   }
 }

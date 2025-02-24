@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "./button";
 import { Card } from "./card";
+import { useTranslations } from "next-intl";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -31,6 +32,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const t = useTranslations("DataTable");
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const table = useReactTable({
@@ -99,7 +101,9 @@ export function DataTable<TData, TValue>({
       </Card>
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredRowModel().rows.length} row(s) loaded.
+          {t("rowsLoaded", {
+            count: table.getFilteredRowModel().rows.length,
+          })}
         </div>
         <Button
           variant="outline"
@@ -107,7 +111,7 @@ export function DataTable<TData, TValue>({
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
-          Previous
+          {t("previousBtn")}
         </Button>
         <Button
           variant="outline"
@@ -115,7 +119,7 @@ export function DataTable<TData, TValue>({
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
-          Next
+          {t("nextBtn")}
         </Button>
       </div>
     </div>

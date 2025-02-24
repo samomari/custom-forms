@@ -1,5 +1,145 @@
 {
+  "Header": {
+    "templates": "Templates",
+    "dashboard": "Dashboard",
+    "admin": "Admin Dashboard"
+  },
   "HomePage": {
-    "title": "Hello world!"
+    "noTemplates": "No templates available at the moment.",
+    "mostPopular": "Most popular templates",
+    "latestTemplates": "Latest templates",
+    "browseMore": "Browse More"
+  },
+  "Dashboard": {
+    "formsTabLabel": "Forms",
+    "formsTabEmpty": "You have not filled any forms yet.",
+    "formsTabLink": "Browse Templates",
+    "templatesTabLabel": "Templates",
+    "templatesTabEmpty": "You have not created any templates yet.",
+    "templatesTabLink": "Create Template",
+    "usersTabLabel": "Users",
+    "userTabEmpty": "No users found"
+  },
+  "TemplateCard": {
+    "templateImage": "Template image",
+    "by": "Author"
+  },
+  "TemplatesPage": {
+    "noTemplates": "No templates available at the moment.",
+    "availableTemplates": "All templates available to you"
+  },
+  "Template": {
+    "createTemplate": "Create Template",
+    "expectedAnswer": "Expected {type} answer type",
+    "like": "Like",
+    "editTemplate": "Edit Template",
+    "deleteTemplate": "Delete Template",
+    "useTemplate": "Use Template",
+    "titleLabel": "Title",
+    "titlePlaceholder": "Enter template title",
+    "descriptionLabel": "Description (optional)",
+    "descriptionPlaceholder": "Enter template description",
+    "selectValue": "Select a {label}",
+    "topicLabel": "Template Topic",
+    "imageLabel": "Template Image (optional)",
+    "switchLabel": "Public Template",
+    "removeTooltip": "Remove question",
+    "addTooltip": "Add question",
+    "backButton": "Back",
+    "submitButton": "Submit",
+    "selectUsers": "Select Users",
+    "noUsers": "No available users to select"
+  },
+  "Topic": {
+    "quiz": "Quiz",
+    "survey": "Survey",
+    "feedback": "Feedback",
+    "questionnaire": "Questionnaire"
+  },
+  "TemplateQuestion": {
+    "questionLabel": "Question",
+    "questionPlaceholder": "Enter your question",
+    "typeLabel": "Question Type",
+    "descriptionLabel": "Description (optional)",
+    "descriptionPlaceholder": "Enter question description"
+  },
+  "QuestionType": {
+    "string": "String",
+    "text": "Text",
+    "integer": "Integer",
+    "checkbox": "Checkbox"
+  },
+  "TemplateValidation": {
+    "titleRequired": "Title is required.",
+    "topicRequired": "Topic is required.",
+    "questionRequired": "Question is required.",
+    "typeRequired": "Type is required."
+  },
+  "Form": {
+    "enterAnswer": "Enter {type} type answer",
+    "backButton": "Back",
+    "submitButton": "Submit",
+    "emptyError": "This field cannot be empty",
+    "numberError": "Answer must be a positive number",
+    "editForm": "Edit Form",
+    "deleteForm": "Delete Form"
+  },
+  "DataTable": {
+    "actions": "Actions",
+    "viewTemplate": "View Template",
+    "editTemplate": "Edit Template",
+    "deleteTemplate": "Delete Template",
+    "viewForm": "View Form",
+    "editForm": "Edit Form",
+    "deleteForm": "Delete form",
+    "title": "Title",
+    "topic": "Topic",
+    "lastUpdated": "Last Updated",
+    "rowsLoaded": "{count} row(s) loaded",
+    "previousBtn": "Previous",
+    "nextBtn": "Next",
+    "role": "Role",
+    "blockUser": "Block User",
+    "unblockUser": "Unblock User",
+    "deleteUser": "Delete User"
+  },
+  "API": {
+    "success": "Success",
+    "error": "Error",
+    "unauthorized": "Unauthorized",
+    "unauthorizedForThisAction": "Unauthorized for this action",
+    "blocked": "Your account has been blocked, please contact administration.",
+    "userIdMissing": "User ID missing",
+    "userNotFound": "User not found",
+    "userUnblock": "User has been unblocked",
+    "userBlock": "User has been blocked",
+    "userDelete": "User has been deleted",
+    "missingRole": "Missing role",
+    "userRoleUpdated": "User role has been updated",
+    "templateIdMissing": "Template ID Missing",
+    "templateNotFound": "Template not found",
+    "failedToUpdateTemplate": "Failed to update template",
+    "failedToCreateTemplate": "Failed to create template",
+    "templateCreated": "Template created successfully",
+    "templateUpdated": "Template updated successfully",
+    "templateDeleted": "Template deleted",
+    "formIdMissing": "Form ID Missing",
+    "formNotFound": "Form not found",
+    "failedToUpdateForm": "Failed to update form",
+    "failedToCreateForm": "Failed to create form",
+    "formSubmitted": "Form submitted",
+    "formUpdated": "Form updated successfully",
+    "formDeleted": "Form deleted",
+    "noAnswersProvided": "No answers provided",
+    "missingData": "Missing data",
+    "likeOnce": "You have already liked this template",
+    "liked": "Liked",
+    "internalError": "Internal Server Error"
+  },
+  "ConfirmDialog": {
+    "title": "Are you sure?",
+    "description": "This action cannot be undone.",
+    "cancel": "Cancel",
+    "continue": "Continue"
   }
 }

@@ -1,5 +1,145 @@
 {
+  "Header": {
+    "templates": "Шаблоны",
+    "dashboard": "Панель управления",
+    "admin": "Панель администратора"
+  },
   "HomePage": {
-    "title": "Привет"
+    "noTemplates": "Шаблоны временно недоступны.",
+    "mostPopular": "Самые популярные шаблоны",
+    "latestTemplates": "Последние шаблоны",
+    "browseMore": "Просмотреть больше"
+  },
+  "Dashboard": {
+    "formsTabLabel": "Формы",
+    "formsTabEmpty": "Вы еще не заполнили ни одной формы.",
+    "formsTabLink": "Просмотр шаблонов",
+    "templatesTabLabel": "Шаблоны",
+    "templatesTabEmpty": "Вы еще не создали ни одного шаблона.",
+    "templatesTabLink": "Создать шаблон",
+    "usersTabLabel": "Пользователи",
+    "userTabEmpty": "Пользователи не найдены"
+  },
+  "TemplateCard": {
+    "templateImage": "Изображение шаблона",
+    "by": "Автор"
+  },
+  "TemplatesPage": {
+    "noTemplates": "Шаблоны временно недоступны.",
+    "availableTemplates": "Все доступные вам шаблоны"
+  },
+  "Template": {
+    "createTemplate": "Создать шаблон",
+    "expectedAnswer": "Ожидаемый ответ типа {type}",
+    "like": "Нравится",
+    "editTemplate": "Редактировать шаблон",
+    "deleteTemplate": "Удалить шаблон",
+    "useTemplate": "Использовать шаблон",
+    "titleLabel": "Заголовок",
+    "titlePlaceholder": "Введите заголовок шаблона",
+    "descriptionLabel": "Описание (необязательно)",
+    "descriptionPlaceholder": "Введите описание шаблона",
+    "selectValue": "Выберите {label}",
+    "topicLabel": "Тема шаблона",
+    "imageLabel": "Изображение шаблона (необязательно)",
+    "switchLabel": "Публичный шаблон",
+    "removeTooltip": "Удалить вопрос",
+    "addTooltip": "Добавить вопрос",
+    "backButton": "Назад",
+    "submitButton": "Отправить",
+    "selectUsers": "Выбрать пользователей",
+    "noUsers": "Нет доступных пользователей для выбора"
+  },
+  "Topic": {
+    "quiz": "Викторина",
+    "survey": "Опрос",
+    "feedback": "Обратная связь",
+    "questionnaire": "Анкета"
+  },
+  "TemplateQuestion": {
+    "questionLabel": "Вопрос",
+    "questionPlaceholder": "Введите ваш вопрос",
+    "typeLabel": "Тип вопроса",
+    "descriptionLabel": "Описание (необязательно)",
+    "descriptionPlaceholder": "Введите описание вопроса"
+  },
+  "QuestionType": {
+    "string": "Строка",
+    "text": "Текст",
+    "integer": "Число",
+    "checkbox": "Чекбокс"
+  },
+  "TemplateValidation": {
+    "titleRequired": "Заголовок обязателен.",
+    "topicRequired": "Тема обязательна.",
+    "questionRequired": "Вопрос обязателен.",
+    "typeRequired": "Тип обязателен."
+  },
+  "Form": {
+    "enterAnswer": "Введите ответ типа {type}",
+    "backButton": "Назад",
+    "submitButton": "Отправить",
+    "emptyError": "Это поле не может быть пустым",
+    "numberError": "Ответ должен быть положительным числом",
+    "editForm": "Редактировать форму",
+    "deleteForm": "Удалить форму"
+  },
+  "DataTable": {
+    "actions": "Действия",
+    "viewTemplate": "Просмотреть шаблон",
+    "editTemplate": "Редактировать шаблон",
+    "deleteTemplate": "Удалить шаблон",
+    "viewForm": "Просмотреть форму",
+    "editForm": "Редактировать форму",
+    "deleteForm": "Удалить форму",
+    "title": "Заголовок",
+    "topic": "Тема",
+    "lastUpdated": "Последнее обновление",
+    "rowsLoaded": "Загружено {count} строк",
+    "previousBtn": "Предыдущий",
+    "nextBtn": "Следующий",
+    "role": "Роль",
+    "blockUser": "Заблокировать пользователя",
+    "unblockUser": "Разблокировать пользователя",
+    "deleteUser": "Удалить пользователя"
+  },
+  "API": {
+    "success": "Успех",
+    "error": "Ошибка",
+    "unauthorized": "Неавторизован",
+    "unauthorizedForThisAction": "Неавторизован для этого действия",
+    "blocked": "Ваша учетная запись заблокирована, пожалуйста, свяжитесь с администрацией.",
+    "userIdMissing": "Отсутствует ID пользователя",
+    "userNotFound": "Пользователь не найден",
+    "userUnblock": "Пользователь разблокирован",
+    "userBlock": "Пользователь заблокирован",
+    "userDelete": "Пользователь удален",
+    "missingRole": "Отсутствует роль",
+    "userRoleUpdated": "Роль пользователя обновлена",
+    "templateIdMissing": "Отсутствует ID шаблона",
+    "templateNotFound": "Шаблон не найден",
+    "failedToUpdateTemplate": "Не удалось обновить шаблон",
+    "failedToCreateTemplate": "Не удалось создать шаблон",
+    "templateCreated": "Шаблон успешно создан",
+    "templateUpdated": "Шаблон успешно обновлен",
+    "templateDeleted": "Шаблон удален",
+    "formIdMissing": "Отсутствует ID формы",
+    "formNotFound": "Форма не найдена",
+    "failedToUpdateForm": "Не удалось обновить форму",
+    "failedToCreateForm": "Не удалось создать форму",
+    "formSubmitted": "Форма отправлена",
+    "formUpdated": "Форма успешно обновлена",
+    "formDeleted": "Форма удалена",
+    "noAnswersProvided": "Ответы не предоставлены",
+    "missingData": "Отсутствуют данные",
+    "likeOnce": "Вы уже поставили лайк этому шаблону",
+    "liked": "Понравилось",
+    "internalError": "Внутренняя ошибка сервера"
+  },
+  "ConfirmDialog": {
+    "title": "Вы уверены?",
+    "description": "Это действие невозможно отменить.",
+    "cancel": "Отменить",
+    "continue": "Продолжить"
   }
 }

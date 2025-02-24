@@ -5,8 +5,10 @@ import { redirect } from "next/navigation";
 import { formsTableColumns } from "@/components/forms/forms-table-collumns";
 import { templatesTableColumns } from "@/components/templates/templates-table-collumns";
 import Dashboard from "@/components/dashboard/dashboard";
+import { getTranslations } from "next-intl/server";
 
 export default async function Page() {
+  const t = await getTranslations("Dashboard");
   const user = await currentUser();
   if (!user) redirect("/templates");
 
@@ -16,21 +18,21 @@ export default async function Page() {
   const tabs = [
     {
       value: "forms",
-      label: "Forms",
+      label: t("formsTabLabel"),
       data: userForms,
       columns: formsTableColumns,
-      emptyMessage: "You have not filled any forms yet.",
+      emptyMessage: t("formsTabEmpty"),
       link: "/templates",
-      linkText: "Browse Templates",
+      linkText: t("formsTabLink"),
     },
     {
       value: "templates",
-      label: "Templates",
+      label: t("templatesTabLabel"),
       data: userTemplates,
       columns: templatesTableColumns,
-      emptyMessage: "You have not created any templates yet.",
+      emptyMessage: t("templatesTabEmpty"),
       link: "/templates/new",
-      linkText: "Create Template",
+      linkText: t("templatesTabLink"),
     },
   ];
 

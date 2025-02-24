@@ -19,16 +19,18 @@ import { toast } from "@/hooks/use-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import FormValidator from "@/lib/utils/form-validator";
+import { useTranslations } from "next-intl";
 
 const setFormErrors = (
   errors: ValidationError[],
   form: any,
   questions: QuestionType[],
+  t: (key: string) => string,
 ) => {
   errors.forEach((error) => {
     form.setError(
       `answers.${questions.findIndex((q) => q.id === error.questionId)}.answer`,
-      { type: "manual", message: error.message },
+      { type: "manual", message: t(error.message) },
     );
   });
 };
@@ -39,6 +41,9 @@ interface CreateFormProps {
 }
 
 export default function CreateForm({ template, questions }: CreateFormProps) {
+  const tForm = useTranslations("Form");
+  const tApi = useTranslations("API");
+  const tType = useTranslations("QuestionType");
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formCreationSchema>>({
@@ -54,7 +59,7 @@ export default function CreateForm({ template, questions }: CreateFormProps) {
   const onSubmit = async (values: z.infer<typeof formCreationSchema>) => {
     const errors = FormValidator(values.answers, questions);
     if (errors.length > 0) {
-      setFormErrors(errors, form, questions);
+      setFormErrors(errors, form, questions, tForm);
     } else {
       try {
         const response = await axios.post("/api/forms", {
@@ -63,16 +68,16 @@ export default function CreateForm({ template, questions }: CreateFormProps) {
         });
 
         toast({
-          title: "Success",
-          description: "Form submited",
+          title: tApi("success"),
+          description: tApi(response.data.message),
         });
-        router.push(`/forms/${response.data.id}`);
+        router.push(`/forms/${response.data.form.id}`);
       } catch (error) {
         toast({
-          title: "Error",
+          title: tApi("error"),
           description:
             // @ts-expect-error ignore
-            error.response?.data.message || "An unexpected error occcured",
+            tApi(error.response?.data.message),
           variant: "destructive",
         });
       }
@@ -112,7 +117,11 @@ export default function CreateForm({ template, questions }: CreateFormProps) {
                           <FormInput
                             label={q.text}
                             description={q.description}
-                            placeholder={`Enter ${GetResponseType(q.type).toLowerCase()} type answer `}
+                            placeholder={tForm("enterAnswer", {
+                              type: tType(
+                                GetResponseType(q.type),
+                              ).toLowerCase(),
+                            })}
                             field={field}
                           />
                         )}
@@ -121,7 +130,11 @@ export default function CreateForm({ template, questions }: CreateFormProps) {
                           <FormTextArea
                             label={q.text}
                             description={q.description}
-                            placeholder={`Enter ${GetResponseType(q.type).toLowerCase()} type answer `}
+                            placeholder={tForm("enterAnswer", {
+                              type: tType(
+                                GetResponseType(q.type),
+                              ).toLowerCase(),
+                            })}
                             field={field}
                           />
                         )}
@@ -130,7 +143,11 @@ export default function CreateForm({ template, questions }: CreateFormProps) {
                           <FormInput
                             label={q.text}
                             description={q.description}
-                            placeholder={`Enter ${GetResponseType(q.type).toLowerCase()} type answer `}
+                            placeholder={tForm("enterAnswer", {
+                              type: tType(
+                                GetResponseType(q.type),
+                              ).toLowerCase(),
+                            })}
                             field={field}
                             answerType={2}
                           />
@@ -156,9 +173,9 @@ export default function CreateForm({ template, questions }: CreateFormProps) {
               ))}
               <div className="flex justify-between pb-2">
                 <Button variant="outline" onClick={() => handleBack()}>
-                  Back
+                  {tForm("backButton")}
                 </Button>
-                <Button type="submit">Submit</Button>
+                <Button type="submit">{tForm("submitButton")}</Button>
               </div>
             </div>
           </form>

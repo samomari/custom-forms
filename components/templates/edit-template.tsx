@@ -39,7 +39,8 @@ import { useRouter } from "next/navigation";
 import { UsersSelect } from "./users-select";
 import { QuestionType, TemplateType, TopicType, UserType } from "@/types";
 import { FormTextArea } from "@/components/ui/form-textarea";
-import { templateSchema } from "@/schema";
+import { useTemplateSchema } from "@/schema";
+import { useTranslations } from "next-intl";
 
 interface EditTemplateProps {
   template: TemplateType;
@@ -56,12 +57,16 @@ export default function EditTemplate({
   allowedUsers,
   topics,
 }: EditTemplateProps) {
+  const tTmp = useTranslations("Template");
+  const tApi = useTranslations("API");
+  const tTop = useTranslations("Topic");
   const [isMounted, setIsMounted] = useState(false);
   const [selectedUsers, setSelectedUsers] = useState<string[]>(
     allowedUsers?.map((user) => user.id) || [],
   );
   const { toast } = useToast();
   const router = useRouter();
+  const templateSchema = useTemplateSchema();
 
   const form = useForm<z.infer<typeof templateSchema>>({
     resolver: zodResolver(templateSchema),
@@ -133,16 +138,16 @@ export default function EditTemplate({
         selectedUsers: values.selectedUsers,
       });
       toast({
-        title: "Success",
-        description: response.data.message,
+        title: tApi("success"),
+        description: tApi(response.data.message),
       });
       router.push(`/templates/${template?.id}`);
     } catch (error) {
       toast({
-        title: "Error",
+        title: tApi("error"),
         description:
           // @ts-expect-error ignore
-          error.response?.data?.message,
+          tApi(error.response?.data?.message),
         variant: "destructive",
       });
     }
@@ -197,15 +202,15 @@ export default function EditTemplate({
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <Card className="p-6 shadow-lg rounded-xl space-y-4">
               <CardHeader className="text-xl uppercase text-center">
-                <CardTitle>Edit Template</CardTitle>
+                <CardTitle>{tTmp("editTemplate")}</CardTitle>
               </CardHeader>
               <FormField
                 control={form.control}
                 name="title"
                 render={({ field }) => (
                   <FormInput
-                    label="Title"
-                    placeholder="Enter template title"
+                    label={tTmp("titleLabel")}
+                    placeholder={tTmp("titlePlaceholder")}
                     field={field}
                   />
                 )}
@@ -215,8 +220,8 @@ export default function EditTemplate({
                 name="description"
                 render={({ field }) => (
                   <FormTextArea
-                    label="Description (optional)"
-                    placeholder="Enter template description"
+                    label={tTmp("descriptionLabel")}
+                    placeholder={tTmp("descriptionPlaceholder")}
                     field={field}
                   />
                 )}
@@ -226,10 +231,10 @@ export default function EditTemplate({
                 name="topicId"
                 render={({ field }) => (
                   <FormSelect
-                    label="Template Topic"
+                    label={tTmp("topicLabel")}
                     options={topics.map((topic) => ({
                       value: topic.id,
-                      label: topic.name,
+                      label: tTop(topic.name),
                     }))}
                     field={field}
                   />
@@ -241,7 +246,7 @@ export default function EditTemplate({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="mr-4 uppercase font-bold">
-                      Template Image (optional)
+                      {tTmp("imageLabel")}
                     </FormLabel>
                     <FormControl>
                       <ImageUpload
@@ -259,7 +264,7 @@ export default function EditTemplate({
                   <FormItem>
                     <div className="flex items-center space-x-4">
                       <FormLabel className="mr-4 uppercase font-bold">
-                        Public Template
+                        {tTmp("switchLabel")}
                       </FormLabel>
                       <Switch
                         id="visibility-switch"
@@ -307,7 +312,7 @@ export default function EditTemplate({
             <div className="flex justify-between pb-2">
               <div className="flex space-x-2">
                 {fields.length > 1 && (
-                  <ActionTooltip label="Remove question">
+                  <ActionTooltip label={tTmp("removeTooltip")}>
                     <Button
                       type="button"
                       onClick={() => remove(fields.length - 1)}
@@ -318,7 +323,7 @@ export default function EditTemplate({
                     </Button>
                   </ActionTooltip>
                 )}
-                <ActionTooltip label="Add question">
+                <ActionTooltip label={tTmp("addTooltip")}>
                   <Button
                     type="button"
                     onClick={() =>
@@ -338,9 +343,9 @@ export default function EditTemplate({
               </div>
               <div className="flex space-x-2">
                 <Button variant="outline" onClick={() => handleBack()}>
-                  Back
+                  {tTmp("backButton")}
                 </Button>
-                <Button type="submit">Submit</Button>
+                <Button type="submit">{tTmp("submitButton")}</Button>
               </div>
             </div>
           </form>

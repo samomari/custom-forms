@@ -6,6 +6,7 @@ import { FormField } from "@/components/ui/form";
 import { FormInput } from "@/components/ui/form-input";
 import { FormSelect } from "@/components/ui/form-select";
 import { ResponseTypes } from "@/types";
+import { useTranslations } from "next-intl";
 
 interface TemplateQuestionProps {
   field: any;
@@ -18,6 +19,8 @@ export const TemplateQuestion = ({
   index,
   form,
 }: TemplateQuestionProps) => {
+  const t = useTranslations("TemplateQuestion");
+  const tType = useTranslations("QuestionType");
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: field.id });
 
@@ -46,8 +49,8 @@ export const TemplateQuestion = ({
             name={`questions.${index}.question`}
             render={({ field }) => (
               <FormInput
-                label="Question"
-                placeholder="Enter your question"
+                label={t("questionLabel")}
+                placeholder={t("questionPlaceholder")}
                 field={field}
               />
             )}
@@ -60,10 +63,10 @@ export const TemplateQuestion = ({
             name={`questions.${index}.type`}
             render={({ field }) => (
               <FormSelect
-                label="Question Type"
+                label={t("typeLabel")}
                 options={ResponseTypes.map((type) => ({
                   value: type.id.toString(),
-                  label: type.label,
+                  label: tType(type.label),
                 }))}
                 field={{
                   ...field,
@@ -81,8 +84,8 @@ export const TemplateQuestion = ({
           name={`questions.${index}.description`}
           render={({ field }) => (
             <FormInput
-              label="Description (optional)"
-              placeholder="Question Description"
+              label={t("descriptionLabel")}
+              placeholder={t("descriptionPlaceholder")}
               field={field}
             />
           )}

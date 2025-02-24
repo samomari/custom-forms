@@ -2,6 +2,7 @@ import { DataTable } from "@/components/ui/data-table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
 type Tab = {
   value: string;
@@ -20,6 +21,7 @@ interface EmptyStateProps {
 }
 
 export default function Dashboard({ tabs }: { tabs: Tab[] }) {
+  const t = useTranslations("Dashboard");
   return (
     <div className="h-full w-full overflow-hidden p-6">
       <Tabs defaultValue={tabs[0].value}>
@@ -32,7 +34,7 @@ export default function Dashboard({ tabs }: { tabs: Tab[] }) {
             ))}
           </TabsList>
           <Link href="/templates/new">
-            <Button>Create Template</Button>
+            <Button>{t("templatesTabLink")}</Button>
           </Link>
         </div>
         {tabs.map((tab) => (

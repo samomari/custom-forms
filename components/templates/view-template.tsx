@@ -17,7 +17,8 @@ import { GetResponseType } from "@/lib/utils/get-response-type";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useDeleteTemplate } from "@/lib/utils/delete-template";
-import { ConfirmDialog } from "../ui/confirm-dialog";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { useTranslations } from "next-intl";
 
 interface ViewTemplateProps {
   id: string;
@@ -42,6 +43,9 @@ export default function ViewTemplate({
   const [likes, setLikes] = useState(likeCount);
   const [open, setOpen] = useState(false);
   const { deleteTemplate } = useDeleteTemplate();
+  const tView = useTranslations("Template");
+  const tApi = useTranslations("API");
+  const tType = useTranslations("QuestionType");
 
   const handleLike = async () => {
     try {
@@ -52,16 +56,16 @@ export default function ViewTemplate({
       if (response.status === 200) {
         setLikes((prev) => prev + 1);
         toast({
-          title: "Success",
-          description: response.data.message,
+          title: tApi("success"),
+          description: tApi(response.data.message),
         });
       }
     } catch (error) {
       toast({
-        title: "Error",
+        title: tApi("error"),
         description:
           // @ts-expect-error ignore
-          error.response?.data?.message,
+          tApi(error.response?.data?.message),
         variant: "destructive",
       });
     }
@@ -103,10 +107,12 @@ export default function ViewTemplate({
                   )}
                   <Input
                     id={`question-${q.id}-input`}
-                    value={`Expected ${GetResponseType(q.type).toLowerCase()} answer type`}
+                    value={tView("expectedAnswer", {
+                      type: tType(GetResponseType(q.type)).toLowerCase(),
+                    })}
                     disabled
                     className="font-medium"
-                  ></Input>
+                  />
                 </div>
               ))}
             </ul>
@@ -114,7 +120,7 @@ export default function ViewTemplate({
           {user && (
             <div className="mt-6 flex justify-between items-center">
               <div className="flex">
-                <ActionTooltip label="Like">
+                <ActionTooltip label={tView("like")}>
                   <Button
                     variant="ghost"
                     className="text-red-500 hover:text-red-600"
@@ -125,12 +131,12 @@ export default function ViewTemplate({
                 </ActionTooltip>
                 {isEditor && (
                   <>
-                    <ActionTooltip label="Edit Template">
+                    <ActionTooltip label={tView("editTemplate")}>
                       <Button variant="ghost" onClick={handleEdit}>
                         <Pencil className="h-5 w-5 mr-1" />
                       </Button>
                     </ActionTooltip>
-                    <ActionTooltip label="Delete Template">
+                    <ActionTooltip label={tView("deleteTemplate")}>
                       <Button
                         variant="ghost"
                         className="text-red-500 hover:text-red-600"
@@ -147,19 +153,13 @@ export default function ViewTemplate({
                 className="bg-indigo-600 text-white hover:bg-indigo-700"
                 onClick={() => router.push(`/forms/new/${id}`)}
               >
-                Use Template
+                {tView("useTemplate")}
               </Button>
             </div>
           )}
         </Card>
       </div>
-      <ConfirmDialog
-        title="Are you sure?"
-        description="This action cannot be undone."
-        onConfirm={handleDelete}
-        open={open}
-        setOpen={setOpen}
-      />
+      <ConfirmDialog onConfirm={handleDelete} open={open} setOpen={setOpen} />
     </div>
   );
 }

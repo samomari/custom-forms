@@ -13,21 +13,20 @@ export async function DELETE(
     const user = await currentUser();
 
     if (!user) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ message: "unauthorized" }, { status: 401 });
     }
 
     if (user.status === "BLOCKED") {
       return NextResponse.json(
         {
-          message:
-            "Your account has been blocked, please contact administration.",
+          message: "blocked",
         },
         { status: 403 },
       );
     }
 
     if (!id) {
-      return NextResponse.json({ message: "Form ID Missing" }, { status: 400 });
+      return NextResponse.json({ message: "formIdMissing" }, { status: 400 });
     }
 
     const formExists = await db
@@ -39,7 +38,7 @@ export async function DELETE(
     if (formExists.length === 0) {
       return NextResponse.json(
         {
-          message: "Form not found",
+          message: "formNotFound",
         },
         { status: 404 },
       );
@@ -50,7 +49,7 @@ export async function DELETE(
 
     if (!isAdmin && !isOwner) {
       return NextResponse.json(
-        { message: "Unauthorized for this action" },
+        { message: "unauthorizedForThisAction" },
         { status: 403 },
       );
     }
@@ -63,14 +62,11 @@ export async function DELETE(
       .where(eq(template.id, formExists[0].templateId));
 
     return NextResponse.json({
-      message: "Form deleted",
+      message: "formDeleted",
     });
   } catch (error) {
     console.error("FORM_DELETE_ERROR", error);
-    return NextResponse.json(
-      { error: "Failed to delete form" },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: "internalError" }, { status: 500 });
   }
 }
 
@@ -81,14 +77,13 @@ export async function PATCH(
   try {
     const user = await currentUser();
     if (!user) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ message: "unauthorized" }, { status: 401 });
     }
 
     if (user.status === "BLOCKED") {
       return NextResponse.json(
         {
-          message:
-            "Your account has been blocked, please contact administration.",
+          message: "blocked",
         },
         { status: 403 },
       );
@@ -98,7 +93,7 @@ export async function PATCH(
     const { answers } = await req.json();
 
     if (!id) {
-      return NextResponse.json({ message: "Form ID Missing" }, { status: 400 });
+      return NextResponse.json({ message: "formIdMissing" }, { status: 400 });
     }
 
     const formExists = await db
@@ -108,7 +103,7 @@ export async function PATCH(
       .execute();
 
     if (formExists.length === 0) {
-      return NextResponse.json({ message: "Form not found" }, { status: 404 });
+      return NextResponse.json({ message: "formNotFound" }, { status: 404 });
     }
 
     const isAdmin = user.role === "ADMIN";
@@ -116,7 +111,7 @@ export async function PATCH(
 
     if (!isAdmin && !isOwner) {
       return NextResponse.json(
-        { message: "Unauthorized for this action" },
+        { message: "unauthorizedForThisAction" },
         { status: 403 },
       );
     }
@@ -131,14 +126,14 @@ export async function PATCH(
 
     if (!updatedForm.length) {
       return NextResponse.json(
-        { message: "Form was not updated" },
+        { message: "failedToUpdateForm" },
         { status: 409 },
       );
     }
 
     if (!answers || answers.length === 0) {
       return NextResponse.json(
-        { message: "No answers provided" },
+        { message: "noAnswersProvided" },
         { status: 400 },
       );
     }
@@ -155,15 +150,12 @@ export async function PATCH(
 
     return NextResponse.json(
       {
-        message: "Form updated succesfully",
+        message: "formUpdated",
       },
       { status: 200 },
     );
   } catch (error) {
     console.error("FORM_UPDATE_ERROR", error);
-    return NextResponse.json(
-      { message: "Failed to update form" },
-      { status: 500 },
-    );
+    return NextResponse.json({ message: "internalError" }, { status: 500 });
   }
 }

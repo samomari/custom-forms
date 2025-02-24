@@ -7,8 +7,10 @@ import { GetAllForms } from "@/features/forms/get-all-forms";
 import { GetAllTemplates } from "@/features/templates/get-all-templates";
 import { allFormsColumns } from "@/components/admin/all-forms-columns";
 import { allTemplatesColumns } from "@/components/admin/all-templates-columns";
+import { getTranslations } from "next-intl/server";
 
 export default async function Page() {
+  const t = await getTranslations("Dashboard");
   const user = await currentUser();
   if (!user || !(user.role === "ADMIN")) redirect("/templates");
 
@@ -19,28 +21,28 @@ export default async function Page() {
   const tabs = [
     {
       value: "forms",
-      label: "Forms",
+      label: t("formsTabLabel"),
       data: allForms,
       columns: allFormsColumns,
-      emptyMessage: "There is no any forms yet.",
+      emptyMessage: t("formsTabEmpty"),
       link: "/templates",
-      linkText: "Browse Templates",
+      linkText: t("formsTabLink"),
     },
     {
       value: "templates",
-      label: "Templates",
+      label: t("templatesTabLabel"),
       data: allTemplates,
       columns: allTemplatesColumns,
-      emptyMessage: "There is no any templates yet.",
+      emptyMessage: t("templatesTabEmpty"),
       link: "/templates/new",
-      linkText: "Create Template",
+      linkText: t("templatesTabLink"),
     },
     {
       value: "users",
-      label: "Users",
+      label: t("usersTabLabel"),
       data: allUsers,
       columns: allUsersColumns,
-      emptyMessage: "No users found.",
+      emptyMessage: t("userTabEmpty"),
       link: null,
       linkText: null,
     },

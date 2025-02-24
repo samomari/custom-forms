@@ -13,14 +13,13 @@ export async function DELETE(
     const user = await currentUser();
 
     if (!user) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ message: "unauthorized" }, { status: 401 });
     }
 
     if (user.status === "BLOCKED") {
       return NextResponse.json(
         {
-          message:
-            "Your account has been blocked, please contact administration.",
+          message: "blocked",
         },
         { status: 403 },
       );
@@ -28,7 +27,7 @@ export async function DELETE(
 
     if (!id) {
       return NextResponse.json(
-        { message: "Template ID Missing" },
+        { message: "templateIdMissing" },
         { status: 400 },
       );
     }
@@ -41,7 +40,7 @@ export async function DELETE(
 
     if (templateExists.length === 0) {
       return NextResponse.json(
-        { message: "Template not found" },
+        { message: "templateNotFound" },
         { status: 404 },
       );
     }
@@ -51,7 +50,7 @@ export async function DELETE(
 
     if (!isAdmin && !isOwner) {
       return NextResponse.json(
-        { message: "Unauthorized for this action" },
+        { message: "unauthorizedForThisAction" },
         { status: 403 },
       );
     }
@@ -59,14 +58,11 @@ export async function DELETE(
     await db.delete(template).where(eq(template.id, id));
 
     return NextResponse.json({
-      message: "Template deleted",
+      message: "templateDeleted",
     });
   } catch (error) {
     console.error("TEMPLATE_DELETE_ERROR", error);
-    return NextResponse.json(
-      { message: "Failed to delete template" },
-      { status: 500 },
-    );
+    return NextResponse.json({ message: "internalError" }, { status: 500 });
   }
 }
 
@@ -88,14 +84,13 @@ export async function PATCH(
     } = await req.json();
 
     if (!user) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ message: "unauthorized" }, { status: 401 });
     }
 
     if (user.status === "BLOCKED") {
       return NextResponse.json(
         {
-          message:
-            "Your account has been blocked, please contact administration.",
+          message: "blocked",
         },
         { status: 403 },
       );
@@ -103,7 +98,7 @@ export async function PATCH(
 
     if (!id) {
       return NextResponse.json(
-        { message: "Template ID Missing" },
+        { message: "templateIdMissing" },
         { status: 400 },
       );
     }
@@ -117,7 +112,7 @@ export async function PATCH(
 
     if (templateExists.length === 0) {
       return NextResponse.json(
-        { message: "Template not found" },
+        { message: "templateNotFound" },
         { status: 404 },
       );
     }
@@ -127,7 +122,7 @@ export async function PATCH(
 
     if (!isAdmin && !isOwner) {
       return NextResponse.json(
-        { message: "Unauthorized for this action" },
+        { message: "unauthorizedForThisAction" },
         { status: 403 },
       );
     }
@@ -147,7 +142,7 @@ export async function PATCH(
 
     if (!updatedTemplate.length) {
       return NextResponse.json(
-        { message: "Template was not updated" },
+        { message: "failedToUpdateTemplate" },
         { status: 404 },
       );
     }
@@ -258,12 +253,9 @@ export async function PATCH(
         await db.insert(privateTemplateAccess).values(insertValues);
       }
     }
-    return NextResponse.json({ message: "Template updated" });
+    return NextResponse.json({ message: "templateUpdated" });
   } catch (error) {
     console.error("TEMPLATE_UPDATE_ERROR", error);
-    return NextResponse.json(
-      { message: "Failed to update template" },
-      { status: 500 },
-    );
+    return NextResponse.json({ message: "internalError" }, { status: 500 });
   }
 }

@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useDeleteForm } from "@/lib/utils/delete-form";
 import { ConfirmDialog } from "../ui/confirm-dialog";
+import { useTranslations } from "next-intl";
 
 type FormType = {
   id: string;
@@ -23,6 +24,7 @@ type FormType = {
 };
 
 const ActionCell = ({ row }: { row: any }) => {
+  const t = useTranslations("DataTable");
   const [open, setOpen] = useState(false);
   const { deleteForm } = useDeleteForm();
 
@@ -39,29 +41,23 @@ const ActionCell = ({ row }: { row: any }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuLabel>{t("actions")}</DropdownMenuLabel>
           <DropdownMenuItem>
-            <Link href={`/forms/${row.original.id}`}>View Form</Link>
+            <Link href={`/forms/${row.original.id}`}>{t("viewForm")}</Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <Link href={`/forms/${row.original.id}/edit`}>Edit Form</Link>
+            <Link href={`/forms/${row.original.id}/edit`}>{t("editForm")}</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => setOpen(true)}
             className="text-red-600 hover:cursor-pointer"
           >
-            Delete Form
+            {t("deleteForm")}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <ConfirmDialog
-        title="Are you sure?"
-        description="This action cannot be undone."
-        onConfirm={handleDelete}
-        open={open}
-        setOpen={setOpen}
-      />
+      <ConfirmDialog onConfirm={handleDelete} open={open} setOpen={setOpen} />
     </>
   );
 };

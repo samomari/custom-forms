@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { UserType } from "@/types";
+import { useTranslations } from "next-intl";
 
 interface UsersSelectProps {
   form: any;
@@ -21,45 +22,48 @@ export const UsersSelect = ({
   users,
   selectedUsers,
   setSelectedUsers,
-}: UsersSelectProps) => (
-  <FormField
-    control={form.control}
-    name="selectedUsers"
-    // eslint-disable-next-line
-    render={({ field }) => (
-      <FormItem>
-        <FormControl>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="border pr-0">
-                Select Users
-                <ChevronDown className="w-4 h-4 mr-2" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              {users.length === 0 ? (
-                <p className="text-sm">No available users to select</p>
-              ) : (
-                users.map((user: { id: string; username: string }) => (
-                  <DropdownMenuCheckboxItem
-                    key={user.id}
-                    checked={selectedUsers.includes(user.id)}
-                    onCheckedChange={(checked) => {
-                      const updatedUsers = checked
-                        ? [...selectedUsers, user.id]
-                        : selectedUsers.filter((id) => id !== user.id);
-                      setSelectedUsers(updatedUsers);
-                      form.setValue("selectedUsers", updatedUsers);
-                    }}
-                  >
-                    {user.username}
-                  </DropdownMenuCheckboxItem>
-                ))
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </FormControl>
-      </FormItem>
-    )}
-  />
-);
+}: UsersSelectProps) => {
+  const t = useTranslations("Template");
+  return (
+    <FormField
+      control={form.control}
+      name="selectedUsers"
+      // eslint-disable-next-line
+      render={({ field }) => (
+        <FormItem>
+          <FormControl>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="border pr-0">
+                  {t("selectUsers")}
+                  <ChevronDown className="w-4 h-4 mr-2" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                {users.length === 0 ? (
+                  <p className="text-sm">{t("noUsers")}</p>
+                ) : (
+                  users.map((user: { id: string; username: string }) => (
+                    <DropdownMenuCheckboxItem
+                      key={user.id}
+                      checked={selectedUsers.includes(user.id)}
+                      onCheckedChange={(checked) => {
+                        const updatedUsers = checked
+                          ? [...selectedUsers, user.id]
+                          : selectedUsers.filter((id) => id !== user.id);
+                        setSelectedUsers(updatedUsers);
+                        form.setValue("selectedUsers", updatedUsers);
+                      }}
+                    >
+                      {user.username}
+                    </DropdownMenuCheckboxItem>
+                  ))
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </FormControl>
+        </FormItem>
+      )}
+    />
+  );
+};

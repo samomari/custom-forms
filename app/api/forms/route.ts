@@ -11,14 +11,13 @@ export async function POST(req: Request) {
     const user = await currentUser();
 
     if (!user) {
-      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      return NextResponse.json({ message: "unauthorized" }, { status: 401 });
     }
 
     if (user.status === "BLOCKED") {
       return NextResponse.json(
         {
-          message:
-            "Your account has been blocked, please contact administration.",
+          message: "blocked",
         },
         { status: 403 },
       );
@@ -27,7 +26,7 @@ export async function POST(req: Request) {
     const templateData = await GetTemplateData(templateId);
     if (!templateData) {
       return NextResponse.json(
-        { message: "Template not found" },
+        { message: "templateNotFound" },
         { status: 404 },
       );
     }
@@ -42,7 +41,7 @@ export async function POST(req: Request) {
 
     if (newForm.length === 0 || !newForm[0]) {
       return NextResponse.json(
-        { message: "Failed to create form" },
+        { message: "failedToCreateForm" },
         { status: 500 },
       );
     }
@@ -64,9 +63,12 @@ export async function POST(req: Request) {
       .set({ formCount: sql`${template.formCount} +1` })
       .where(eq(template.id, templateId));
 
-    return NextResponse.json(newForm[0]);
+    return NextResponse.json({
+      form: newForm[0],
+      message: "formSubmitted",
+    });
   } catch (error) {
     console.error("FORM_POST_ERROR", error);
-    return NextResponse.json({ message: "Internal Error" }, { status: 500 });
+    return NextResponse.json({ message: "internalError" }, { status: 500 });
   }
 }

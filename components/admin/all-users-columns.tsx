@@ -17,11 +17,13 @@ import { MoreHorizontal, ArrowUpDown, Check, Loader2 } from "lucide-react";
 import { UserType } from "@/types";
 import { useState } from "react";
 import { useDeleteUser } from "@/lib/utils/delete-user";
-import { ConfirmDialog } from "../ui/confirm-dialog";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { useRoleChange } from "@/lib/utils/role-change";
 import { useBlockUser } from "@/lib/utils/block-user";
+import { useTranslations } from "next-intl";
 
 const ActionCell = ({ row }: { row: any }) => {
+  const t = useTranslations("DataTable");
   const [open, setOpen] = useState(false);
   const { deleteUser } = useDeleteUser();
   const { blockUser } = useBlockUser();
@@ -41,9 +43,9 @@ const ActionCell = ({ row }: { row: any }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuLabel>{t("actions")}</DropdownMenuLabel>
           <DropdownMenuSub>
-            <DropdownMenuSubTrigger>Role</DropdownMenuSubTrigger>
+            <DropdownMenuSubTrigger>{t("role")}</DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
                 <DropdownMenuItem
@@ -72,20 +74,20 @@ const ActionCell = ({ row }: { row: any }) => {
             onClick={() => blockUser(row.original.id)}
             className={`hover:cursor-pointer ${row.original.status === "ACTIVE" ? "text-red-600" : "text-green-600"}`}
           >
-            {row.original.status === "ACTIVE" ? "Block User" : "Unblock User"}
+            {row.original.status === "ACTIVE"
+              ? t("blockUser")
+              : t("unblockUser")}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() => setOpen(true)}
             className="text-red-600 hover:cursor-pointer"
           >
-            Delete User
+            {t("deleteUser")}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       <ConfirmDialog
-        title="Are you sure?"
-        description="This action cannot be undone."
         onConfirm={() => deleteUser(row.original.id)}
         open={open}
         setOpen={setOpen}

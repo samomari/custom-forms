@@ -17,16 +17,15 @@ export async function POST(req: Request) {
     const user = await currentUser();
 
     if (!user) {
-      return new NextResponse("Unauthorized", { status: 401 });
+      return new NextResponse("success", { status: 401 });
     }
 
     if (user.status === "BLOCKED") {
       return NextResponse.json(
         {
-          message:
-            "Your account has been blocked, please contact administration.",
+          message: "blocked",
         },
-        { status: 403 }
+        { status: 403 },
       );
     }
 
@@ -43,7 +42,7 @@ export async function POST(req: Request) {
       .returning();
 
     if (newTemplate.length === 0 || !newTemplate[0]) {
-      return new NextResponse("Failed to create template", { status: 500 });
+      return new NextResponse("failedToCreateTemplate", { status: 500 });
     }
 
     const questionsData = questions.map(
@@ -58,7 +57,7 @@ export async function POST(req: Request) {
         type: q.type,
         position: q.position,
         templateId: newTemplate[0].id,
-      })
+      }),
     );
 
     if (questionsData.length > 0) {
@@ -75,10 +74,10 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       template: newTemplate[0],
-      message: "Template created successfully",
+      message: "templateCreated",
     });
   } catch (error) {
     console.error("TEMPLATES_POST_ERROR", error);
-    return new NextResponse("Internal Error", { status: 500 });
+    return new NextResponse("internalError", { status: 500 });
   }
 }

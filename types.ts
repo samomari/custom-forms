@@ -22,10 +22,10 @@ export type QuestionAnswer = {
 };
 
 export const ResponseTypes = [
-  { id: 0, label: "String" },
-  { id: 1, label: "Text" },
-  { id: 2, label: "Integer" },
-  { id: 3, label: "Checkbox" },
+  { id: 0, label: "string" },
+  { id: 1, label: "text" },
+  { id: 2, label: "integer" },
+  { id: 3, label: "checkbox" },
 ];
 
 export type QuestionType = {
