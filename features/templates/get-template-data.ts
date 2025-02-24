@@ -13,6 +13,7 @@ export const GetTemplateData = async (templateId: string) => {
         topicId: template.topicId,
         imageUrl: template.imageUrl,
         likeCount: template.likeCount,
+        formCount: template.formCount,
         isPublic: template.isPublic,
       })
       .from(template)

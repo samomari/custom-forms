@@ -44,6 +44,13 @@ const ActionCell = ({ row }: { row: any }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>{t("actions")}</DropdownMenuLabel>
+          {row.original.formCount > 0 && (
+            <DropdownMenuItem>
+              <Link href={`/templates/${row.original.id}/forms`}>
+                {t("formsList")}
+              </Link>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem>
             <Link href={`/templates/${row.original.id}`}>
               {t("viewTemplate")}

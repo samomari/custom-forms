@@ -34,6 +34,7 @@ export default async function Page({
           title={template.title}
           description={template.description}
           likeCount={template.likeCount}
+          formCount={template.formCount}
           questions={questions}
           isEditor={isEditor}
           user={user}

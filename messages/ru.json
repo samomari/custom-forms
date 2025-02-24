@@ -34,6 +34,7 @@
     "createTemplate": "Создать шаблон",
     "expectedAnswer": "Ожидаемый ответ типа {type}",
     "like": "Нравится",
+    "viewForms": "Список форм",
     "editTemplate": "Редактировать шаблон",
     "deleteTemplate": "Удалить шаблон",
     "useTemplate": "Использовать шаблон",
@@ -84,10 +85,15 @@
     "emptyError": "Это поле не может быть пустым",
     "numberError": "Ответ должен быть положительным числом",
     "editForm": "Редактировать форму",
-    "deleteForm": "Удалить форму"
+    "deleteForm": "Удалить форму",
+    "formsCreated": "Формы, созданные по шаблону {title}",
+    "formFilled": "Форму заполнил: {username}",
+    "formId": "ID формы: {id}",
+    "lastUpdated": "Последнее обновление: {date}"
   },
   "DataTable": {
     "actions": "Действия",
+    "formsList": "Список форм",
     "viewTemplate": "Просмотреть шаблон",
     "editTemplate": "Редактировать шаблон",
     "deleteTemplate": "Удалить шаблон",

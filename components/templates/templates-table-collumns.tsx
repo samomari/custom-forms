@@ -21,6 +21,8 @@ type TemplateType = {
   updatedAt: Date;
   title: string;
   topic: string;
+  likeCount: number;
+  formCount: number;
 };
 
 const ActionCell = ({ row }: { row: any }) => {
@@ -41,6 +43,13 @@ const ActionCell = ({ row }: { row: any }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>{t("actions")}</DropdownMenuLabel>
+          {row.original.formCount > 0 && (
+            <DropdownMenuItem>
+              <Link href={`/templates/${row.original.id}/forms`}>
+                {t("formsList")}
+              </Link>
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem>
             <Link href={`/templates/${row.original.id}`}>
               {t("viewTemplate")}
@@ -101,6 +110,36 @@ export const templatesTableColumns: ColumnDef<TemplateType>[] = [
     cell: ({ row }) => (
       <div className="capitalize px-4">{row.original.topic}</div>
     ),
+  },
+  {
+    accessorKey: "likeCount",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Likes Count
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className="px-16">{row.original.likeCount}</div>,
+  },
+  {
+    accessorKey: "formCount",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Forms Count
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => <div className="px-16">{row.original.formCount}</div>,
   },
   {
     accessorKey: "updatedAt",

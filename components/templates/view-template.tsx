@@ -6,7 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Heart, Pencil, Trash } from "lucide-react";
+import { Heart, List, Pencil, Trash } from "lucide-react";
 import { ActionTooltip } from "@/components/action-tooltip";
 import { QuestionType } from "@/types";
 import { toast } from "@/hooks/use-toast";
@@ -25,6 +25,7 @@ interface ViewTemplateProps {
   title: string;
   description?: string | null;
   likeCount: number;
+  formCount: number;
   questions: QuestionType[];
   isEditor: boolean;
   user: any;
@@ -36,6 +37,7 @@ export default function ViewTemplate({
   title,
   description,
   likeCount,
+  formCount,
   questions,
   isEditor,
   user,
@@ -136,11 +138,22 @@ export default function ViewTemplate({
                 </ActionTooltip>
                 {isEditor && (
                   <>
+                    {formCount > 0 && (
+                      <ActionTooltip label={t("Template.viewForms")}>
+                        <Button
+                          variant="ghost"
+                          onClick={() => router.push(`/templates/${id}/forms`)}
+                        >
+                          <List className="h-5 w-5"></List>
+                        </Button>
+                      </ActionTooltip>
+                    )}
                     <ActionTooltip label={t("Template.editTemplate")}>
                       <Button variant="ghost" onClick={handleEdit}>
-                        <Pencil className="h-5 w-5 mr-1" />
+                        <Pencil className="h-5 w-5" />
                       </Button>
                     </ActionTooltip>
+
                     <ActionTooltip label={t("Template.deleteTemplate")}>
                       <Button
                         variant="ghost"
