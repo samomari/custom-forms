@@ -19,7 +19,7 @@ export default function TemplatesGallery({
   topics?: { id: string; name: string }[];
 }) {
   const t = useTranslations();
-  const [filter, setFilter] = useState<string | null>(null);
+  const [filter, setFilter] = useState<string | undefined>(undefined);
   const filteredTemplates = filter
     ? templates.filter((template) => template.topicId === filter)
     : templates;
@@ -39,7 +39,7 @@ export default function TemplatesGallery({
                 <SelectValue placeholder={t("TemplatesPage.filter")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={null}>
+                <SelectItem value={undefined}>
                   {t("TemplatesPage.allTopics")}
                 </SelectItem>
                 {topics.map((topic) => (
