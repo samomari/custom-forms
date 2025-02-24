@@ -19,7 +19,7 @@ export default function TemplatesGallery({
   topics?: { id: string; name: string }[];
 }) {
   const t = useTranslations();
-  const [filter, setFilter] = useState<string>("");
+  const [filter, setFilter] = useState<string | null>(null);
   const filteredTemplates = filter
     ? templates.filter((template) => template.topicId === filter)
     : templates;
@@ -33,7 +33,7 @@ export default function TemplatesGallery({
           <div className="pl-4 mt-[-35px] mb-4">
             <Select
               onValueChange={(value) => setFilter(value)}
-              defaultValue={filter}
+              defaultValue={undefined}
             >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder={t("TemplatesPage.filter")} />
