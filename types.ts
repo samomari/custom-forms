@@ -1,6 +1,7 @@
 export type GalleryTemplateType = {
   id: string;
   title: string;
+  topicId: string;
   description?: string | null;
   imageUrl?: string | null;
   username?: string;
@@ -8,7 +9,6 @@ export type GalleryTemplateType = {
 
 export type TemplateType = GalleryTemplateType & {
   userId: string;
-  topicId: string;
   likeCount: number;
   isPublic: boolean;
 };

@@ -28,6 +28,7 @@ interface ViewTemplateProps {
   questions: QuestionType[];
   isEditor: boolean;
   user: any;
+  topicName: string;
 }
 
 export default function ViewTemplate({
@@ -38,14 +39,13 @@ export default function ViewTemplate({
   questions,
   isEditor,
   user,
+  topicName,
 }: ViewTemplateProps) {
   const router = useRouter();
   const [likes, setLikes] = useState(likeCount);
   const [open, setOpen] = useState(false);
   const { deleteTemplate } = useDeleteTemplate();
-  const tView = useTranslations("Template");
-  const tApi = useTranslations("API");
-  const tType = useTranslations("QuestionType");
+  const t = useTranslations();
 
   const handleLike = async () => {
     try {
@@ -56,16 +56,16 @@ export default function ViewTemplate({
       if (response.status === 200) {
         setLikes((prev) => prev + 1);
         toast({
-          title: tApi("success"),
-          description: tApi(response.data.message),
+          title: t("API.success"),
+          description: t(`API.${response.data.message}`),
         });
       }
     } catch (error) {
       toast({
-        title: tApi("error"),
+        title: t("API.error"),
         description:
           // @ts-expect-error ignore
-          tApi(error.response?.data?.message),
+          t(`API.${error.response?.data?.message}`),
         variant: "destructive",
       });
     }
@@ -89,6 +89,9 @@ export default function ViewTemplate({
             <CardDescription className="break-words">
               {description}
             </CardDescription>
+            <p className="text-sm text-muted-foreground font-medium">
+              {t(`Topic.${topicName}`)}
+            </p>
           </CardHeader>
           <div className="mt-6">
             <ul className="space-y-3">
@@ -107,8 +110,10 @@ export default function ViewTemplate({
                   )}
                   <Input
                     id={`question-${q.id}-input`}
-                    value={tView("expectedAnswer", {
-                      type: tType(GetResponseType(q.type)).toLowerCase(),
+                    value={t("Template.expectedAnswer", {
+                      type: t(
+                        `QuestionType.${GetResponseType(q.type)}`,
+                      ).toLowerCase(),
                     })}
                     disabled
                     className="font-medium"
@@ -120,7 +125,7 @@ export default function ViewTemplate({
           {user && (
             <div className="mt-6 flex justify-between items-center">
               <div className="flex">
-                <ActionTooltip label={tView("like")}>
+                <ActionTooltip label={t("Template.like")}>
                   <Button
                     variant="ghost"
                     className="text-red-500 hover:text-red-600"
@@ -131,12 +136,12 @@ export default function ViewTemplate({
                 </ActionTooltip>
                 {isEditor && (
                   <>
-                    <ActionTooltip label={tView("editTemplate")}>
+                    <ActionTooltip label={t("Template.editTemplate")}>
                       <Button variant="ghost" onClick={handleEdit}>
                         <Pencil className="h-5 w-5 mr-1" />
                       </Button>
                     </ActionTooltip>
-                    <ActionTooltip label={tView("deleteTemplate")}>
+                    <ActionTooltip label={t("Template.deleteTemplate")}>
                       <Button
                         variant="ghost"
                         className="text-red-500 hover:text-red-600"
@@ -153,7 +158,7 @@ export default function ViewTemplate({
                 className="bg-indigo-600 text-white hover:bg-indigo-700"
                 onClick={() => router.push(`/forms/new/${id}`)}
               >
-                {tView("useTemplate")}
+                {t("Template.useTemplate")}
               </Button>
             </div>
           )}

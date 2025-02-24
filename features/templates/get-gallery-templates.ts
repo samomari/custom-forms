@@ -15,6 +15,7 @@ const getTemplates = async (sortBy: SortByField, limit: number | null) => {
           title: template.title,
           description: template.description,
           imageUrl: template.imageUrl,
+          topicId: template.topicId,
           username: user.username,
         })
         .from(template)
@@ -34,6 +35,7 @@ const getTemplates = async (sortBy: SortByField, limit: number | null) => {
         title: template.title,
         description: template.description,
         imageUrl: template.imageUrl,
+        topicId: template.topicId,
         username: user.username,
       })
       .from(template)

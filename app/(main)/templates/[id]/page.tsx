@@ -4,6 +4,7 @@ import { GetTemplateData } from "@/features/templates/get-template-data";
 import { GetTemplateQuestions } from "@/features/questions/get-template-questions";
 import { redirect } from "next/navigation";
 import { getUserRole } from "@/features/roles/get-user-role";
+import { GetTopicName } from "@/features/topics/get-topic-name";
 
 export default async function Page({
   params,
@@ -15,6 +16,7 @@ export default async function Page({
 
   const template = await GetTemplateData(id);
   const questions = await GetTemplateQuestions(id);
+  const topicName = await GetTopicName(id);
 
   if (!template) {
     redirect("/templates");
@@ -35,6 +37,7 @@ export default async function Page({
           questions={questions}
           isEditor={isEditor}
           user={user}
+          topicName={topicName}
         />
       )}
     </div>

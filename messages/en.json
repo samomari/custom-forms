@@ -26,7 +26,9 @@
   },
   "TemplatesPage": {
     "noTemplates": "No templates available at the moment.",
-    "availableTemplates": "All templates available to you"
+    "availableTemplates": "All templates available to you",
+    "filter": "Filter by topic",
+    "allTopics": "All Topics"
   },
   "Template": {
     "createTemplate": "Create Template",
