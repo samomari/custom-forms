@@ -19,10 +19,12 @@ export default function TemplatesGallery({
   topics?: { id: string; name: string }[];
 }) {
   const t = useTranslations();
-  const [filter, setFilter] = useState<string | undefined>(undefined);
-  const filteredTemplates = filter
-    ? templates.filter((template) => template.topicId === filter)
-    : templates;
+  const [filter, setFilter] = useState<string>("all");
+  const filteredTemplates =
+    filter === "all"
+      ? templates
+      : templates.filter((template) => template.topicId === filter);
+
   return (
     <div className="h-full w-full">
       {topics && (
@@ -33,13 +35,13 @@ export default function TemplatesGallery({
           <div className="pl-4 mt-[-35px] mb-4">
             <Select
               onValueChange={(value) => setFilter(value)}
-              defaultValue={undefined}
+              defaultValue={filter}
             >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder={t("TemplatesPage.filter")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={undefined}>
+                <SelectItem value="all">
                   {t("TemplatesPage.allTopics")}
                 </SelectItem>
                 {topics.map((topic) => (
