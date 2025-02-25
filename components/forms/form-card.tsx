@@ -20,7 +20,7 @@ export function FormCard({ id, username, updatedAt }: FormCardProps) {
     <Link href={`/forms/${id}`}>
       <Card className="shadow-lg rounded-lg overflow-hidden group relative hover:scale-105 transition-transform h-full">
         <CardHeader className="p-4 flex flex-col">
-          <CardTitle className="text-lg font-semibold">
+          <CardTitle className="text-lg font-semibold mb-2">
             {t("Form.formFilled", { username: username })}
           </CardTitle>
           <p className="text-sm text-muted-foreground">

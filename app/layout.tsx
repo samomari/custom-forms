@@ -51,7 +51,7 @@ export default async function RootLayout({
           >
             <NaviHeader />
             <NextIntlClientProvider messages={messages}>
-              <main className="grow">{children}</main>
+              <main className="grow px-2 md:px-4">{children}</main>
             </NextIntlClientProvider>
             <Toaster />
           </ThemeProvider>

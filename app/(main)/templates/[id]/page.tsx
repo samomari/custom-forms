@@ -27,7 +27,7 @@ export default async function Page({
   const isEditor = isOwner || role === "ADMIN";
 
   return (
-    <div className="h-full w-full flex justify-center pt-4">
+    <div className="h-full w-full flex justify-center pt-4 ">
       {template && (
         <ViewTemplate
           id={id}

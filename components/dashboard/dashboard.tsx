@@ -25,7 +25,7 @@ export default function Dashboard({ tabs }: { tabs: Tab[] }) {
   return (
     <div className="h-full w-full overflow-hidden p-6">
       <Tabs defaultValue={tabs[0].value}>
-        <div className="flex items-center justify-between space-x-4">
+        <div className="sm:flex-row flex flex-col-reverse items-center justify-between space-x-4">
           <TabsList className="flex space-x-4">
             {tabs.map((tab) => (
               <TabsTrigger key={tab.value} value={tab.value}>
@@ -33,7 +33,7 @@ export default function Dashboard({ tabs }: { tabs: Tab[] }) {
               </TabsTrigger>
             ))}
           </TabsList>
-          <Link href="/templates/new">
+          <Link href="/templates/new" className="mb-2 sm:mb-0">
             <Button>{t("templatesTabLink")}</Button>
           </Link>
         </div>

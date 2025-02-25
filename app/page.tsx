@@ -15,30 +15,31 @@ export default async function Home() {
   const t = await getTranslations("HomePage");
   return (
     <div className="h-full w-full">
-      <div className="p-6">
+      <div className="md:px-6 py-6 xl:px-8 px-2">
         {populartemplates.length === 0 && latestTemplates.length === 0 ? (
           <p className="text-center text-muted-foreground text-xl font-semibold">
             {t("noTemplates")}
           </p>
         ) : (
           <>
-            <p className="text-2xl font-bold mb-4 text-center">
+            <p className="text-3xl font-bold mb-6 text-start">
               {t("mostPopular")}
             </p>
             <TemplatesGallery templates={populartemplates} />
 
-            <p className="text-2xl font-bold py-2 text-center">
-              {t("latestTemplates")}
-            </p>
-            <TemplatesGallery templates={latestTemplates} />
-
-            <div className="pt-4 flex justify-end">
-              <Link href="/templates">
-                <Button variant="link">
-                  {t("browseMore")} <ArrowRight />
-                </Button>
-              </Link>
+            <div className="flex justify-between items-baseline">
+              <p className="text-3xl font-bold text-start mb-6 mt-8">
+                {t("latestTemplates")}
+              </p>
+              <div className="pt-4 flex justify-end">
+                <Link href="/templates">
+                  <Button variant="link" className="text-lg">
+                    {t("browseMore")} <ArrowRight />
+                  </Button>
+                </Link>
+              </div>
             </div>
+            <TemplatesGallery templates={latestTemplates} />
           </>
         )}
       </div>

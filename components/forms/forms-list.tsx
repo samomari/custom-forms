@@ -6,7 +6,7 @@ interface FormsListProps {
 
 export default function FormsList({ forms }: FormsListProps) {
   return (
-    <div className="xl:w-1/2 md:w-1/2 flex justify-center items-baseline">
+    <div className="lg:w-3/4 w-full flex justify-center items-baseline">
       <div className="w-full flex flex-col space-y-4">
         {forms.map((form) => (
           <FormCard

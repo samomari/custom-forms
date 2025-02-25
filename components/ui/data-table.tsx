@@ -61,7 +61,7 @@ export function DataTable<TData, TValue>({
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext(),
+                            header.getContext()
                           )}
                     </TableHead>
                   );
@@ -80,7 +80,7 @@ export function DataTable<TData, TValue>({
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext(),
+                        cell.getContext()
                       )}
                     </TableCell>
                   ))}
@@ -100,7 +100,7 @@ export function DataTable<TData, TValue>({
         </Table>
       </Card>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
+        <div className="md:flex flex-1 text-sm text-muted-foreground hidden ">
           {t("rowsLoaded", {
             count: table.getFilteredRowModel().rows.length,
           })}

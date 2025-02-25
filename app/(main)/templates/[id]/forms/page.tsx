@@ -22,7 +22,7 @@ export default async function Page({
     redirect("/templates");
   }
   return (
-    <div className="h-full w-full flex flex-col items-center pt-4">
+    <div className="h-full w-full flex flex-col items-center pt-4 ">
       <h1 className="text-2xl font-bold text-center mb-4">
         {t("Form.formsCreated", { title: template?.title })}
       </h1>

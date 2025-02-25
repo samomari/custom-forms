@@ -83,11 +83,13 @@ export default function ViewTemplate({
   };
 
   return (
-    <div className="xl:w-1/2 md:w-1/2 flex justify-center items-baseline">
+    <div className="xl:w-1/2 flex justify-center items-baseline">
       <div className="w-full text-zinc-600 dark:text-zinc-300 ">
         <Card className="p-6 shadow-lg rounded-xl space-y-4">
-          <CardHeader className="text-xl uppercase text-center">
-            <CardTitle className="break-words">{title}</CardTitle>
+          <CardHeader className="uppercase text-center">
+            <CardTitle className="break-words leading-[1.3] text-md md:text-xl">
+              {title}
+            </CardTitle>
             <CardDescription className="break-words">
               {description}
             </CardDescription>
@@ -114,7 +116,7 @@ export default function ViewTemplate({
                     id={`question-${q.id}-input`}
                     value={t("Template.expectedAnswer", {
                       type: t(
-                        `QuestionType.${GetResponseType(q.type)}`,
+                        `QuestionType.${GetResponseType(q.type)}`
                       ).toLowerCase(),
                     })}
                     disabled
@@ -125,7 +127,7 @@ export default function ViewTemplate({
             </ul>
           </div>
           {user && (
-            <div className="mt-6 flex justify-between items-center">
+            <div className="mt-6 md:flex-row flex flex-col justify-between items-center">
               <div className="flex">
                 <ActionTooltip label={t("Template.like")}>
                   <Button
@@ -168,7 +170,7 @@ export default function ViewTemplate({
               </div>
 
               <Button
-                className="bg-indigo-600 text-white hover:bg-indigo-700"
+                className="bg-indigo-600 text-white hover:bg-indigo-700 mt-2 md:mt-0"
                 onClick={() => router.push(`/forms/new/${id}`)}
               >
                 {t("Template.useTemplate")}
