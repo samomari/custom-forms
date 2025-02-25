@@ -6,16 +6,17 @@ import Link from "next/link";
 import { getUserRole } from "@/features/roles/get-user-role";
 import { LangToggle } from "@/components/lang-toggle";
 import { getTranslations } from "next-intl/server";
+import { NaviSidebar } from "./navi-sidebar";
 
 export async function NaviHeader() {
   const t = await getTranslations("Header");
   const role = await getUserRole();
   return (
-    <div className="w-full dark:bg-[#0C0A09] bg-[#E3E5E8]">
-      <nav className="flex justify-between items-center">
-        <ul className="pl-2 flex gap-6 items-center text-zinc-600 dark:text-zinc-300">
-          <li>
-            <Link href="/" className="text-3xl">
+    <div className="md:w-full w-auto dark:bg-[#0C0A09] bg-[#E3E5E8] ">
+      <nav className="md:flex justify-between items-center py-3 px-6 hidden ">
+        <ul className="hidden pl-2 md:flex gap-6 items-center text-zinc-600 dark:text-zinc-300">
+          <li className="mr-4">
+            <Link href="/" className="text-2xl font-semibold">
               Custom forms
             </Link>
           </li>
@@ -34,7 +35,7 @@ export async function NaviHeader() {
             )}
           </SignedIn>
         </ul>
-        <div className="flex pr-2">
+        <div className="md:flex hidden pr-2">
           <LangToggle />
           <ModeToggle />
           <SignedOut>
@@ -49,6 +50,9 @@ export async function NaviHeader() {
           </SignedIn>
         </div>
       </nav>
+      <div className="md:hidden block">
+        <NaviSidebar />
+      </div>
     </div>
   );
 }
