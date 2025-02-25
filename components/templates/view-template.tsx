@@ -116,7 +116,7 @@ export default function ViewTemplate({
                     id={`question-${q.id}-input`}
                     value={t("Template.expectedAnswer", {
                       type: t(
-                        `QuestionType.${GetResponseType(q.type)}`
+                        `QuestionType.${GetResponseType(q.type)}`,
                       ).toLowerCase(),
                     })}
                     disabled

@@ -1,12 +1,17 @@
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
-import { LangToggle } from "../lang-toggle";
-import { ModeToggle } from "../mode-toggle";
-import { Button } from "../ui/button";
+import { LangToggle } from "@/components/lang-toggle";
+import { ModeToggle } from "@/components/mode-toggle";
+import { Button } from "@/components/ui/button";
 import { LogIn } from "lucide-react";
 import { getUserRole } from "@/features/roles/get-user-role";
 import { getTranslations } from "next-intl/server";
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "../ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 
 export const NaviSidebar = async () => {
