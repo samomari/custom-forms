@@ -3,6 +3,7 @@ import { createUploadthing, type FileRouter } from "uploadthing/next";
 
 const f = createUploadthing();
 
+console.log("UPLOADTHING_TOKEN:", process.env.UPLOADTHING_TOKEN);
 const handleAuth = async () => {
   const { userId } = await auth();
   if (!userId) throw new Error("Unauthorized");
