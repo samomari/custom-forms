@@ -93,7 +93,7 @@ export const allFormsColumns: ColumnDef<FormType>[] = [
       );
     },
     cell: ({ row }) => (
-      <div className="capitalize px-4 md:max-w-[200px] truncate">
+      <div className="capitalize px-4 md:max-w-[200px] lg:max-w-[400px] truncate">
         {row.original.title}
       </div>
     ),
