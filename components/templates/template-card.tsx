@@ -28,7 +28,7 @@ export function TemplateCard({
               src={imageUrl}
               alt={t("templateImage")}
               fill
-              style={{ objectFit: "contain" }}
+              style={{ objectFit: "cover" }}
             />
           ) : (
             <ImageIcon size={164} />

@@ -46,7 +46,7 @@ export default function ViewForm({
   };
 
   return (
-    <div className="xl:w-1/2  flex justify-center items-baseline">
+    <div className="xl:w-1/2  flex justify-center items-baseline mb-6">
       <div className="w-full text-zinc-600 dark:text-zinc-300 ">
         <Card className="p-6 shadow-lg rounded-xl space-y-4">
           <CardHeader className="text-md md:text-xl uppercase text-center">

@@ -83,7 +83,7 @@ export default function ViewTemplate({
   };
 
   return (
-    <div className="xl:w-1/2 flex justify-center items-baseline">
+    <div className="xl:w-1/2 flex justify-center items-baseline mb-6">
       <div className="w-full text-zinc-600 dark:text-zinc-300 ">
         <Card className="p-6 shadow-lg rounded-xl space-y-4">
           <CardHeader className="uppercase text-center">
@@ -116,7 +116,7 @@ export default function ViewTemplate({
                     id={`question-${q.id}-input`}
                     value={t("Template.expectedAnswer", {
                       type: t(
-                        `QuestionType.${GetResponseType(q.type)}`,
+                        `QuestionType.${GetResponseType(q.type)}`
                       ).toLowerCase(),
                     })}
                     disabled
