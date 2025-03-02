@@ -21,6 +21,7 @@ import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { useRoleChange } from "@/lib/utils/role-change";
 import { useBlockUser } from "@/lib/utils/block-user";
 import { useTranslations } from "next-intl";
+import Link from "next/link";
 
 const ActionCell = ({ row }: { row: any }) => {
   const t = useTranslations("DataTable");
@@ -44,6 +45,10 @@ const ActionCell = ({ row }: { row: any }) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>{t("actions")}</DropdownMenuLabel>
+
+          <DropdownMenuItem>
+            <Link href={`/user/${row.original.id}`}>{t("viewUser")}</Link>
+          </DropdownMenuItem>
           <DropdownMenuSub>
             <DropdownMenuSubTrigger>{t("role")}</DropdownMenuSubTrigger>
             <DropdownMenuPortal>

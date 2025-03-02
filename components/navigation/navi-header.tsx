@@ -7,10 +7,11 @@ import { getUserRole } from "@/features/roles/get-user-role";
 import { LangToggle } from "@/components/lang-toggle";
 import { getTranslations } from "next-intl/server";
 import { NaviSidebar } from "./navi-sidebar";
+import { currentUser } from "@/features/users/current-user";
 
 export async function NaviHeader() {
   const t = await getTranslations("Header");
-  const role = await getUserRole();
+  const user = await currentUser();
   return (
     <div className="md:w-full w-auto dark:bg-[#0C0A09] bg-[#E3E5E8] ">
       <nav className="md:flex justify-between items-center py-3 px-6 hidden ">
@@ -25,10 +26,10 @@ export async function NaviHeader() {
           </li>
           <SignedIn>
             <li>
-              <Link href="/dashboard">{t("dashboard")}</Link>
+              <Link href={`/user/${user?.id}`}>{t("dashboard")}</Link>
             </li>
 
-            {role === "ADMIN" && (
+            {user?.role === "ADMIN" && (
               <li>
                 <Link href="/admin">{t("admin")}</Link>{" "}
               </li>
