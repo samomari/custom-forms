@@ -12,13 +12,21 @@
   },
   "Dashboard": {
     "formsTabLabel": "Формы",
+    "userFormsTabLabel": "Формы пользователя",
     "formsTabEmpty": "Вы еще не заполнили ни одной формы.",
+    "userFormsTabEmpty": "Еще не заполнено ни одной формы.",
     "formsTabLink": "Просмотр шаблонов",
     "templatesTabLabel": "Шаблоны",
+    "userTemplatesTabLabel": "Шаблоны пользователя",
     "templatesTabEmpty": "Вы еще не создали ни одного шаблона.",
+    "userTemplatesTabEmpty": "Еще не создано ни одного шаблона.",
     "templatesTabLink": "Создать шаблон",
     "usersTabLabel": "Пользователи",
-    "userTabEmpty": "Пользователи не найдены"
+    "userTabEmpty": "Пользователи не найдены",
+    "username": "Имя пользователя",
+    "email": "Электронная почта",
+    "role": "Роль",
+    "status": "Статус аккаунта"
   },
   "TemplateCard": {
     "templateImage": "Изображение шаблона",
@@ -106,6 +114,7 @@
     "rowsLoaded": "Загружено {count} строк",
     "previousBtn": "Предыдущий",
     "nextBtn": "Следующий",
+    "viewUser": "Страница пользователя",
     "role": "Роль",
     "blockUser": "Заблокировать пользователя",
     "unblockUser": "Разблокировать пользователя",

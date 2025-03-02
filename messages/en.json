@@ -12,13 +12,21 @@
   },
   "Dashboard": {
     "formsTabLabel": "Forms",
+    "userFormsTabLabel": "User Forms",
     "formsTabEmpty": "You have not filled any forms yet.",
+    "userFormsTabEmpty": "No forms filled yet.",
     "formsTabLink": "Browse Templates",
     "templatesTabLabel": "Templates",
+    "userTemplatesTabLabel": "User Templates",
     "templatesTabEmpty": "You have not created any templates yet.",
+    "userTemplatesTabEmpty": "No templates created yet.",
     "templatesTabLink": "Create Template",
     "usersTabLabel": "Users",
-    "userTabEmpty": "No users found"
+    "userTabEmpty": "No users found",
+    "username": "Username",
+    "email": "Email",
+    "role": "Role",
+    "status": "Account status"
   },
   "TemplateCard": {
     "templateImage": "Template image",
@@ -106,6 +114,7 @@
     "rowsLoaded": "{count} row(s) loaded",
     "previousBtn": "Previous",
     "nextBtn": "Next",
+    "viewUser": "User Page",
     "role": "Role",
     "blockUser": "Block User",
     "unblockUser": "Unblock User",
