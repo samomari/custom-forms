@@ -22,6 +22,7 @@ export const user = pgTable(
     status: text("status", { enum: ["ACTIVE", "BLOCKED"] })
       .default("ACTIVE")
       .notNull(),
+    sfAccountId: varchar("sf_account_id", { length: 20 }),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },

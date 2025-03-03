@@ -3,7 +3,6 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { LogIn } from "lucide-react";
 import Link from "next/link";
-import { getUserRole } from "@/features/roles/get-user-role";
 import { LangToggle } from "@/components/lang-toggle";
 import { getTranslations } from "next-intl/server";
 import { NaviSidebar } from "./navi-sidebar";

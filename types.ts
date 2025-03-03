@@ -39,6 +39,7 @@ export type UserType = {
   id: string;
   email: string;
   username: string;
+  sfAccountId: string | null;
   role: "USER" | "ADMIN";
   status: "ACTIVE" | "BLOCKED";
 };

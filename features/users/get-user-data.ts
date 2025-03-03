@@ -9,6 +9,7 @@ export const GetUserData = async (userId: string) => {
         id: user.id,
         email: user.email,
         username: user.username,
+        sfAccountId: user.sfAccountId,
         role: user.role,
         status: user.status,
       })

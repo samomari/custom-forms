@@ -14,6 +14,7 @@ export const GetAllUsers = async () => {
         email: user.email,
         username: user.username,
         role: user.role,
+        sfAccountId: user.sfAccountId,
         status: user.status,
       })
       .from(user);

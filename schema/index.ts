@@ -45,3 +45,16 @@ export const formEditSchema = z.object({
     }),
   ),
 });
+
+export const useSalesforceSchema = () => {
+  const t = useTranslations("TemplateValidation");
+
+  return z.object({
+    firstName: z.string().min(1, { message: t("firstNameRequired") }),
+    lastName: z.string().min(1, { message: t("lastNameRequired") }),
+    phone: z.string(),
+    website: z.string(),
+    industry: z.string(),
+    title: z.string(),
+  });
+};
