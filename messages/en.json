@@ -25,8 +25,9 @@
     "userTabEmpty": "No users found",
     "username": "Username",
     "email": "Email",
-    "role": "Role",
-    "status": "Account status"
+    "status": "Account status",
+    "sfAccId": "Salesforce account id: {id}",
+    "sfSyncButton": "Sync with Salesforce"
   },
   "TemplateCard": {
     "templateImage": "Template image",
@@ -84,7 +85,9 @@
     "titleRequired": "Title is required.",
     "topicRequired": "Topic is required.",
     "questionRequired": "Question is required.",
-    "typeRequired": "Type is required."
+    "typeRequired": "Type is required.",
+    "firstNameRequired": "First name is required.",
+    "lastNameRequired": "Last name is required."
   },
   "Form": {
     "enterAnswer": "Enter {type} type answer",
@@ -151,12 +154,32 @@
     "missingData": "Missing data",
     "likeOnce": "You have already liked this template",
     "liked": "Liked",
-    "internalError": "Internal Server Error"
+    "internalError": "Internal Server Error",
+    "failedSfAcc": "Failed to create salesforce account",
+    "failedSfCon": "Failed to create salesforce contact",
+    "successSf": "Salesforce account and contact created"
   },
   "ConfirmDialog": {
     "title": "Are you sure?",
     "description": "This action cannot be undone.",
     "cancel": "Cancel",
     "continue": "Continue"
+  },
+  "SalesforceDialog": {
+    "title": "Salesforce sync",
+    "description": "Please provide aditional information",
+    "firstName": "First Name",
+    "firstNamePlaceholder": "John",
+    "lastName": "Last Name",
+    "lastNamePlaceholder": "Doe",
+    "phone": "Phone (optional)",
+    "phonePlaceholder": "091762456",
+    "phoneTitle": "Enter a valid phone number, e.g., +37062312435 or 065223554",
+    "website": "Website (optional)",
+    "websitePlaceholder": "http://example.com",
+    "industry": "Industry (optional)",
+    "industryPlaceholder": "Technology",
+    "contactTitle": "Contact Title (optional)",
+    "contactTitlePlaceholder": "Software Engineer"
   }
 }

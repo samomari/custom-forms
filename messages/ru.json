@@ -25,8 +25,9 @@
     "userTabEmpty": "Пользователи не найдены",
     "username": "Имя пользователя",
     "email": "Электронная почта",
-    "role": "Роль",
-    "status": "Статус аккаунта"
+    "status": "Статус аккаунта",
+    "sfAccId": "Salesforce ID аккаунта: {id}",
+    "sfSyncButton": "Синхронизировать с Salesforce"
   },
   "TemplateCard": {
     "templateImage": "Изображение шаблона",
@@ -84,7 +85,9 @@
     "titleRequired": "Заголовок обязателен.",
     "topicRequired": "Тема обязательна.",
     "questionRequired": "Вопрос обязателен.",
-    "typeRequired": "Тип обязателен."
+    "typeRequired": "Тип обязателен.",
+    "firstNameRequired": "Имя обязательно.",
+    "lastNameRequired": "Фамилия обязательна."
   },
   "Form": {
     "enterAnswer": "Введите ответ типа {type}",
@@ -151,12 +154,32 @@
     "missingData": "Отсутствуют данные",
     "likeOnce": "Вы уже поставили лайк этому шаблону",
     "liked": "Понравилось",
-    "internalError": "Внутренняя ошибка сервера"
+    "internalError": "Внутренняя ошибка сервера",
+    "failedSfAcc": "Не удалось создать аккаунт Salesforce",
+    "failedSfCon": "Не удалось создать контакт Salesforce",
+    "successSf": "Аккаунт и контакт Salesforce успешно созданы"
   },
   "ConfirmDialog": {
     "title": "Вы уверены?",
     "description": "Это действие невозможно отменить.",
     "cancel": "Отменить",
     "continue": "Продолжить"
+  },
+  "SalesforceDialog": {
+    "title": "Синхронизация с Salesforce",
+    "description": "Пожалуйста, укажите дополнительную информацию",
+    "firstName": "Имя",
+    "firstNamePlaceholder": "Иван",
+    "lastName": "Фамилия",
+    "lastNamePlaceholder": "Петров",
+    "phone": "Телефон (необязательно)",
+    "phonePlaceholder": "091762456",
+    "phoneTitle": "Введите корректный номер телефона, например, +37062312435 или 065223554",
+    "website": "Веб-сайт (необязательно)",
+    "websitePlaceholder": "http://example.com",
+    "industry": "Отрасль (необязательно)",
+    "industryPlaceholder": "Технологии",
+    "contactTitle": "Должность (необязательно)",
+    "contactTitlePlaceholder": "Программист"
   }
 }
