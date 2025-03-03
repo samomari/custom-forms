@@ -40,6 +40,7 @@ export type UserType = {
   email: string;
   username: string;
   sfAccountId: string | null;
+  token: string | null;
   role: "USER" | "ADMIN";
   status: "ACTIVE" | "BLOCKED";
 };

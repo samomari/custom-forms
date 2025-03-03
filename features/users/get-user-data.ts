@@ -10,6 +10,7 @@ export const GetUserData = async (userId: string) => {
         email: user.email,
         username: user.username,
         sfAccountId: user.sfAccountId,
+        token: user.token,
         role: user.role,
         status: user.status,
       })

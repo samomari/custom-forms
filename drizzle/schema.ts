@@ -23,6 +23,7 @@ export const user = pgTable(
       .default("ACTIVE")
       .notNull(),
     sfAccountId: varchar("sf_account_id", { length: 20 }),
+    token: text("token"),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
   },

@@ -15,6 +15,7 @@ export const GetAllUsers = async () => {
         username: user.username,
         role: user.role,
         sfAccountId: user.sfAccountId,
+        token: user.token,
         status: user.status,
       })
       .from(user);
