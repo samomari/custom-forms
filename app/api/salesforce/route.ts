@@ -6,10 +6,30 @@ import { eq, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
 const domain = process.env.SALESFORCE_DOMAIN;
+const tokenUrl = process.env.SALESFORCE_TOKEN_URL!;
+const clientId = process.env.SALESFORCE_CLIENT_ID!;
+const clientSecret = process.env.SALESFORCE_CLIENT_SECRET!;
 
-const headers = {
-  Authorization: `Bearer ${process.env.SALESFORCE_ACCESS_TOKEN}`,
-};
+async function getOAuthToken() {
+  try {
+    const params = new URLSearchParams({
+      grant_type: "client_credentials",
+      client_id: clientId,
+      client_secret: clientSecret,
+    });
+
+    const response = await axios.post(tokenUrl, params);
+
+    if (!response.data.access_token) {
+      throw new Error("OAuth token not received");
+    }
+
+    return response.data.access_token;
+  } catch (error) {
+    console.error("Salesforce OAuth Token Error:", error);
+    return null;
+  }
+}
 
 export async function POST(req: Request) {
   try {
@@ -46,6 +66,17 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "missingData" }, { status: 400 });
     }
 
+    const accessToken = await getOAuthToken();
+    if (!accessToken) {
+      return NextResponse.json(
+        { message: "failedToGetToken" },
+        { status: 500 },
+      );
+    }
+
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+    };
     const accountUrl = `${domain}Account/`;
     const contactUrl = `${domain}Contact/`;
 

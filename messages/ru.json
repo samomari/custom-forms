@@ -157,7 +157,8 @@
     "internalError": "Внутренняя ошибка сервера",
     "failedSfAcc": "Не удалось создать аккаунт Salesforce",
     "failedSfCon": "Не удалось создать контакт Salesforce",
-    "successSf": "Аккаунт и контакт Salesforce успешно созданы"
+    "successSf": "Аккаунт и контакт Salesforce успешно созданы",
+    "failedToGetToken": "Не удалось получить OAuth токен"
   },
   "ConfirmDialog": {
     "title": "Вы уверены?",

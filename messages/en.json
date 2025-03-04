@@ -157,7 +157,8 @@
     "internalError": "Internal Server Error",
     "failedSfAcc": "Failed to create salesforce account",
     "failedSfCon": "Failed to create salesforce contact",
-    "successSf": "Salesforce account and contact created"
+    "successSf": "Salesforce account and contact created",
+    "failedToGetToken": "Failed to get OAuth token"
   },
   "ConfirmDialog": {
     "title": "Are you sure?",
