@@ -7,6 +7,7 @@ import { LangToggle } from "@/components/lang-toggle";
 import { getTranslations } from "next-intl/server";
 import { NaviSidebar } from "./navi-sidebar";
 import { currentUser } from "@/features/users/current-user";
+import JiraServiceComponent from "../jira-service-component";
 
 export async function NaviHeader() {
   const t = await getTranslations("Header");
@@ -24,6 +25,10 @@ export async function NaviHeader() {
             <Link href="/templates">{t("templates")}</Link>
           </li>
           <SignedIn>
+            <JiraServiceComponent
+              username={user?.username as string}
+              email={user?.email as string}
+            />
             <li>
               <Link href={`/user/${user?.id}`}>{t("dashboard")}</Link>
             </li>

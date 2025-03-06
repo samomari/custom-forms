@@ -36,7 +36,6 @@ export function UserCard({ user }: UserCardProps) {
         const response = await axios.patch(`/api/users/${user.id}/token`);
         const newToken = response.data.user.token;
         copyToken(newToken);
-        console.log(newToken);
       } catch (error) {
         console.error("Error getting token:", error);
       } finally {
