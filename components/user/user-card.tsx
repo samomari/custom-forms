@@ -72,9 +72,9 @@ export function UserCard({ user }: UserCardProps) {
                 {t("sfSyncButton")}
               </Button>
             )}
-            <Button disabled={loading} onClick={handleGetToken}>
+            {/* <Button disabled={loading} onClick={handleGetToken}>
               Get odoo token
-            </Button>
+            </Button> */}
           </div>
         </div>
       </div>
