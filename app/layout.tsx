@@ -15,6 +15,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Custom Forms",
   description: "Custom Forms",
+  other: {
+    "google-site-verification": "8orObmFWgy04ShjQQvpNWuIw-X_OYDTgcJTsAi8IWlY",
+  },
 };
 
 export default async function RootLayout({
