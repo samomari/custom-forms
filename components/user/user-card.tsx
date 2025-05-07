@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { SalesforceDialog } from "@/components/dialogs/salesforce-dialog";
-import { toast } from "@/hooks/use-toast";
-import axios from "axios";
 
 interface UserCardProps {
   user: UserType;
@@ -14,35 +12,35 @@ interface UserCardProps {
 
 export function UserCard({ user }: UserCardProps) {
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
   const t = useTranslations("Dashboard");
 
-  const copyToken = (token: string) => {
-    navigator.clipboard.writeText(token).then(() => {
-      toast({
-        title: "success",
-        description: "Token copied to clipbaord",
-      });
-    });
-  };
+  // const copyToken = (token: string) => {
+  //   navigator.clipboard.writeText(token).then(() => {
+  //     toast({
+  //       title: "success",
+  //       description: "Token copied to clipbaord",
+  //     });
+  //   });
+  // };
 
-  const handleGetToken = async () => {
-    setLoading(true);
-    if (user.token) {
-      copyToken(user?.token);
-      setLoading(false);
-    } else {
-      try {
-        const response = await axios.patch(`/api/users/${user.id}/token`);
-        const newToken = response.data.user.token;
-        copyToken(newToken);
-      } catch (error) {
-        console.error("Error getting token:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-  };
+  // const handleGetToken = async () => {
+  //   setLoading(true);
+  //   if (user.token) {
+  //     copyToken(user?.token);
+  //     setLoading(false);
+  //   } else {
+  //     try {
+  //       const response = await axios.patch(`/api/users/${user.id}/token`);
+  //       const newToken = response.data.user.token;
+  //       copyToken(newToken);
+  //     } catch (error) {
+  //       console.error("Error getting token:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
+  // };
   return (
     <Card className="mb-2">
       <div className="flex flex-col p-4 space-y-3">
